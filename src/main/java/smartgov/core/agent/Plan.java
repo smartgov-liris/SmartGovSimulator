@@ -30,7 +30,6 @@ public class Plan <Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
 	private Queue<Tnode> remainingNodes;
 	private Tnode currentNode;
 	private Tarc currentArc;
-	// private int indexOfCurrentNode;
 	private boolean pathComplete;
 	
 	private AbstractAgent<?> agent;

@@ -1,8 +1,6 @@
 package smartgov.core.agent.behavior;
 
 import smartgov.core.agent.AbstractAgentBody;
-import smartgov.core.agent.perception.AbstractPerception;
-import smartgov.core.agent.properties.AbstractProperties;
 import smartgov.core.environment.LowLevelAction;
 
 /**
@@ -14,7 +12,17 @@ import smartgov.core.environment.LowLevelAction;
  * @param <W> AbstractProperties
  * @param <B> AbstractAgentBody
  */
-public abstract class AbstractBehavior<T extends AbstractPerception, W extends AbstractProperties, B extends AbstractAgentBody<?, ?, ?>> {
+public abstract class AbstractBehavior<B extends AbstractAgentBody<?, ?, ?>> {
+	
+	private B agentBody;
+	
+	public AbstractBehavior(B agentBody) {
+		this.agentBody = agentBody;
+	}
+	
+	public B getAgentBody() {
+		return agentBody;
+	}
 
 	/**
 	 * Provide the actions that a lower agent should perform according to the current conditions.
@@ -26,12 +34,8 @@ public abstract class AbstractBehavior<T extends AbstractPerception, W extends A
 	 * @param body
 	 * @return
 	 */
-	public abstract LowLevelAction provideAction(T perceptions, W properties, B body);
+	public abstract LowLevelAction provideAction();
 	
 	public abstract void initialize();
-	
-	public abstract void setInitialState();
-	
-	public abstract void setToFinalState();
 	
 }

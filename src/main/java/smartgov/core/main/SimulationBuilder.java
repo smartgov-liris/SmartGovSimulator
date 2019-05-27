@@ -16,28 +16,19 @@ public class SimulationBuilder {
 	// Time that correspond to a tick, in seconds
 	public static final double TICK_DURATION = 1.0;
 
-	private SmartGovContext<?, ?, ?> context;
+	private SmartGovContext context;
 
-	public SimulationBuilder(SmartGovContext<?, ?, ?> context) {
+	public SimulationBuilder(SmartGovContext context) {
 		this.context = context;
-	}
-	/**
-	 * This function is called each time Repast start a simulation.
-	 * Every variables need to be cleared before a new simulation to avoid bad garbage collection.
-	 * 
-	 * It can be called and overridden by subclasses to add features to the simulation.
-	 */
-	public void build() {
-
 		long beginTime = System.currentTimeMillis();
 
 		context.clear();
 
-		context.scenario = context.loadScenario((String) context.getConfig().get("scenario"));
+		context.setScenario(context.loadScenario((String) context.getConfig().get("scenario")));
 
-		if (context.scenario != null) {
-			System.out.println("Loading scenario " + context.scenario.getClass().getSimpleName());
-			context.scenario.loadWorld(context);
+		if (context.getScenario() != null) {
+			System.out.println("Loading scenario " + context.getScenario().getClass().getSimpleName());
+			context.getScenario().loadWorld(context);
 			System.out.println("Time to process simulation creation: " + (System.currentTimeMillis() - beginTime) + " ms.");
 		}
 		else {
@@ -45,7 +36,7 @@ public class SimulationBuilder {
 		}
 	}
 	
-	public SmartGovContext<?, ?, ?> getContext() {
+	public SmartGovContext getContext() {
 		return context;
 	}
 

@@ -16,7 +16,7 @@ public class Arc<Tnode extends Node<?>> extends GraphObject {
 	private String id;
 	private final Tnode startNode;
 	private final Tnode targetNode;
-	protected double distance;
+	protected double length;
 
 	/**
 	 * Arc constructor.
@@ -26,11 +26,11 @@ public class Arc<Tnode extends Node<?>> extends GraphObject {
 	 * @param targetNode Target Node
 	 * @param distance Length of the Arc
 	 */
-	public Arc(String id, Tnode startNode, Tnode targetNode, double distance) {
+	public Arc(String id, Tnode startNode, Tnode targetNode, double length) {
 		this.id = id;
 		this.startNode = startNode;
 		this.targetNode = targetNode;
-		this.distance = distance;
+		this.length = length;
 	}
 	
 	public String getId() {
@@ -45,8 +45,8 @@ public class Arc<Tnode extends Node<?>> extends GraphObject {
 		return targetNode;
 	}
 
-	public double getDistance() {
-		return distance;
+	public double getLength() {
+		return length;
 	}
 
 	@Override

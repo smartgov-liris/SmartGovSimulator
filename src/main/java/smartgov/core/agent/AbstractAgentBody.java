@@ -9,7 +9,6 @@ import smartgov.core.agent.events.ArcReachedEvent;
 import smartgov.core.agent.events.DestinationReachedEvent;
 import smartgov.core.agent.events.MoveEvent;
 import smartgov.core.agent.events.NodeReachedEvent;
-import smartgov.core.agent.perception.Perception;
 import smartgov.core.environment.LowLevelAction;
 import smartgov.core.environment.Perceivable;
 import smartgov.core.environment.graph.arc.Arc;
@@ -72,8 +71,6 @@ public abstract class AbstractAgentBody<Tagent extends AbstractAgent<?>, Tnode e
 	public void updatePlan(List<Tnode> nodes) {
 		plan.update(nodes);
 	}
-	
-	public abstract Perception getPerception();
 	
 	public void doAction(LowLevelAction action){
 		// TODO : event listeners

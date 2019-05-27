@@ -29,25 +29,25 @@ import smartgov.core.simulation.Scenario;
  * @param <Tarc> Arc type
  */
 
-public class SmartGovContext<Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>, Tagent extends AbstractAgent<? extends AbstractAgentBody<Tagent, Tnode, Tarc>>> extends AbstractContext {
+public class SmartGovContext extends AbstractContext {
 	
 	//Scenario
-	public Scenario scenario;
+	private Scenario scenario;
 
 	//Repast Static Variables
 	public static final GeometryFactory GEOFACTORY = new GeometryFactory();
 	
-	public Map<String, Tagent> agents;
+	public Map<String, AbstractAgent<?>> agents;
 
-	public Map<String, Tnode> nodes;
-	public Map<String, Tarc> arcs;
-	public OrientedGraph<Tnode, Tarc> graph;
+	public Map<String, Node<?>> nodes;
+	public Map<String, Arc<?>> arcs;
+	public OrientedGraph graph;
 	public Map<String, SourceNode> sourceNodes;
 	public Map<String, SinkNode> sinkNodes;
 	
 	//Manage human agent creation and allocation
 	public static int AGENT_MAX; //Max agents in the simulation (determine by parameters)
-	public Map<String, Queue<Tagent>> agentsStock; // Map SourceNodes ids to available agents
+	public Map<String, Queue<AbstractAgent<?>>> agentsStock; // Map SourceNodes ids to available agents
 	
 	//File names
 	public static String outputFile;
@@ -61,6 +61,14 @@ public class SmartGovContext<Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>, 
 		sourceNodes = new HashMap<>();
 		sinkNodes = new HashMap<>();
 		agentsStock = new HashMap<>();	
+	}
+	
+	public Scenario getScenario() {
+		return scenario;
+	}
+	
+	public void setScenario(Scenario scenario) {
+		this.scenario = scenario;
 	}
 	
 	@Override

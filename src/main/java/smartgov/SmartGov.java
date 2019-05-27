@@ -15,13 +15,12 @@ public class SmartGov {
 	 */
 	// public static String configFile = FilePath.inputFolder + "config.ini";
 	
-	public SmartGov(String configFile) {
-		SmartGovContext<?, ?, ?> context = new SmartGovContext<>(configFile);
+	public SmartGov(SmartGovContext context) {
 		simulationBuilder = new SimulationBuilder(context);
 	}
 
     public static void main(String[] args) {
-        new SmartGov(args[1]).getSimulationBuilder().build();
+        new SmartGov(new SmartGovContext(args[1]));
     }
     
     public SimulationBuilder getSimulationBuilder() {

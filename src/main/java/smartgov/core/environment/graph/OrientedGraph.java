@@ -40,10 +40,12 @@ public class OrientedGraph<Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> ex
        for(Tnode node : nodes.values()){
         	for(int j = 0; j < node.getOutgoingArcs().size(); j++){       	
         		try {
-       				g.addEdge(node.getOutgoingArcs().get(j).getId(), 
-    				node.getId(),
-    				node.getOutgoingArcs().get(j).getTargetNode().getId(), true)
-    				.setAttribute("distance", node.getOutgoingArcs().get(j).getDistance());
+       				g.addEdge(
+       						node.getOutgoingArcs().get(j).getId(), 
+       						node.getId(),
+       						node.getOutgoingArcs().get(j).getTargetNode().getId(),
+       						true)
+    				.setAttribute("distance", node.getOutgoingArcs().get(j).getLength());
        			} catch(IdAlreadyInUseException | ElementNotFoundException |EdgeRejectedException er ){
        				System.out.println(er.getMessage());
        			};
@@ -81,85 +83,3 @@ public class OrientedGraph<Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> ex
 	}
 	
 }
-
-
-
-
-/*
-package graph;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import environment.city.EnvVar;
-
-import environment.city.EnvVar;
-import es.usc.citius.hipster.algorithm.AStar;
-import es.usc.citius.hipster.algorithm.Hipster;
-import es.usc.citius.hipster.graph.GraphBuilder;
-import es.usc.citius.hipster.graph.GraphSearchProblem;
-import es.usc.citius.hipster.graph.HipsterDirectedGraph;
-import es.usc.citius.hipster.model.impl.WeightedNode;
-import es.usc.citius.hipster.model.problem.SearchProblem;
-
-public class OrientedGraph {
-	
-	private HipsterDirectedGraph<String, Double> orientedGraph;
-	
-	private List<Node> nodes;
-	
-	public OrientedGraph(){
-		this.nodes = EnvVar.nodes;
-		GraphBuilder<String, Double> graph = GraphBuilder.<String, Double>create();
-        for(int i = 0; i < EnvVar.nodes.size(); i++){
-        	Node node = EnvVar.nodes.get(i);
-        	
-        	for(int j = 0; j < node.getOutgoingArcs().size(); j++){
-        		graph.connect(node.getId())
-        		.to(node.getOutgoingArcs().get(j).getTargetNode().getId())
-        		.withEdge(node.getOutgoingArcs().get(j).getDistance());
-        	}
-        }
-        orientedGraph = graph.createDirectedGraph();
-	}
-	
-	
-	public OrientedGraph(List<Node> nodes){
-		this.nodes = nodes;
-		GraphBuilder<String, Double> graph = GraphBuilder.<String, Double>create();
-        for(int i = 0; i < nodes.size(); i++){
-        	Node node = nodes.get(i);
-        	
-        	for(int j = 0; j < node.getOutgoingArcs().size(); j++){
-        		graph.connect(node.getId())
-        		.to(node.getOutgoingArcs().get(j).getTargetNode().getId())
-        		.withEdge(node.getOutgoingArcs().get(j).getDistance());
-        	}
-        }
-        orientedGraph = graph.createDirectedGraph();
-	}
-	
-	
-	private List<String> pathBetween(Node from, Node to){
-		SearchProblem<Double, String, WeightedNode<Double, String, Double>> p = GraphSearchProblem.startingFrom(from.getId())
-                .in(orientedGraph)
-                .takeCostsFromEdges()
-                .build();
-		return AStar.recoverStatePath(Hipster.createAStar(p).search(to.getId()).getGoalNode());
-	}
-	
-	private List<Node> pathStringToNode(List<String> nodesId){
-		List<Node> nodesPath = new ArrayList<>();
-		for(int i = 0; i < nodesId.size(); i++){
-			nodesPath.add(nodes.get(Integer.parseInt(nodesId.get(i))));
-		}
-		return nodesPath;
-	}
-	
-	public List<Node> shortestPath(Node from, Node to){
-		return pathStringToNode(pathBetween(from, to));
-	}
-	
-}
-
-*/
