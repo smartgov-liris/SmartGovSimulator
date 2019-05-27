@@ -3,8 +3,15 @@
  */
 package smartgov;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.main.SimulationBuilder;
@@ -24,6 +31,28 @@ public class SmartGov {
 	public SmartGov(SmartGovContext context) {
 		logger.info("Starting SmartGov");
 		simulationBuilder = new SimulationBuilder(context);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		String outputFolder = context.getFiles().getFile("outputFolder");
+		
+		File nodeOutput = new File(outputFolder + File.separator + "init_nodes.json");
+		File arcOutput = new File(outputFolder + File.separator + "init_arcs.json");
+		try {
+			logger.info("Saving initial nodes to " + nodeOutput.getPath());
+			objectMapper.writeValue(nodeOutput, context.nodes.values());
+			
+			logger.info("Saving initial arcs to " + arcOutput.getPath());
+			objectMapper.writeValue(arcOutput, context.arcs.values());
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
     public static void main(String[] args) {

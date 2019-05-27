@@ -4,18 +4,23 @@ import java.util.List;
 
 import org.locationtech.jts.geom.Coordinate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import smartgov.core.environment.graph.node.Node;
 
 /**
- * Generic abstract class to represent a Node on a map.
+ * Generic class to represent a Node on a map.
  * 
  * @see Node
  * @author pbreugnot
  *
  * @param <Tarc> GeoArc type
  */
-public abstract class GeoNode<Tarc extends GeoArc<?>> extends Node<Tarc> {
+public class GeoNode<Tarc extends GeoArc<?>> extends Node<Tarc> {
 	
+	// Ignore the Coordinate field : uses the getPositionAsArray getter instead.
+	@JsonIgnore
 	private Coordinate position;
 	
 	public GeoNode(String id, Coordinate position){
@@ -37,6 +42,7 @@ public abstract class GeoNode<Tarc extends GeoArc<?>> extends Node<Tarc> {
 		return position;
 	}
 	
+	@JsonProperty("position")
 	public double[] getPositionAsArray(){
 		double[] coords = new double[2];
 		coords[0] = position.x;

@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 import smartgov.SmartGov;
-import smartgov.core.simulation.Files;
 import smartgov.core.simulation.Scenario;
+import smartgov.core.utils.Files;
 
 /**
  * Abstract environment class, implemented at different SmartGov levels.

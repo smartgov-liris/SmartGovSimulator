@@ -1,4 +1,4 @@
-package smartgov.core.simulation;
+package smartgov.core.utils;
 
 import java.io.File;
 import java.util.Properties;

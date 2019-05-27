@@ -3,6 +3,8 @@ package smartgov.core.environment.graph;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import smartgov.core.environment.graph.events.AgentArrival;
 import smartgov.core.environment.graph.events.AgentDeparture;
 import smartgov.core.events.EventHandler;
@@ -17,7 +19,9 @@ import smartgov.core.events.EventHandler;
  */
 public abstract class GraphObject {
 	
+	@JsonIgnore
 	private Collection<EventHandler<AgentArrival>> agentArrivalListeners;
+	@JsonIgnore
 	private Collection<EventHandler<AgentDeparture>> agentDepartureListeners;
 	
 	public GraphObject() {

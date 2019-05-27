@@ -12,9 +12,6 @@ import java.util.Map.Entry;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.city.Building;
@@ -85,7 +82,6 @@ public class OsmJSONReader {
 				Coordinate[] coordinates1 = new Coordinate[2];
 				coordinates1[0] = beginNode.getPosition();
 				coordinates1[1] = targetNode.getPosition();
-				MultiLineString roadLine = createMultiLineString(coordinates1);
 				int lanes = 0;
 				try {
 					lanes = currentEdge.get("lanes").asInt();
@@ -122,7 +118,6 @@ public class OsmJSONReader {
 							roads.get(currentEdge.get("road").asInt()),
 							beginNode,
 							targetNode,
-							roadLine,
 							lanes,
 							type);
 
@@ -231,15 +226,6 @@ public class OsmJSONReader {
 		listOfNodeIds[1] = despawnNodeId;
 		System.out.println("Time to process spawns node identification: " + (System.currentTimeMillis() - beginTime) + "ms.");
 		return listOfNodeIds;
-	}
-
-	protected static MultiLineString createMultiLineString(Coordinate[] coordinates){
-		CoordinateArraySequence coords = new CoordinateArraySequence(coordinates);
-		GeometryFactory geoFactory = new GeometryFactory();
-		LineString line = new LineString(coords, geoFactory);
-		LineString[] lines = new LineString[1];
-		lines[0] = line;
-		return new MultiLineString(lines, geoFactory);
 	}
 
 //	private static SurfaceShape createSurfaceShape(Coordinate[] coordinates, double elevation){

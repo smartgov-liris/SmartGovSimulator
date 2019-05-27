@@ -2,6 +2,8 @@ package smartgov.urban.osm.environment.graph;
 
 import org.locationtech.jts.geom.Coordinate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import smartgov.urban.geo.environment.graph.GeoNode;
 
 /**
@@ -15,6 +17,7 @@ import smartgov.urban.geo.environment.graph.GeoNode;
  */
 public class OsmNode extends GeoNode<OsmArc> {
 
+	@JsonIgnore
 	private boolean needToSlow = true;
 	
 	public OsmNode(String id, Coordinate coordinate) {

@@ -3,7 +3,8 @@ package smartgov.urban.osm.environment.graph;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.locationtech.jts.geom.MultiLineString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import smartgov.core.environment.Perceivable;
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.simulation.GISComputation;
@@ -20,23 +21,23 @@ import smartgov.urban.osm.environment.city.ParkingSpot;
  */
 public class OsmArc extends GeoArc<OsmNode> implements Perceivable {
 	
+	@JsonIgnore
 	protected Road road;
-	// protected List<OsmAgentBody> agentsInRoad;
 	protected String type;
+	@JsonIgnore
 	protected int lanes;
+	@JsonIgnore
 	protected List<ParkingSpot> spots;
+	@JsonIgnore
 	protected ParkingSpot closeSpot;
 	
 	/**
 	 * OsmArc constructor.
 	 * 
-	 * @param geography Current Geometry
 	 * @param id Arc id
 	 * @param road Road to which the Arc belongs to.
 	 * @param startNode Start Node
 	 * @param targetNode Target Node
-	 * @param distance Length of the Arc
-	 * @param polyLine Shape of the Arc
 	 * @param lanes Number of OSM lanes
 	 * @param type Arc type. (OSM 'highway' attribute)
 	 */
@@ -45,10 +46,9 @@ public class OsmArc extends GeoArc<OsmNode> implements Perceivable {
 			Road road,
 			OsmNode startNode,
 			OsmNode targetNode,
-			MultiLineString polyLine,
 			int lanes,
 			String type) {
-		super(id, startNode, targetNode, polyLine);
+		super(id, startNode, targetNode);
 		this.road = road;
 		spots = new ArrayList<>();
 	}
@@ -64,22 +64,6 @@ public class OsmArc extends GeoArc<OsmNode> implements Perceivable {
 	public String getType() {
 		return type;
 	}
-	
-//	public List<OsmAgentBody> getAgentsInRoad() {
-//		return agentsInRoad;
-//	}
-	
-//	public int getLeaderFor(AbstractAgentBody<?, ?, ?> body) {
-//		if(agentsInRoad.contains(body)) {
-//			return agentsInRoad.indexOf(body) - 1 < 0 ? 0 : agentsInRoad.indexOf(body) - 1;
-//		} else {
-//			return 0;
-//		}
-//	}
-	
-//	public Coordinate getLeaderCoordinateFor(AbstractAgentBody<?, ?, ?> body) {
-//		return getLeaderFor(body) == 0 ? null : agentsInRoad.get(getLeaderFor(body)).getPosition();
-//	}
 	
 	public List<ParkingSpot> getSpots() {
 		return spots;
