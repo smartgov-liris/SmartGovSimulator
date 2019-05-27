@@ -38,11 +38,12 @@ public class SmartGov {
 		File nodeOutput = new File(outputFolder + File.separator + "init_nodes.json");
 		File arcOutput = new File(outputFolder + File.separator + "init_arcs.json");
 		try {
+			// Using maps is simpler when processed in JS, but IDs are duplicated.
 			logger.info("Saving initial nodes to " + nodeOutput.getPath());
-			objectMapper.writeValue(nodeOutput, context.nodes.values());
+			objectMapper.writeValue(nodeOutput, context.nodes);
 			
 			logger.info("Saving initial arcs to " + arcOutput.getPath());
-			objectMapper.writeValue(arcOutput, context.arcs.values());
+			objectMapper.writeValue(arcOutput, context.arcs);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
