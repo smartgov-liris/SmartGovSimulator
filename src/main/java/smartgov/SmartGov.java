@@ -3,10 +3,16 @@
  */
 package smartgov;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.main.SimulationBuilder;
+import smartgov.urban.osm.environment.OsmContext;
 
 public class SmartGov {
+	
+	public static final Logger logger = LogManager.getLogger(SmartGov.class);
 	
 	private SimulationBuilder simulationBuilder;
 	
@@ -16,11 +22,12 @@ public class SmartGov {
 	// public static String configFile = FilePath.inputFolder + "config.ini";
 	
 	public SmartGov(SmartGovContext context) {
+		logger.info("Starting SmartGov");
 		simulationBuilder = new SimulationBuilder(context);
 	}
 
     public static void main(String[] args) {
-        new SmartGov(new SmartGovContext(args[1]));
+        new SmartGov(new OsmContext(args[0]));
     }
     
     public SimulationBuilder getSimulationBuilder() {

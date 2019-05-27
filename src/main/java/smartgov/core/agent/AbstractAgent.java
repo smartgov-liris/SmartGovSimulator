@@ -1,5 +1,7 @@
 package smartgov.core.agent;
 
+import smartgov.core.agent.properties.AgentProperties;
+
 //import repast.simphony.engine.schedule.ScheduledMethod;
 
 /**
@@ -16,10 +18,12 @@ public abstract class AbstractAgent<B extends AbstractAgentBody<?, ?, ?>> {
 	
 	protected String id;
 	protected B body;
+	protected AgentProperties agentProperties;
 	
-	public AbstractAgent(String id, B body){
+	public AbstractAgent(String id, B body, AgentProperties agentProperties){
 		this.id = id;
 		this.body = body;
+		this.agentProperties = agentProperties;
 	}
 
 	/**
@@ -42,6 +46,10 @@ public abstract class AbstractAgent<B extends AbstractAgentBody<?, ?, ?>> {
 	
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public AgentProperties getAgentProperties() {
+		return agentProperties;
 	}
 	
 	/**

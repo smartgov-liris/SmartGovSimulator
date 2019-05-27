@@ -33,6 +33,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
     implementation 'org.graphstream:gs-algo:1.3'
     implementation 'net.sourceforge:javaml:0.1.7'
+    implementation 'org.apache.logging.log4j:log4j-api:2.11.2'
+    implementation 'org.apache.logging.log4j:log4j-core:2.11.2'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
@@ -40,4 +42,4 @@ dependencies {
 }
 
 // Define the main class for the application
-mainClassName = 'smartgov.App'
+mainClassName = 'smartgov.SmartGov'

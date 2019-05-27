@@ -4,6 +4,7 @@ import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.math.Vector2D;
 
 import smartgov.core.environment.graph.arc.Arc;
+import smartgov.urban.geo.simulation.GISComputation;
 
 /**
  * Generic abstract class to represent an Arc on a map.
@@ -28,7 +29,7 @@ public abstract class GeoArc<Tnode extends GeoNode<?>> extends Arc<Tnode> {
 	 * @param polyLine Shape of the Arc
 	 */
 	public GeoArc(String id, Tnode startNode, Tnode targetNode, MultiLineString polyline){
-		super(id, startNode, targetNode, startNode.getPosition().distance(targetNode.getPosition()));
+		super(id, startNode, targetNode, GISComputation.GPS2Meter(startNode.getPosition(), targetNode.getPosition()));
 		this.polyline = polyline;
 		this.direction = new Vector2D(startNode.getPosition(), targetNode.getPosition());
 		this.direction.normalize();

@@ -2,6 +2,7 @@ package smartgov.urban.geo.agent;
 
 import smartgov.core.agent.AbstractAgent;
 import smartgov.core.agent.behavior.AbstractBehavior;
+import smartgov.core.agent.properties.AgentProperties;
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.environment.graph.GeoNode;
 
@@ -28,8 +29,9 @@ public abstract class GeoAgent<Tnode extends GeoNode<Tarc>, Tarc extends GeoArc<
 	public GeoAgent(
 			String id,
 			Tbody body,
-			B behavior) {
-		super(id, body);
+			B behavior,
+			AgentProperties agentProperties) {
+		super(id, body, agentProperties);
 		this.body.setSpeed(0.0);
 		this.behavior = behavior;
 	}

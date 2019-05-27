@@ -1,5 +1,6 @@
 package smartgov.core.main;
 
+import smartgov.SmartGov;
 import smartgov.core.environment.SmartGovContext;
 
 /**
@@ -27,12 +28,12 @@ public class SimulationBuilder {
 		context.setScenario(context.loadScenario((String) context.getConfig().get("scenario")));
 
 		if (context.getScenario() != null) {
-			System.out.println("Loading scenario " + context.getScenario().getClass().getSimpleName());
+			SmartGov.logger.info("Loading World for " + context.getScenario().getClass().getSimpleName());
 			context.getScenario().loadWorld(context);
-			System.out.println("Time to process simulation creation: " + (System.currentTimeMillis() - beginTime) + " ms.");
+			SmartGov.logger.info("Time to process simulation creation: " + (System.currentTimeMillis() - beginTime) + " ms.");
 		}
 		else {
-			System.out.println("Scenario not found");
+			SmartGov.logger.error("Scenario not found");
 		}
 	}
 	

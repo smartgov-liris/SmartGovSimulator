@@ -4,12 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
-import java.util.Scanner;
 
-import smartgov.core.simulation.FilePath;
+import smartgov.SmartGov;
+import smartgov.core.simulation.Files;
 import smartgov.core.simulation.Scenario;
 
 /**
@@ -21,6 +19,7 @@ import smartgov.core.simulation.Scenario;
 public abstract class AbstractContext {
 	
 	private Properties config;
+	private Files files;
 
 	public abstract void clear();
 	public abstract void init();
@@ -32,8 +31,11 @@ public abstract class AbstractContext {
 	public abstract Scenario loadScenario(String scenarioName);
 	
 	private void parseConfig(String file) {
+		SmartGov.logger.info("Loading config from " + file);
 		config = new Properties();
 		try {
+			File configFile = new File(file);
+			files = new Files(configFile.getParentFile().getAbsolutePath(), config);
 			config.load(new FileInputStream(new File(file)));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -46,6 +48,10 @@ public abstract class AbstractContext {
 	
 	public Properties getConfig() {
 		return config;
+	}
+	
+	public Files getFiles() {
+		return files;
 	}
 	
 //	public static Map<String, String> parseConfig(String filestr) {

@@ -21,30 +21,30 @@ public class TestLoadWorldScenario {
 
 	@Test
 	public void loasSmartGovWithTestScenario() {
-		SmartGov smartGov = loadSmartGov();
+		SmartGov smartgov = loadSmartGov();
 		
 		assertThat(
-				smartGov.getSimulationBuilder().getContext().getScenario(),
+				smartgov.getSimulationBuilder().getContext().getScenario(),
 				notNullValue()
 				);
 		
 		assertThat(
-				smartGov.getSimulationBuilder().getContext().getScenario() instanceof TestScenario,
+				smartgov.getSimulationBuilder().getContext().getScenario() instanceof TestScenario,
 				equalTo(true)
 				);
 	}
 	
 	@Test
 	public void testNodes() {
-		SmartGov smartGov = loadSmartGov();
+		SmartGov smartgov = loadSmartGov();
 		
 		assertThat(
-				smartGov.getSimulationBuilder().getContext().nodes.keySet(),
+				smartgov.getSimulationBuilder().getContext().nodes.keySet(),
 				hasSize(4)
 				);
 		
 		assertThat(
-				smartGov.getSimulationBuilder().getContext().arcs.keySet(),
+				smartgov.getSimulationBuilder().getContext().arcs.keySet(),
 				hasSize(5)
 				);
 	}

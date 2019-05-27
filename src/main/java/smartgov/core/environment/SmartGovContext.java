@@ -10,6 +10,7 @@ import java.util.Queue;
 
 import org.locationtech.jts.geom.GeometryFactory;
 
+import smartgov.SmartGov;
 import smartgov.core.agent.AbstractAgent;
 import smartgov.core.agent.AbstractAgentBody;
 import smartgov.core.environment.graph.OrientedGraph;
@@ -100,7 +101,7 @@ public class SmartGovContext extends AbstractContext {
 
 	@Override
 	public Scenario loadScenario(String scenarioName) {
-		// TODO Auto-generated method stub
+		SmartGov.logger.info("Loading Scenario : " + scenarioName);
 		return null;
 	}
 }
