@@ -14,14 +14,17 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import smartgov.core.environment.SmartGovContext;
+import smartgov.core.events.EventHandler;
 import smartgov.core.main.SimulationBuilder;
 import smartgov.core.main.SmartGovRuntime;
+import smartgov.core.main.events.SimulationStopped;
 import smartgov.urban.osm.environment.OsmContext;
 
 public class SmartGov {
 	
 	public static final Logger logger = LogManager.getLogger(SmartGov.class);
 	
+	private SmartGovContext context;
 	private SimulationBuilder simulationBuilder;
 	private SmartGovRuntime smartGovRuntime;
 	
@@ -32,6 +35,7 @@ public class SmartGov {
 	
 	public SmartGov(SmartGovContext context) {
 		logger.info("Starting SmartGov");
+		this.context = context;
 		simulationBuilder = new SimulationBuilder(context);
 		
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -39,6 +43,7 @@ public class SmartGov {
 		
 		File nodeOutput = new File(outputFolder + File.separator + "init_nodes.json");
 		File arcOutput = new File(outputFolder + File.separator + "init_arcs.json");
+
 		try {
 			// Using maps is simpler when processed in JS, but IDs are duplicated.
 			logger.info("Saving initial nodes to " + nodeOutput.getPath());
@@ -46,14 +51,7 @@ public class SmartGov {
 			
 			logger.info("Saving initial arcs to " + arcOutput.getPath());
 			objectMapper.writeValue(arcOutput, context.arcs);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -62,7 +60,29 @@ public class SmartGov {
 
     public static void main(String[] args) {
         SmartGov smartGov = new SmartGov(new OsmContext(args[0]));
+        smartGov.getRuntime().addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
+
+			@Override
+			public void handle(SimulationStopped event) {
+				String outputFolder = smartGov.getContext().getFiles().getFile("outputFolder");
+				File agentOutput = new File(outputFolder + File.separator + "agents_" + smartGov.getRuntime().getTickCount() +".json");
+				logger.info("Saving agents state to " + agentOutput.getPath());
+				
+				ObjectMapper objectMapper = new ObjectMapper();
+
+				try {
+					objectMapper.writeValue(agentOutput, smartGov.getContext().agents);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+        	
+        });
         smartGov.getRuntime().start(100);
+    }
+    
+    public SmartGovContext getContext() {
+    	return context;
     }
     
     public SimulationBuilder getSimulationBuilder() {

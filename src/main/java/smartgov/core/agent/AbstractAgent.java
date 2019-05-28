@@ -1,5 +1,7 @@
 package smartgov.core.agent;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import smartgov.core.agent.properties.AgentProperties;
 
 //import repast.simphony.engine.schedule.ScheduledMethod;
@@ -18,6 +20,7 @@ public abstract class AbstractAgent<B extends AbstractAgentBody<?, ?, ?>> {
 	
 	protected String id;
 	protected B body;
+	@JsonProperty("properties")
 	protected AgentProperties agentProperties;
 	
 	public AbstractAgent(String id, B body, AgentProperties agentProperties){

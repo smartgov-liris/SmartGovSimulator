@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import smartgov.core.agent.events.ArcLeftEvent;
 import smartgov.core.agent.events.ArcReachedEvent;
 import smartgov.core.agent.events.DestinationReachedEvent;
@@ -15,6 +18,9 @@ import smartgov.core.environment.graph.events.AgentArrival;
 import smartgov.core.environment.graph.events.AgentDeparture;
 import smartgov.core.environment.graph.events.SpawnAgentEvent;
 import smartgov.core.environment.graph.node.Node;
+import smartgov.core.output.node.NodeListIdSerializer;
+import smartgov.core.output.node.NodeIdSerializer;
+import smartgov.core.output.arc.ArcIdSerializer;
 
 /**
  * A Plan represents a path that an agent wants to follow in the environment graph.
@@ -26,12 +32,17 @@ import smartgov.core.environment.graph.node.Node;
  */
 public class Plan <Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
 
+	@JsonSerialize(using=NodeListIdSerializer.class)
 	private List<Tnode> nodes;
+	@JsonIgnore
 	private Queue<Tnode> remainingNodes;
+	@JsonSerialize(using=NodeIdSerializer.class)
 	private Tnode currentNode;
+	@JsonSerialize(using=ArcIdSerializer.class)
 	private Tarc currentArc;
+	@JsonIgnore
 	private boolean pathComplete;
-	
+	@JsonIgnore
 	private AbstractAgent<?> agent;
 	
 	/**
@@ -89,6 +100,7 @@ public class Plan <Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
 		return pathComplete;
 	}
 	
+	@JsonIgnore
 	public Tnode getNextNode(){
 		return remainingNodes.peek();
 	}
@@ -114,11 +126,12 @@ public class Plan <Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
 //		}
 //		return null;
 //	}
-	
+	@JsonIgnore
 	public Tnode getLastNode() {
 		return nodes.get(nodes.size() - 1);
 	}
 	
+	@JsonIgnore
 	public Tnode getPreviousNode() {
 		return nodes.get(nodes.size() - 2);
 	}

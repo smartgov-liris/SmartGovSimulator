@@ -3,6 +3,8 @@ package smartgov.urban.geo.agent;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.math.Vector2D;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import smartgov.core.agent.AbstractAgentBody;
 import smartgov.core.agent.Plan;
 import smartgov.core.agent.mover.AbstractMover;
@@ -22,13 +24,17 @@ import smartgov.urban.geo.environment.graph.GeoNode;
  */
 public abstract class GeoAgentBody<Tnode extends GeoNode<Tarc>, Tarc extends GeoArc<Tnode>, Tagent extends GeoAgent<?, ?, ?, ?>, Tmover extends AbstractMover> extends AbstractAgentBody<Tagent, Tnode, Tarc> {
 
+	@JsonIgnore
 	protected Vector2D direction;
 
 	protected double speed; //In meters per second
-
+	
+	@JsonIgnore
 	protected Coordinate destination;
+	@JsonIgnore
 	protected Coordinate position;
 
+	@JsonIgnore
 	protected Tmover mover;
 
 	public GeoAgentBody() {

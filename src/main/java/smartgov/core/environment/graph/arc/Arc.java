@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.core.environment.graph.GraphObject;
 import smartgov.core.environment.graph.node.Node;
-import smartgov.core.output.arc.NodeIdSerializer;
+import smartgov.core.output.node.NodeIdSerializer;
 
 /**
  * Generic Arc class.

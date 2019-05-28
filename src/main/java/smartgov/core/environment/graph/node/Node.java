@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.core.environment.graph.GraphObject;
 import smartgov.core.environment.graph.arc.Arc;
-import smartgov.core.output.node.ArcIdSerializer;
+import smartgov.core.output.arc.ArcListIdSerializer;
 
 /**
  * Generic Node class.
@@ -20,9 +20,9 @@ import smartgov.core.output.node.ArcIdSerializer;
 public class Node<T extends Arc<?>> extends GraphObject {
 	
 	public String id;
-	@JsonSerialize(using = ArcIdSerializer.class)
+	@JsonSerialize(using = ArcListIdSerializer.class)
 	protected List<T> outgoingArcs;
-	@JsonSerialize(using = ArcIdSerializer.class)
+	@JsonSerialize(using = ArcListIdSerializer.class)
 	protected List<T> incomingArcs;
 	
 	public Node(String id) {

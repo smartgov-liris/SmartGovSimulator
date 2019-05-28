@@ -1,10 +1,15 @@
 package smartgov.core.main;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import smartgov.core.agent.AbstractAgent;
 import smartgov.core.environment.SmartGovContext;
+import smartgov.core.events.EventHandler;
+import smartgov.core.main.events.SimulationStopped;
 
 public class SmartGovRuntime {
 	
@@ -17,8 +22,11 @@ public class SmartGovRuntime {
 	private boolean pause = true;
 	private SimulationThread simulationThread;
 	
+	private Collection<EventHandler<SimulationStopped>> simulationStoppedEventHandlers;
+	
 	public SmartGovRuntime(SmartGovContext context) {
 		this.context = context;
+		simulationStoppedEventHandlers = new ArrayList<>();
 	}
 	
 	/**
@@ -49,6 +57,7 @@ public class SmartGovRuntime {
 		logger.info("Stop simulation after " + tickCount + " ticks.");
 		pause = false;
 		run = false;
+		triggerSimulationStoppedListeners();
 	}
 	
 	/**
@@ -84,6 +93,17 @@ public class SmartGovRuntime {
 					
 				}
 			}
+		}
+	}
+	
+	public void addSimulationStoppedListener(EventHandler<SimulationStopped> listener) {
+		simulationStoppedEventHandlers.add(listener);
+	}
+	
+	private void triggerSimulationStoppedListeners() {
+		SimulationStopped event = new SimulationStopped();
+		for(EventHandler<SimulationStopped> listener : simulationStoppedEventHandlers) {
+			listener.handle(event);
 		}
 	}
 }

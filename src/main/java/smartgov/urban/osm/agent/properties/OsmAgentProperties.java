@@ -2,7 +2,11 @@ package smartgov.urban.osm.agent.properties;
 
 import java.util.Random;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import smartgov.core.agent.properties.AgentProperties;
+import smartgov.core.output.node.NodeIdSerializer;
 import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.AbstractOsmSinkSourceNode;
@@ -14,8 +18,11 @@ import smartgov.urban.osm.environment.graph.sinkSourceNodes.AbstractOsmSinkSourc
  */
 public class OsmAgentProperties extends AgentProperties {
 
+	@JsonIgnore
 	private OsmContext context;
+	@JsonSerialize(using=NodeIdSerializer.class)
 	private GeoNode<?> beginNode;
+	@JsonSerialize(using=NodeIdSerializer.class)
 	private GeoNode<?> endNode;
 	
 	public OsmAgentProperties(OsmContext context) {

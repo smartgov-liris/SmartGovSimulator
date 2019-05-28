@@ -1,5 +1,7 @@
 package smartgov.urban.osm.agent;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import smartgov.core.environment.SmartGovContext;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.osm.agent.actuator.CarMover;
@@ -18,6 +20,7 @@ import smartgov.urban.osm.environment.graph.OsmNode;
  */
 public class OsmAgentBody extends GeoAgentBody<OsmNode, OsmArc, OsmAgent<?, ?>, CarMover> {
 
+	@JsonIgnore
 	private SmartGovContext environment;
 	
 	/**

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import smartgov.core.agent.events.ArcLeftEvent;
 import smartgov.core.agent.events.ArcReachedEvent;
 import smartgov.core.agent.events.DestinationReachedEvent;
@@ -21,7 +23,7 @@ import smartgov.core.events.EventHandler;
  * @author pbreugnot
  *
  */
-
+@JsonIgnoreProperties({"agent", "agentMoveListeners", "nodeReachedListeners", "arcReachedListeners", "arcLeftListeners", "destinationReachedListeners"})
 public abstract class AbstractAgentBody<Tagent extends AbstractAgent<?>, Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
 
 	protected Plan<Tnode, Tarc> plan;
