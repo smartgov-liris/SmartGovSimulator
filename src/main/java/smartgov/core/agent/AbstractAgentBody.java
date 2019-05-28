@@ -10,7 +10,6 @@ import smartgov.core.agent.events.DestinationReachedEvent;
 import smartgov.core.agent.events.MoveEvent;
 import smartgov.core.agent.events.NodeReachedEvent;
 import smartgov.core.environment.LowLevelAction;
-import smartgov.core.environment.Perceivable;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.node.Node;
 import smartgov.core.events.EventHandler;
@@ -23,11 +22,10 @@ import smartgov.core.events.EventHandler;
  *
  */
 
-public abstract class AbstractAgentBody<Tagent extends AbstractAgent<?>, Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> implements Perceivable {
+public abstract class AbstractAgentBody<Tagent extends AbstractAgent<?>, Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
 
 	protected Plan<Tnode, Tarc> plan;
 	protected Tagent agent;
-	protected Perceivable objectToPerceive;
 	
 	// Listeners collections for each event type
 	protected Collection<EventHandler<MoveEvent>> agentMoveListeners;
@@ -42,15 +40,6 @@ public abstract class AbstractAgentBody<Tagent extends AbstractAgent<?>, Tnode e
 		this.arcReachedListeners = new ArrayList<>();
 		this.arcLeftListeners = new ArrayList<>();
 		this.destinationReachedListeners = new ArrayList<>();
-	}
-	
-	public Perceivable getObjectToPerceive() {
-		return objectToPerceive;
-	}
-
-	public void setObjectToPerceive(Perceivable objectToPerceive) {
-		this.objectToPerceive = objectToPerceive;
-
 	}
 	
 	public abstract void initialize();

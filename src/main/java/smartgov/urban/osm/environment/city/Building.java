@@ -6,8 +6,6 @@ import java.util.Map;
 
 import org.locationtech.jts.geom.Coordinate;
 
-import smartgov.core.environment.ActionableByHumanAgent;
-import smartgov.core.environment.LowLevelAction;
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.environment.graph.GeoNode;
 
@@ -17,7 +15,7 @@ import smartgov.urban.geo.environment.graph.GeoNode;
  * @author pbreugnot
  *
  */
-public abstract class Building extends GeoNode<GeoArc<?>> implements ActionableByHumanAgent {
+public abstract class Building extends GeoNode<GeoArc<?>> {
 	
 	@SuppressWarnings("serial")
 	public static List<String> OFFICE_TYPE = new ArrayList<String>(){
@@ -62,22 +60,6 @@ public abstract class Building extends GeoNode<GeoArc<?>> implements ActionableB
 		// return OsmBuilder.environment.nodes.get(closestNodeId);
 		return nodes.get(closestNodeId);
 	}
-
-	@Override
-	public List<LowLevelAction> getAvailableHumanActions() {
-		List<LowLevelAction> actions = new ArrayList<>();
-		actions.add(LowLevelAction.ENTER);
-		actions.add(LowLevelAction.LEAVE);
-		return actions;
-	}
-
-	@Override
-	public void doHumanAction(LowLevelAction action) {
-		if(action.equals(LowLevelAction.ENTER)){
-			
-		}
-	}
-	
 	
 	public void setClosestNodesWithSpots(List<? extends GeoNode<?>> closestNodesWithSpots) {
 		this.closestNodesWithSpots = closestNodesWithSpots;

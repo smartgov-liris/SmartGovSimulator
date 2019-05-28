@@ -64,7 +64,7 @@ public class SmartGovRuntime {
 		for (AbstractAgent<?> agent : context.agents.values()) {
 			agent.live();
 		}
-		if(tickCount > maxTicks) {
+		if(tickCount >= maxTicks) {
 			stop();
 		}
 		tickCount ++;

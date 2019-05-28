@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import smartgov.core.environment.Perceivable;
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.simulation.GISComputation;
 import smartgov.urban.osm.environment.city.ParkingSpot;
@@ -19,7 +18,7 @@ import smartgov.urban.osm.environment.city.ParkingSpot;
  * @author pbreugnot
  *
  */
-public class OsmArc extends GeoArc<OsmNode> implements Perceivable {
+public class OsmArc extends GeoArc<OsmNode> {
 	
 	@JsonIgnore
 	protected Road road;

@@ -107,7 +107,6 @@ public class CarMover extends AbstractMover {
 		if (!arc.getRoad().getAgentsOnPath().contains(agentBody)) {
 			arc.getRoad().getAgentsOnPath().add(agentBody);
 		}
-		agentBody.setObjectToPerceive(arc);
 		agentBody.setDirection(arc.getDirection());
 	}
 	

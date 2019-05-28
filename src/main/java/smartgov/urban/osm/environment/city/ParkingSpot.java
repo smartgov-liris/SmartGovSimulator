@@ -1,13 +1,7 @@
 package smartgov.urban.osm.environment.city;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.locationtech.jts.geom.Coordinate;
 
-import smartgov.core.environment.ActionableByHumanAgent;
-import smartgov.core.environment.LowLevelAction;
-import smartgov.core.environment.Perceivable;
 import smartgov.urban.geo.environment.graph.EdgeSpot;
 import smartgov.urban.osm.environment.OsmContext;
 
@@ -18,7 +12,7 @@ import smartgov.urban.osm.environment.OsmContext;
  * @author spageaud
  *
  */
-public class ParkingSpot extends EdgeSpot implements ActionableByHumanAgent, Perceivable {
+public class ParkingSpot extends EdgeSpot {
 	
 	protected OsmContext environment;
 
@@ -38,22 +32,6 @@ public class ParkingSpot extends EdgeSpot implements ActionableByHumanAgent, Per
 		super(position);
 		this.environment = environment;
 		this.occupied = isOccupied;
-	}	
-
-	@Override
-	public List<LowLevelAction> getAvailableHumanActions() {
-		List<LowLevelAction> availableActions = new ArrayList<>();
-		if(occupied){
-			availableActions.add(LowLevelAction.LEAVE);
-		} else {
-			availableActions.add(LowLevelAction.ENTER);
-		}
-		return availableActions;
-	}
-
-	@Override
-	public void doHumanAction(LowLevelAction action) {
-
 	}
 	
 	public boolean isOccupied() {

@@ -6,9 +6,6 @@ import org.locationtech.jts.math.Vector2D;
 import smartgov.core.agent.AbstractAgentBody;
 import smartgov.core.agent.Plan;
 import smartgov.core.agent.mover.AbstractMover;
-import smartgov.core.environment.ActionableByHumanAgent;
-import smartgov.core.environment.LowLevelAction;
-import smartgov.core.environment.Perceivable;
 import smartgov.core.main.SimulationBuilder;
 import smartgov.urban.geo.agent.event.GeoMoveEvent;
 import smartgov.urban.geo.environment.graph.GeoArc;
@@ -29,8 +26,6 @@ public abstract class GeoAgentBody<Tnode extends GeoNode<Tarc>, Tarc extends Geo
 
 	protected double speed; //In meters per second
 
-	protected ActionableByHumanAgent objectToInteractWith;
-	protected Perceivable objectToPerceive;
 	protected Coordinate destination;
 	protected Coordinate position;
 
@@ -38,7 +33,6 @@ public abstract class GeoAgentBody<Tnode extends GeoNode<Tarc>, Tarc extends Geo
 
 	public GeoAgentBody() {
 		super();
-		objectToPerceive = null;
 		speed = 0.0;
 		direction = new Vector2D();
 		plan = new Plan<Tnode, Tarc>();
@@ -62,18 +56,6 @@ public abstract class GeoAgentBody<Tnode extends GeoNode<Tarc>, Tarc extends Geo
 
 	public double getSpeed() {
 		return speed;
-	}
-
-	public void setObjectToInteractWith(ActionableByHumanAgent objectToEnter) {
-		this.objectToInteractWith = objectToEnter;
-	}
-
-	public void setObjectToPerceive(Perceivable objectToPerceive) {
-		this.objectToPerceive = objectToPerceive;
-	}
-
-	public ActionableByHumanAgent getObjectToInteractWith() {
-		return objectToInteractWith;
 	}
 
 	public void setDestination(Coordinate destination) {
@@ -118,14 +100,12 @@ public abstract class GeoAgentBody<Tnode extends GeoNode<Tarc>, Tarc extends Geo
 
 	@Override
 	public void enter() {
-		objectToInteractWith.doHumanAction(LowLevelAction.ENTER);
+
 	}
 
 	@Override
 	public void leave() {
-		if(objectToInteractWith != null){
-			objectToInteractWith.doHumanAction(LowLevelAction.LEAVE);
-		}
+
 	}
 
 	@Override
