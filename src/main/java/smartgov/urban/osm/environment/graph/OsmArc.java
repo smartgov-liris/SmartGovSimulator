@@ -3,7 +3,7 @@ package smartgov.urban.osm.environment.graph;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.simulation.GISComputation;
@@ -18,16 +18,13 @@ import smartgov.urban.osm.environment.city.ParkingSpot;
  * @author pbreugnot
  *
  */
+@JsonIgnoreProperties({"road", "lanes", "spots", "closeSpot", "spotCloseToNode", "aspotAvailable"})
 public class OsmArc extends GeoArc<OsmNode> {
 	
-	@JsonIgnore
 	protected Road road;
 	protected String type;
-	@JsonIgnore
 	protected int lanes;
-	@JsonIgnore
 	protected List<ParkingSpot> spots;
-	@JsonIgnore
 	protected ParkingSpot closeSpot;
 	
 	/**

@@ -71,7 +71,6 @@ public class ScenarioLowAgents extends ScenarioVisualization {
 	 * agent bodies.
 	 * 
 	 * @param id AgentBody id
-	 * @param geography Current geography
 	 * @param environment Current OsmEnvironment
 	 * @return Created OsmAgentBody
 	 */

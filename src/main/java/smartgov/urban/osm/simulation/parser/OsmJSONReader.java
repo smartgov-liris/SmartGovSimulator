@@ -23,6 +23,7 @@ import smartgov.urban.osm.environment.city.WorkOffice;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.Road;
+import smartgov.urban.osm.simulation.scenario.OsmScenario;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,34 +36,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @param <T> OsmEnvironment type
  */
 public class OsmJSONReader {
-
-//	protected OsmScenario scenario; // Used to retrieve Arc and Node creators.
+	
+	protected OsmScenario scenario; // Used to retrieve Arc and Node creators.
 	static GeometryFactory geoFactory = new GeometryFactory();
 	protected ObjectMapper objectMapper;
 	
 	
-	public OsmJSONReader() {
+	public OsmJSONReader(OsmScenario scenario) {
+		this.scenario = scenario;
 		// Jackson Object Mapper
 		this.objectMapper = new ObjectMapper();
 	}
-//
-//	public void parseOSMFiles(
-//			String nodeFile,
-//			String buildingFile,
-//			String nodeBuildingFile,
-//			String roadFile,
-//			String edgeFile,
-//			String parkingFile){
-//		long beginTime = System.currentTimeMillis();
-//		// List<Integer>[] specialNodes = getSpawnNodes(edgeFile);
-//		environment.nodes = parseNodeFile(nodeFile);
-//		environment.buildings = parseBuildingFile(buildingFile, nodeBuildingFile);
-//		environment.roads = parseRoadFile(roadFile);
-//		environment.arcs = readArcs(edgeFile, environment.nodes);
-//		environment.parkingSpots.addAll(readParkingWithoutBlockFaces(parkingFile));
-//		generateSourceAndSinkNodes();
-//		System.out.println("Time to process 'parseOSMFiles': " + (System.currentTimeMillis() - beginTime) + "ms.");
-//	}
+
 	
 	public Map<String, OsmArc> readArcs(String edgeFile, Map<String, OsmNode> nodes, List<Road> roads){
 		Map<String, OsmArc> edges = new HashMap<>();
@@ -113,7 +98,7 @@ public class OsmJSONReader {
 //
 //					edgesOSM.add(edgeOSM);
 
-					OsmArc edge = new OsmArc(
+					OsmArc edge = scenario.createArc(
 							String.valueOf(index),
 							roads.get(currentEdge.get("road").asInt()),
 							beginNode,

@@ -5,6 +5,9 @@ import java.util.Collection;
 
 import smartgov.core.agent.AbstractAgent;
 import smartgov.urban.osm.environment.OsmContext;
+import smartgov.urban.osm.environment.graph.OsmArc;
+import smartgov.urban.osm.environment.graph.OsmNode;
+import smartgov.urban.osm.environment.graph.Road;
 import smartgov.urban.osm.simulation.scenario.OsmScenario;
 
 /**
@@ -26,6 +29,18 @@ public class ScenarioVisualization extends OsmScenario {
 	@Override
 	public Collection<AbstractAgent<?>> buildAgents() {
 		return new ArrayList<>();
+	}
+
+	@Override
+	public OsmArc createArc(String id, Road road, OsmNode startNode, OsmNode targetNode, int lanes, String type) {
+		return new OsmArc(
+				id,
+				road,
+				startNode,
+				targetNode,
+				lanes,
+				type
+				);
 	}
 
 }

@@ -6,13 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.graphstream.algorithm.AStar;
-import org.graphstream.graph.EdgeRejectedException;
-import org.graphstream.graph.ElementNotFoundException;
-import org.graphstream.graph.IdAlreadyInUseException;
 import org.graphstream.graph.Path;
 import org.graphstream.graph.implementations.MultiGraph;
 
-import smartgov.SmartGov;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.node.Node;
 
@@ -30,31 +26,24 @@ public class OrientedGraph<Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> ex
 
 	private MultiGraph orientedGraph;
 
-	public OrientedGraph(Map<String, Tnode> nodes){
+	public OrientedGraph(Map<String, Tnode> nodes, Map<String, Tarc> arcs){
 		super(nodes, new HashMap<>());
 		MultiGraph g = new MultiGraph("graph");
 		g.setStrict(true);
-        for(Tnode node : nodes.values()){
-        	g.addNode(node.getId());
-        }
-
-       for(Tnode node : nodes.values()){
-        	for(int j = 0; j < node.getOutgoingArcs().size(); j++){
-        		try {
-       				g.addEdge(
-       						node.getOutgoingArcs().get(j).getId(),
-       						node.getId(),
-       						node.getOutgoingArcs().get(j).getTargetNode().getId(),
-       						true)
-    				.setAttribute("distance", node.getOutgoingArcs().get(j).getLength());
-       			} catch(IdAlreadyInUseException | ElementNotFoundException |EdgeRejectedException er ){
-       				SmartGov.logger.error(er.getMessage());
-       			};
-        	}
-       }
-       orientedGraph = g;
+		for(Tnode node : nodes.values()){
+			g.addNode(node.getId());
+		}
+		
+		for(Tarc arc : arcs.values()) {
+			g.addEdge(
+						arc.getId(),
+						arc.getStartNode().getId(),
+						arc.getTargetNode().getId(),
+						true)
+			.setAttribute("distance", arc.getLength());
+		}
+		orientedGraph = g;
 	}
-
 
 	private List<String> pathBetween(Node<?> from, Node<?> to){
 		 AStar astar = new AStar(orientedGraph);

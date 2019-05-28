@@ -19,6 +19,7 @@ import smartgov.urban.osm.environment.city.WorkOffice;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmGraph;
 import smartgov.urban.osm.environment.graph.OsmNode;
+import smartgov.urban.osm.environment.graph.Road;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkSourceNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSourceNode;
@@ -46,7 +47,7 @@ public abstract class OsmScenario extends Scenario {
 
 	public OsmScenario(OsmContext environment) {
 		this.environment = environment;
-		jsonReader = new OsmJSONReader();
+		jsonReader = new OsmJSONReader(this);
 		loadOsmFeatures();
 		createGraph();
 		createOrientedGraph();
@@ -99,17 +100,6 @@ public abstract class OsmScenario extends Scenario {
 		SmartGov.logger.info("Time to process 'parseOSMFiles': " + (System.currentTimeMillis() - beginTime) + "ms.");
 	}
 
-//	public Context<Object> initContext(Context<Object> context){
-//		loadOsmFeatures();
-//		populateContext(context, geography, elementsToAddToContext());
-//		environment.init(); // Should be called AFTER loadFeatures()?
-//		return context;
-//	}
-//
-//	protected void parseConfigFile() {
-//		environment.configFile = OsmEnvironment.parseConfig("input" + File.separator + "config.ini");
-//	}
-
 	private GeoGraph<OsmNode, OsmArc> createGraph() {
 		OsmGraph roadGraph = new OsmGraph(environment, osmNodes, osmArcs);
 		roadGraph.addParkingToRoad(environment.parkingSpots, osmArcs.values());
@@ -118,11 +108,10 @@ public abstract class OsmScenario extends Scenario {
 
 	private void createOrientedGraph() {
 		long beginTime = System.currentTimeMillis();
-		OrientedGraph<OsmNode, OsmArc> orientedGraph = new OrientedGraph<OsmNode, OsmArc>(osmNodes);
+		OrientedGraph<OsmNode, OsmArc> orientedGraph = new OrientedGraph<OsmNode, OsmArc>(osmNodes, osmArcs);
 		SmartGov.logger.info("Time to create an oriented graph: " + (System.currentTimeMillis() - beginTime) + "ms.");
 		beginTime = System.currentTimeMillis();
 		environment.graph = orientedGraph;
-		SmartGov.logger.info("Time to instanciate oriented graph singleton: " + (System.currentTimeMillis() - beginTime) + "ms.");
 	}
 
 	@Override
@@ -210,4 +199,30 @@ public abstract class OsmScenario extends Scenario {
 		SmartGov.logger.info("Number of source nodes : " + environment.getSourceNodes().size());
 		SmartGov.logger.info("Number of sink nodes : " + environment.getSinkNodes().size());
 	}
+	
+	/**
+	 * This function behaves has an arc factory. It is called by the OSMparser to generate
+	 * an arc from the OSM data, that are represented by the arguments of this function.
+	 * 
+	 * It can be overridden by sub-scenarios to generate other OsmArcs types, but without
+	 * altering the parsing functions.
+	 * 
+	 * @param geography Current Geometry
+	 * @param id Arc id
+	 * @param road Road to which the Arc belongs to.
+	 * @param startNode Start Node
+	 * @param targetNode Target Node
+	 * @param distance Length of the Arc
+	 * @param polyLine Shape of the Arc
+	 * @param lanes Number of OSM lanes
+	 * @param type Arc type. (OSM 'highway' attribute)
+	 * @return Created OsmArc
+	 */
+	public abstract OsmArc createArc(
+			String id,
+			Road road,
+			OsmNode startNode,
+			OsmNode targetNode,
+			int lanes,
+			String type);
 }

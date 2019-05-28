@@ -4,11 +4,13 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.math.Vector2D;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.core.agent.AbstractAgentBody;
 import smartgov.core.agent.Plan;
 import smartgov.core.agent.mover.AbstractMover;
 import smartgov.core.main.SimulationBuilder;
+import smartgov.core.output.coordinate.CoordinateSerializer;
 import smartgov.urban.geo.agent.event.GeoMoveEvent;
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.environment.graph.GeoNode;
@@ -31,7 +33,7 @@ public abstract class GeoAgentBody<Tnode extends GeoNode<Tarc>, Tarc extends Geo
 	
 	@JsonIgnore
 	protected Coordinate destination;
-	@JsonIgnore
+	@JsonSerialize(using=CoordinateSerializer.class)
 	protected Coordinate position;
 
 	@JsonIgnore
@@ -88,7 +90,8 @@ public abstract class GeoAgentBody<Tnode extends GeoNode<Tarc>, Tarc extends Geo
 		
 		// Distance to cross in one tick
 		double distance = getSpeed() * SimulationBuilder.TICK_DURATION;
-
+		setPosition(this.mover.moveOn(distance));
+		
 		Coordinate newCoordinate = getPosition();
 		Tarc newArc = plan.getCurrentArc();
 		Tnode newNode = plan.getCurrentNode();

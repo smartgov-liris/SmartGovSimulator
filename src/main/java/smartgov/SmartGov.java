@@ -9,8 +9,6 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import smartgov.core.environment.SmartGovContext;
@@ -18,6 +16,7 @@ import smartgov.core.events.EventHandler;
 import smartgov.core.main.SimulationBuilder;
 import smartgov.core.main.SmartGovRuntime;
 import smartgov.core.main.events.SimulationStopped;
+import smartgov.models.lez.environment.LezContext;
 import smartgov.urban.osm.environment.OsmContext;
 
 public class SmartGov {
@@ -26,7 +25,7 @@ public class SmartGov {
 	
 	private SmartGovContext context;
 	private SimulationBuilder simulationBuilder;
-	private SmartGovRuntime smartGovRuntime;
+	private static SmartGovRuntime smartGovRuntime;
 	
 	/**
 	 * Config File with parameters for simulations.
@@ -37,6 +36,7 @@ public class SmartGov {
 		logger.info("Starting SmartGov");
 		this.context = context;
 		simulationBuilder = new SimulationBuilder(context);
+		smartGovRuntime = new SmartGovRuntime(context);
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		String outputFolder = context.getFiles().getFile("outputFolder");
@@ -54,31 +54,34 @@ public class SmartGov {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		smartGovRuntime = new SmartGovRuntime(context);
 	}
 
     public static void main(String[] args) {
-        SmartGov smartGov = new SmartGov(new OsmContext(args[0]));
-        smartGov.getRuntime().addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
+        SmartGov smartGov = new SmartGov(new LezContext(args[0]));
+        getRuntime().addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
 
 			@Override
 			public void handle(SimulationStopped event) {
 				String outputFolder = smartGov.getContext().getFiles().getFile("outputFolder");
-				File agentOutput = new File(outputFolder + File.separator + "agents_" + smartGov.getRuntime().getTickCount() +".json");
-				logger.info("Saving agents state to " + agentOutput.getPath());
+				File agentOutput = new File(outputFolder + File.separator + "agents_" + getRuntime().getTickCount() +".json");
+				File arcsOutput = new File(outputFolder + File.separator + "arcs_" + getRuntime().getTickCount() +".json");
+				
 				
 				ObjectMapper objectMapper = new ObjectMapper();
 
 				try {
+					logger.info("Saving agents state to " + agentOutput.getPath());
 					objectMapper.writeValue(agentOutput, smartGov.getContext().agents);
+					
+					logger.info("Saving arcs state to " + agentOutput.getPath());
+					objectMapper.writeValue(arcsOutput, smartGov.getContext().arcs);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
         	
         });
-        smartGov.getRuntime().start(100);
+        getRuntime().start(100);
     }
     
     public SmartGovContext getContext() {
@@ -89,7 +92,7 @@ public class SmartGov {
     	return simulationBuilder;
     }
     
-    public SmartGovRuntime getRuntime() {
+    public static SmartGovRuntime getRuntime() {
     	return smartGovRuntime;
     }
 }

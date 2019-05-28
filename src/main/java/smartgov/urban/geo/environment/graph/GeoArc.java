@@ -2,6 +2,8 @@ package smartgov.urban.geo.environment.graph;
 
 import org.locationtech.jts.math.Vector2D;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.urban.geo.simulation.GISComputation;
 
@@ -15,6 +17,7 @@ import smartgov.urban.geo.simulation.GISComputation;
  */
 public class GeoArc<Tnode extends GeoNode<?>> extends Arc<Tnode> {
 
+	@JsonIgnore
 	protected Vector2D direction;
 	
 	/**
