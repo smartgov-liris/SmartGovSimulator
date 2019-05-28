@@ -2,16 +2,16 @@ package smartgov.urban.osm.simulation.scenario;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 
 import smartgov.SmartGov;
 import smartgov.core.environment.graph.OrientedGraph;
+import smartgov.core.environment.graph.SourceNode;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.node.Node;
 import smartgov.core.simulation.Scenario;
 import smartgov.urban.geo.environment.graph.GeoGraph;
-import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.city.Building;
 import smartgov.urban.osm.environment.city.Home;
@@ -47,10 +47,13 @@ public abstract class OsmScenario extends Scenario {
 	public OsmScenario(OsmContext environment) {
 		this.environment = environment;
 		jsonReader = new OsmJSONReader();
-		environment.init();
 		loadOsmFeatures();
 		createGraph();
 		createOrientedGraph();
+	}
+	
+	public OsmContext getOsmContext() {
+		return environment;
 	}
 
 	/**
@@ -141,7 +144,6 @@ public abstract class OsmScenario extends Scenario {
 		}
 		return arcs;
 	}
-	protected abstract void createAgents();
 
 	/*
 	 * TODO: Temporary dirty solution.
@@ -166,8 +168,8 @@ public abstract class OsmScenario extends Scenario {
 						node.getPosition(),
 						node.getIncomingArcs()
 						);
-				environment.sinkNodes.put(sinkNode.getId(), sinkNode);
-				environment.nodes.put(sinkNode.getId(), sinkNode); //Overrides the normal OsmNode entry
+				environment.getSinkNodes().put(sinkNode.getId(), sinkNode);
+				osmNodes.put(sinkNode.getId(), sinkNode); //Overrides the normal OsmNode entry
 			}
 			else if (node.getIncomingArcs().size() == 0 && node.getOutgoingArcs().size() > 0) {
 				OsmSourceNode sourceNode = new OsmSourceNode(
@@ -176,8 +178,8 @@ public abstract class OsmScenario extends Scenario {
 						node.getPosition(),
 						node.getOutgoingArcs()
 						);
-				environment.sourceNodes.put(sourceNode.getId(), sourceNode);
-				environment.nodes.put(sourceNode.getId(), sourceNode); //Overrides the normal OsmNode entry
+				environment.getSourceNodes().put(sourceNode.getId(), sourceNode);
+				osmNodes.put(sourceNode.getId(), sourceNode); //Overrides the normal OsmNode entry
 			}
 			else if (node.getIncomingArcs().size() == 1 && node.getOutgoingArcs().size() == 1) {
 //				boolean incomingEqualOutcoming = true;
@@ -196,13 +198,16 @@ public abstract class OsmScenario extends Scenario {
 							node.getIncomingArcs(),
 							node.getOutgoingArcs()
 							);
-					environment.sinkNodes.put(sinkSourceNode.getId(), sinkSourceNode);
-					environment.sourceNodes.put(sinkSourceNode.getId(), sinkSourceNode);
-					environment.nodes.put(sinkSourceNode.getId(), sinkSourceNode); //Overrides the normal OsmNode entry
+					environment.getSinkNodes().put(sinkSourceNode.getId(), sinkSourceNode);
+					environment.getSourceNodes().put(sinkSourceNode.getId(), sinkSourceNode);
+					osmNodes.put(sinkSourceNode.getId(), sinkSourceNode); //Overrides the normal OsmNode entry
 				}
 			}
 		}
-		SmartGov.logger.info("Number of source nodes : " + environment.sourceNodes.size());
-		SmartGov.logger.info("Number of sink nodes : " + environment.sinkNodes.size());
+		for(SourceNode sourceNode : environment.getSourceNodes().values()) {
+			environment.agentsStock.put(sourceNode.getId(), new LinkedList<>());
+		}
+		SmartGov.logger.info("Number of source nodes : " + environment.getSourceNodes().size());
+		SmartGov.logger.info("Number of sink nodes : " + environment.getSinkNodes().size());
 	}
 }

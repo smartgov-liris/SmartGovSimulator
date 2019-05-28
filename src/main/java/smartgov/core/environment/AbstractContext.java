@@ -22,7 +22,6 @@ public abstract class AbstractContext {
 	private Files files;
 
 	public abstract void clear();
-	public abstract void init();
 	
 	public AbstractContext(String configFile) {
 		parseConfig(configFile);

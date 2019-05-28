@@ -64,7 +64,7 @@ public abstract class GeoAgent<Tnode extends GeoNode<Tarc>, Tarc extends GeoArc<
 	 */
 	@Override
 	public void initialize() {
-//		properties.initialize();
+		agentProperties.initialize();
 		behavior.initialize();
 		body.initialize();
 	}

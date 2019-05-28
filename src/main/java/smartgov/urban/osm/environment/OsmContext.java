@@ -12,6 +12,7 @@ import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.Road;
 import smartgov.urban.osm.simulation.scenario.OsmScenario;
+import smartgov.urban.osm.simulation.scenario.lowLayer.ScenarioLowAgents;
 import smartgov.urban.osm.simulation.scenario.lowLayer.ScenarioVisualization;
 
 import java.util.ArrayList;
@@ -88,8 +89,8 @@ public class OsmContext extends SmartGovContext {
 		switch (scenarioName) {
 			case ScenarioVisualization.name:
 				return new ScenarioVisualization(this);
-//			case ScenarioLowAgents.name:
-//				return new ScenarioLowAgents(this);
+			case ScenarioLowAgents.name:
+				return new ScenarioLowAgents(this);
 //			case AgentListenersScenario.name:
 //				return new AgentListenersScenario(this);
 			default:

@@ -29,12 +29,12 @@ public class OsmAgentProperties extends AgentProperties {
 		Random rnd = new Random();
 		
 		// Set up new origin
-		String randomSourceNodeId = (String) context.sourceNodes.keySet().toArray()[rnd.nextInt(context.sourceNodes.size())];
-		beginNode = (AbstractOsmSinkSourceNode) context.sourceNodes.get(randomSourceNodeId);
+		String randomSourceNodeId = (String) context.getSourceNodes().keySet().toArray()[rnd.nextInt(context.getSourceNodes().size())];
+		beginNode = (AbstractOsmSinkSourceNode) context.getSourceNodes().get(randomSourceNodeId);
 		
 		// Set up new destination
-		String randomSinkNodeId = (String) context.sinkNodes.keySet().toArray()[rnd.nextInt(context.sinkNodes.size())];
-		endNode = (AbstractOsmSinkSourceNode) context.sinkNodes.get(randomSinkNodeId);
+		String randomSinkNodeId = (String) context.getSinkNodes().keySet().toArray()[rnd.nextInt(context.getSinkNodes().size())];
+		endNode = (AbstractOsmSinkSourceNode) context.getSinkNodes().get(randomSinkNodeId);
 	}
 
 	public OsmAgentProperties(GeoNode<?> beginNode, GeoNode<?> endNode){

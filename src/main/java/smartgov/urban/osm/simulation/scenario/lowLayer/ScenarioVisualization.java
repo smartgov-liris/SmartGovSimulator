@@ -1,5 +1,9 @@
 package smartgov.urban.osm.simulation.scenario.lowLayer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import smartgov.core.agent.AbstractAgent;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.simulation.scenario.OsmScenario;
 
@@ -20,9 +24,8 @@ public class ScenarioVisualization extends OsmScenario {
 	}
 
 	@Override
-	protected void createAgents() {
-		// No agents for this scenario
-		
+	public Collection<AbstractAgent<?>> buildAgents() {
+		return new ArrayList<>();
 	}
 
 }

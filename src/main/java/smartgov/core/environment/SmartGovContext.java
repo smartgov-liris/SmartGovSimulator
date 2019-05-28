@@ -43,8 +43,8 @@ public class SmartGovContext extends AbstractContext {
 	public Map<String, Node<?>> nodes;
 	public Map<String, Arc<?>> arcs;
 	public OrientedGraph graph;
-	public Map<String, SourceNode> sourceNodes;
-	public Map<String, SinkNode> sinkNodes;
+	private Map<String, SourceNode> sourceNodes;
+	private Map<String, SinkNode> sinkNodes;
 	
 	//Manage human agent creation and allocation
 	public static int AGENT_MAX; //Max agents in the simulation (determine by parameters)
@@ -72,15 +72,13 @@ public class SmartGovContext extends AbstractContext {
 		this.scenario = scenario;
 	}
 	
-	@Override
-	public void init(){
-		
-		resetSpecialList();
-		for(SourceNode sourceNode : sourceNodes.values()) {
-			agentsStock.put(sourceNode.getId(), new LinkedList<>());
-		}
+	public Map<String, SourceNode> getSourceNodes() {
+		return sourceNodes;
 	}
-	
+
+	public Map<String, SinkNode> getSinkNodes() {
+		return sinkNodes;
+	}
 
 	protected void resetSpecialList(){
 		for(Queue<?> queue : agentsStock.values()){

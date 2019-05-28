@@ -3,6 +3,7 @@ package smartgov.core.simulation;
 import java.util.Collection;
 
 import smartgov.SmartGov;
+import smartgov.core.agent.AbstractAgent;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.node.Node;
@@ -23,8 +24,13 @@ public abstract class Scenario {
 			context.arcs.put(arc.getId(), arc);
 		}
 		SmartGov.logger.info(context.arcs.size() + " arcs added to SmartGovContext");
+		for (AbstractAgent<?> agent : buildAgents()) {
+			context.agents.put(agent.getId(), agent);
+		}
+		SmartGov.logger.info(context.agents.size() + " agents added to SmartGovContext");
 	}
 	
 	public abstract Collection<Node<?>> buildNodes();
 	public abstract Collection<Arc<?>> buildArcs();
+	public abstract Collection<AbstractAgent<?>> buildAgents();
 }
