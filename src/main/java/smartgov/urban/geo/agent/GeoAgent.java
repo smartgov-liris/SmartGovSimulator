@@ -36,20 +36,12 @@ public abstract class GeoAgent<Tnode extends GeoNode<Tarc>, Tarc extends GeoArc<
 		this.behavior = behavior;
 	}
 
-//	@Override
+	@Override
 	public void live() {
 //		perceptions.filterPerception(this.getBody().getPerception());
 		this.getBody().doAction(behavior.provideAction());
 //		perceptions.clear();
 	}
-	
-//	public AbstractProperties getProperties() {
-//		return properties;
-//	}
-//	
-//	public AbstractBehavior<? extends AbstractPerception, ? extends AbstractProperties, ? extends AbstractAgentBody<?, ?, ?>> getBehavior() {
-//		return behavior;
-//	}
 	
 	/**
 	 * Called each time an agent spawns as a new agents.
@@ -68,17 +60,4 @@ public abstract class GeoAgent<Tnode extends GeoNode<Tarc>, Tarc extends GeoArc<
 		behavior.initialize();
 		body.initialize();
 	}
-
-// TODO : This might be replaced by initialize. Need to check for each scenario.
-//	@Override
-//	public void recycleAgent(int id) {
-//		this.setId(id);
-//		this.getProperties().resetProperties(id);
-//		this.behavior.setInitialState();
-//		if(this.body != null){
-//			this.body.init();
-//			this.body.setAgent(this);
-//		}
-//		
-//	}
 }

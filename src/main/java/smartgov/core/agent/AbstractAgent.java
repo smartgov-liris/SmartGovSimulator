@@ -58,4 +58,6 @@ public abstract class AbstractAgent<B extends AbstractAgentBody<?, ?, ?>> {
 	 */
 	public abstract void initialize();
 	// public abstract void recycleAgent(int id);
+	
+	public abstract void live();
 }

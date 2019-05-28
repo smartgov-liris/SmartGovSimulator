@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.main.SimulationBuilder;
+import smartgov.core.main.SmartGovRuntime;
 import smartgov.urban.osm.environment.OsmContext;
 
 public class SmartGov {
@@ -22,6 +23,7 @@ public class SmartGov {
 	public static final Logger logger = LogManager.getLogger(SmartGov.class);
 	
 	private SimulationBuilder simulationBuilder;
+	private SmartGovRuntime smartGovRuntime;
 	
 	/**
 	 * Config File with parameters for simulations.
@@ -54,13 +56,20 @@ public class SmartGov {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		smartGovRuntime = new SmartGovRuntime(context);
 	}
 
     public static void main(String[] args) {
-        new SmartGov(new OsmContext(args[0]));
+        SmartGov smartGov = new SmartGov(new OsmContext(args[0]));
+        smartGov.getRuntime().start(100);
     }
     
     public SimulationBuilder getSimulationBuilder() {
     	return simulationBuilder;
+    }
+    
+    public SmartGovRuntime getRuntime() {
+    	return smartGovRuntime;
     }
 }
