@@ -17,6 +17,7 @@ import smartgov.core.main.SimulationBuilder;
 import smartgov.core.main.SmartGovRuntime;
 import smartgov.core.main.events.SimulationStopped;
 import smartgov.models.lez.environment.LezContext;
+import smartgov.models.lez.environment.pollution.Pollution;
 import smartgov.urban.osm.environment.OsmContext;
 
 public class SmartGov {
@@ -65,6 +66,7 @@ public class SmartGov {
 				String outputFolder = smartGov.getContext().getFiles().getFile("outputFolder");
 				File agentOutput = new File(outputFolder + File.separator + "agents_" + getRuntime().getTickCount() +".json");
 				File arcsOutput = new File(outputFolder + File.separator + "arcs_" + getRuntime().getTickCount() +".json");
+				File pollutionPeeks = new File(outputFolder + File.separator + "pollution_peeks_" + getRuntime().getTickCount() +".json");
 				
 				
 				ObjectMapper objectMapper = new ObjectMapper();
@@ -75,6 +77,9 @@ public class SmartGov {
 					
 					logger.info("Saving arcs state to " + agentOutput.getPath());
 					objectMapper.writeValue(arcsOutput, smartGov.getContext().arcs);
+					
+					logger.info("Saving pollution peeks to " + agentOutput.getPath());
+					objectMapper.writeValue(pollutionPeeks, Pollution.pollutionRatePeeks);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
