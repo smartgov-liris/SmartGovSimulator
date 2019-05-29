@@ -5,5 +5,5 @@
 build
 
 bin
-input
-output
+/input
+/output

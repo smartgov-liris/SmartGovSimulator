@@ -1,12 +1,13 @@
 package smartgov.models.lez.environment.pollution;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.SmartGov;
 import smartgov.core.main.SimulationBuilder;
 import smartgov.models.lez.copert.fields.Pollutant;
+import smartgov.models.lez.output.PollutionRateSerializer;
 
-@JsonIgnoreProperties({"pollutant", "pollution", "absValue"})
+@JsonSerialize(using = PollutionRateSerializer.class)
 public class PollutionRate {
 
 	private Pollutant pollutant;
