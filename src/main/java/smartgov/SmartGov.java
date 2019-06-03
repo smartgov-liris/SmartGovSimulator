@@ -38,23 +38,7 @@ public class SmartGov {
 		this.context = context;
 		simulationBuilder = new SimulationBuilder(context);
 		smartGovRuntime = new SmartGovRuntime(context);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-		String outputFolder = context.getFiles().getFile("outputFolder");
-		
-		File nodeOutput = new File(outputFolder + File.separator + "init_nodes.json");
-		File arcOutput = new File(outputFolder + File.separator + "init_arcs.json");
-
-		try {
-			// Using maps is simpler when processed in JS, but IDs are duplicated.
-			logger.info("Saving initial nodes to " + nodeOutput.getPath());
-			objectMapper.writeValue(nodeOutput, context.nodes);
-			
-			logger.info("Saving initial arcs to " + arcOutput.getPath());
-			objectMapper.writeValue(arcOutput, context.arcs);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	
 	}
 
     public static void main(String[] args) {
@@ -86,6 +70,34 @@ public class SmartGov {
 			}
         	
         });
+        
+    	
+		ObjectMapper objectMapper = new ObjectMapper();
+		String outputFolder = null;
+		
+		try {
+			outputFolder = smartGov.getContext().getFiles().getFile("outputFolder");
+		} catch (IllegalArgumentException e) {
+			logger.warn("No outputFolder specified in the input configuration.");
+		}
+		
+		if(outputFolder != null) {
+			File nodeOutput = new File(outputFolder + File.separator + "init_nodes.json");
+			File arcOutput = new File(outputFolder + File.separator + "init_arcs.json");
+
+			try {
+				// Using maps is simpler when processed in JS, but IDs are duplicated.
+				logger.info("Saving initial nodes to " + nodeOutput.getPath());
+				objectMapper.writeValue(nodeOutput, smartGov.getContext().nodes);
+				
+				logger.info("Saving initial arcs to " + arcOutput.getPath());
+				objectMapper.writeValue(arcOutput, smartGov.getContext().arcs);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
         getRuntime().start(43200);
     }
     
