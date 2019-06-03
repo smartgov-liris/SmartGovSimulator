@@ -28,11 +28,11 @@ public class NodeSerializationTest {
 	
 	@Test
 	public void serializeNodeWithArcs() throws JsonProcessingException {
-		Node<?> node = new Node<>("1");
-		Node<?> fakeNode = new Node<>("2");
-		Arc<?> arc1 = new Arc<>("1", node, fakeNode, 1);
-		Arc<?> arc2 = new Arc<>("2", node, fakeNode, 2);
-		Arc<?> arc3 = new Arc<>("3", fakeNode, node, 1);
+		Node<Arc<?>> node = new Node<>("1");
+		Node<Arc<?>> fakeNode = new Node<>("2");
+		Arc<Node<?>> arc1 = new Arc<>("1", node, fakeNode, 1);
+		Arc<Node<?>> arc2 = new Arc<>("2", node, fakeNode, 2);
+		Arc<Node<?>> arc3 = new Arc<>("3", fakeNode, node, 1);
 		node.setIncomingArcs(Arrays.asList(arc3));
 		node.setOutgoingArcs(Arrays.asList(arc1, arc2));
 		
