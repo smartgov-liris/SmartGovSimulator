@@ -70,7 +70,7 @@ public class SmartGovRuntime {
 	}
 	
 	private void _step() {
-		for (AbstractAgent<?> agent : context.agents.values()) {
+		for (AbstractAgent agent : context.agents.values()) {
 			agent.live();
 		}
 		if(tickCount >= maxTicks) {

@@ -1,9 +1,5 @@
 package smartgov.core.agent;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import smartgov.core.agent.properties.AgentProperties;
-
 //import repast.simphony.engine.schedule.ScheduledMethod;
 
 /**
@@ -16,17 +12,14 @@ import smartgov.core.agent.properties.AgentProperties;
  *
  * @param <B> Body type of the agent.
  */
-public abstract class AbstractAgent<B extends AbstractAgentBody<?>> {
+public abstract class AbstractAgent {
 	
 	protected String id;
-	protected B body;
-	@JsonProperty("properties")
-	protected AgentProperties agentProperties;
+	protected AbstractAgentBody body;
 	
-	public AbstractAgent(String id, B body, AgentProperties agentProperties){
+	public AbstractAgent(String id, AbstractAgentBody body){
 		this.id = id;
 		this.body = body;
-		this.agentProperties = agentProperties;
 	}
 
 	/**
@@ -35,11 +28,11 @@ public abstract class AbstractAgent<B extends AbstractAgentBody<?>> {
 //	@ScheduledMethod(start = 1, interval = 1)
 //	public abstract void live();
 	
-	public B getBody(){
+	public AbstractAgentBody getBody(){
 		return body;
 	}
 	
-	public void setBody(B body) {
+	public void setBody(AbstractAgentBody body) {
 		this.body = body;
 	}
 	
@@ -51,13 +44,9 @@ public abstract class AbstractAgent<B extends AbstractAgentBody<?>> {
 		this.id = id;
 	}
 	
-	public AgentProperties getAgentProperties() {
-		return agentProperties;
-	}
-	
 	/**
-	 * This function is called to initialize, or re-initialize an agent. It notably 
-	 * used on SinkNodes, to re-initialized agents without remove them from the Repast Context. 
+	 * This function is called to initialize, or re-initialize an agent. It is notably 
+	 * used on SinkNodes, to re-initialized agents without removing them from the Context. 
 	 */
 	public abstract void initialize();
 	// public abstract void recycleAgent(int id);

@@ -11,13 +11,13 @@ import smartgov.core.events.Event;
  */
 public abstract class AgentEvent extends Event {
 
-	private AbstractAgent<?> agent;
+	private AbstractAgent agent;
 	
-	public AgentEvent(AbstractAgent<?> agent) {
+	public AgentEvent(AbstractAgent agent) {
 		this.agent = agent;
 	}
 	
-	public AbstractAgent<?> getAgent() {
+	public AbstractAgent getAgent() {
 		return agent;
 	}
 }

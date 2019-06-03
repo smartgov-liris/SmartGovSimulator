@@ -12,15 +12,15 @@ import smartgov.core.environment.LowLevelAction;
  * @param <W> AbstractProperties
  * @param <B> AbstractAgentBody
  */
-public abstract class AbstractBehavior<B extends AbstractAgentBody<?>> {
+public abstract class AbstractBehavior {
 	
-	private B agentBody;
+	private AbstractAgentBody agentBody;
 	
-	public AbstractBehavior(B agentBody) {
+	public AbstractBehavior(AbstractAgentBody agentBody) {
 		this.agentBody = agentBody;
 	}
 	
-	public B getAgentBody() {
+	public AbstractAgentBody getAgentBody() {
 		return agentBody;
 	}
 

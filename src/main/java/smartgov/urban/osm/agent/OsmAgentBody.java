@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.osm.agent.actuator.CarMover;
-import smartgov.urban.osm.agent.properties.OsmAgentProperties;
 
 /**
  * An OSM implementation of a {@link smartgov.urban.geo.agent.GeoAgentBody GeoAgentBody}.
@@ -16,7 +15,7 @@ import smartgov.urban.osm.agent.properties.OsmAgentProperties;
  * @author pbreugnot
  *
  */
-public class OsmAgentBody extends GeoAgentBody<OsmAgent<?, ?>, CarMover> {
+public class OsmAgentBody extends GeoAgentBody<CarMover> {
 
 	@JsonIgnore
 	private SmartGovContext environment;
@@ -48,18 +47,18 @@ public class OsmAgentBody extends GeoAgentBody<OsmAgent<?, ?>, CarMover> {
 	public void initialize() {
 		updatePlan(
 			environment.graph.shortestPath(
-					((OsmAgentProperties) agent.getAgentProperties()).getBeginNode(),
-					((OsmAgentProperties) agent.getAgentProperties()).getEndNode()
+					((OsmAgent<?>) agent).getAgentProperties().getBeginNode(),
+					((OsmAgent<?>) agent).getAgentProperties().getEndNode()
 					)
 			);
 
 		// Make the current agent available for the source node.
 		environment.agentsStock.get(
-					((OsmAgentProperties) agent.getAgentProperties()).getBeginNode().getId()
+				((OsmAgent<?>) agent).getAgentProperties().getBeginNode().getId()
 				).add(agent);
 		
 		// Set up body position
-		setPosition(((OsmAgentProperties) agent.getAgentProperties()).getBeginNode().getPosition());
+		setPosition(((OsmAgent<?>) agent).getAgentProperties().getBeginNode().getPosition());
 	}
 	
 }

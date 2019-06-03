@@ -103,7 +103,7 @@ public class TestLoadWorldScenario {
 		}
 
 		@Override
-		public Collection<AbstractAgent<?>> buildAgents() {
+		public Collection<AbstractAgent> buildAgents() {
 			// TODO Auto-generated method stub
 			return new ArrayList<>();
 		}

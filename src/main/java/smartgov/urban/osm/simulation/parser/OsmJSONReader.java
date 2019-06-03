@@ -106,8 +106,6 @@ public class OsmJSONReader {
 							lanes,
 							type);
 
-					beginNode.addOutgoingArc(edge);
-					targetNode.addIncomingArc(edge);
 					edges.put(edge.getId(), edge);					
 				}
 				//*/

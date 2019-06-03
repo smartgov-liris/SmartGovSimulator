@@ -43,7 +43,7 @@ public class Plan {
 	@JsonIgnore
 	private boolean pathComplete;
 	@JsonIgnore
-	private AbstractAgent<?> agent;
+	private AbstractAgent agent;
 	
 	/**
 	 * Empty plan for agent body pool. Need to be updated.
@@ -56,7 +56,7 @@ public class Plan {
 		update(nodes);
 	}
 	
-	public void setAgent(AbstractAgent<?> agent) {
+	public void setAgent(AbstractAgent agent) {
 		this.agent = agent;
 	}
 	

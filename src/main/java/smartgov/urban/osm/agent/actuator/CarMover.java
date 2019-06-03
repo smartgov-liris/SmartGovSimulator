@@ -1,10 +1,15 @@
 package smartgov.urban.osm.agent.actuator;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.locationtech.jts.geom.Coordinate;
 
 import smartgov.core.agent.Plan;
 import smartgov.core.agent.mover.AbstractMover;
+import smartgov.core.events.EventHandler;
 import smartgov.core.main.SimulationBuilder;
+import smartgov.urban.geo.agent.event.CarMovedEvent;
 import smartgov.urban.geo.simulation.GISComputation;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.graph.OsmArc;
@@ -20,8 +25,11 @@ public class CarMover extends AbstractMover {
 	
 	protected OsmAgentBody agentBody;
 	private GippsSteering gippsSteering;
+	
+	private Collection<EventHandler<CarMovedEvent>> carMovedListeners;
 
 	public CarMover() {
+		carMovedListeners = new ArrayList<>();
 		gippsSteering = new GippsSteering(1.0,1.5,-3.0);
 	}
 	
@@ -95,8 +103,15 @@ public class CarMover extends AbstractMover {
 				 */
 				double dx = distance * (destination.x - currentPosition.x) / remainingDistanceToNode;
 				double dy = distance * (destination.y - currentPosition.y) / remainingDistanceToNode;
-
-				return new Coordinate(currentPosition.x + dx, currentPosition.y + dy);
+				Coordinate newCoordinate = new Coordinate(currentPosition.x + dx, currentPosition.y + dy);
+				triggerCarMovedListeners(
+						new CarMovedEvent(
+								currentPosition,
+								newCoordinate,
+								GISComputation.GPS2Meter(currentPosition, newCoordinate)
+								)
+						);
+				return newCoordinate;
 			}
 		}
 		
@@ -147,6 +162,16 @@ public class CarMover extends AbstractMover {
 			return destination;
 		} else {
 			return moveOn(agentBody.getSpeed() * SimulationBuilder.TICK_DURATION);
+		}
+	}
+	
+	public void addCarMovedEventListener(EventHandler<CarMovedEvent> listener) {
+		carMovedListeners.add(listener);
+	}
+	
+	private void triggerCarMovedListeners(CarMovedEvent event) {
+		for (EventHandler<CarMovedEvent> listener : carMovedListeners) {
+			listener.handle(event);
 		}
 	}
 }

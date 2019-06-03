@@ -24,10 +24,10 @@ import smartgov.core.events.EventHandler;
  *
  */
 @JsonIgnoreProperties({"agent", "agentMoveListeners", "nodeReachedListeners", "arcReachedListeners", "arcLeftListeners", "destinationReachedListeners"})
-public abstract class AbstractAgentBody<Tagent extends AbstractAgent<?>> {
+public abstract class AbstractAgentBody {
 
 	protected Plan plan;
-	protected Tagent agent;
+	protected AbstractAgent agent;
 	
 	// Listeners collections for each event type
 	protected Collection<EventHandler<MoveEvent>> agentMoveListeners;
@@ -46,12 +46,12 @@ public abstract class AbstractAgentBody<Tagent extends AbstractAgent<?>> {
 	
 	public abstract void initialize();
 	
-	public void setAgent(Tagent agent) {
+	public void setAgent(AbstractAgent agent) {
 		this.agent = agent;
 		plan.setAgent(agent);
 	}
 	
-	public Tagent getAgent() {
+	public AbstractAgent getAgent() {
 		return agent;
 	}
 
@@ -67,7 +67,16 @@ public abstract class AbstractAgentBody<Tagent extends AbstractAgent<?>> {
 		// TODO : event listeners
 		switch(action){
 		case MOVE:
-			triggerOnMoveListeners(move());
+			Arc oldArc = plan.getCurrentArc();
+			Node oldNode = plan.getCurrentNode();
+			move();
+			triggerOnMoveListeners(new MoveEvent(
+					oldArc,
+					plan.getCurrentArc(),
+					oldNode,
+					plan.getCurrentNode()
+					)
+					);
 			break;
 		case ENTER:
 			enter();
@@ -83,7 +92,7 @@ public abstract class AbstractAgentBody<Tagent extends AbstractAgent<?>> {
 		}
 	}
 	
-	public abstract MoveEvent move();
+	public abstract void move();
 	
 	public abstract void enter();
 	
@@ -94,7 +103,7 @@ public abstract class AbstractAgentBody<Tagent extends AbstractAgent<?>> {
 	public abstract void idle();
 	
 	// Move listeners
-	public void addOnMoveListener(EventHandler<? extends MoveEvent> moveListener) {
+	public void addOnMoveListener(EventHandler<MoveEvent> moveListener) {
 		agentMoveListeners.add((EventHandler<MoveEvent>) moveListener);
 	}
 	

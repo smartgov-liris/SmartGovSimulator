@@ -34,7 +34,9 @@ public class Arc extends GraphObject {
 	public Arc(String id, Node startNode, Node targetNode, double length) {
 		this.id = id;
 		this.startNode = startNode;
+		startNode.addOutgoingArc(this);
 		this.targetNode = targetNode;
+		targetNode.addIncomingArc(this);
 		this.length = length;
 	}
 	

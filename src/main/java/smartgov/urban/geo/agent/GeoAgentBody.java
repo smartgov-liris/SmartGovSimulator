@@ -13,7 +13,6 @@ import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.node.Node;
 import smartgov.core.main.SimulationBuilder;
 import smartgov.core.output.coordinate.CoordinateSerializer;
-import smartgov.urban.geo.agent.event.GeoMoveEvent;
 /**
  * A generic abstract child of an AbstractAgentBody, built to be represented on a map.
  * 
@@ -24,7 +23,7 @@ import smartgov.urban.geo.agent.event.GeoMoveEvent;
  * @param <Tmover> Mover used to move agents in the structure.
  * @param <Tsensor> Sensor used to sense data in the environment.
  */
-public abstract class GeoAgentBody<Tagent extends GeoAgent<?, ?, ?, ?>, Tmover extends AbstractMover> extends AbstractAgentBody<Tagent> {
+public abstract class GeoAgentBody<Tmover extends AbstractMover> extends AbstractAgentBody {
 
 	@JsonIgnore
 	protected Vector2D direction;
@@ -83,28 +82,10 @@ public abstract class GeoAgentBody<Tagent extends GeoAgent<?, ?, ?, ?>, Tmover e
 	}
 
 	@Override
-	public GeoMoveEvent move() {
-		Coordinate oldCoordinate = getPosition();
-		Arc oldArc = plan.getCurrentArc();
-		Node oldNode = plan.getCurrentNode();
-		
+	public void move() {
 		// Distance to cross in one tick
 		double distance = getSpeed() * SimulationBuilder.TICK_DURATION;
 		setPosition(this.mover.moveOn(distance));
-		
-		Coordinate newCoordinate = getPosition();
-		Arc newArc = plan.getCurrentArc();
-		Node newNode = plan.getCurrentNode();
-		
-		return new GeoMoveEvent(
-				oldCoordinate,
-				newCoordinate,
-				oldArc,
-				newArc,
-				oldNode,
-				newNode,
-				distance
-				);
 	}
 
 	@Override
@@ -127,4 +108,6 @@ public abstract class GeoAgentBody<Tagent extends GeoAgent<?, ?, ?, ?>, Tmover e
 		// TODO Auto-generated method stub
 
 	}
+	
+	
 }

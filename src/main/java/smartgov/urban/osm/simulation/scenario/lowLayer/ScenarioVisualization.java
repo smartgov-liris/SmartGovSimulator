@@ -27,7 +27,7 @@ public class ScenarioVisualization extends OsmScenario {
 	}
 
 	@Override
-	public Collection<AbstractAgent<?>> buildAgents() {
+	public Collection<AbstractAgent> buildAgents() {
 		return new ArrayList<>();
 	}
 

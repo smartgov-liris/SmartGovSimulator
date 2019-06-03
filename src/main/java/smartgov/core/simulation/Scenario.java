@@ -24,7 +24,7 @@ public abstract class Scenario {
 			context.arcs.put(arc.getId(), arc);
 		}
 		SmartGov.logger.info(context.arcs.size() + " arcs added to SmartGovContext");
-		for (AbstractAgent<?> agent : buildAgents()) {
+		for (AbstractAgent agent : buildAgents()) {
 			context.agents.put(agent.getId(), agent);
 		}
 		SmartGov.logger.info(context.agents.size() + " agents added to SmartGovContext");
@@ -32,5 +32,5 @@ public abstract class Scenario {
 	
 	public abstract Collection<Node> buildNodes();
 	public abstract Collection<Arc> buildArcs();
-	public abstract Collection<AbstractAgent<?>> buildAgents();
+	public abstract Collection<AbstractAgent> buildAgents();
 }

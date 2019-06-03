@@ -42,8 +42,8 @@ public class ScenarioLowAgents extends ScenarioVisualization {
 	 * re-add them to the context. 
 	 */
 	@Override
-	public Collection<AbstractAgent<?>> buildAgents() {
-		Collection<AbstractAgent<?>> agents = new ArrayList<>();
+	public Collection<AbstractAgent> buildAgents() {
+		Collection<AbstractAgent> agents = new ArrayList<>();
 		int agentCount = Integer.valueOf((String) getOsmContext().getConfig().get("AgentNumber"));
 		for(int i = 0; i < agentCount; i++){
 			OsmAgentProperties properties = new OsmAgentProperties(getOsmContext());
@@ -52,7 +52,7 @@ public class ScenarioLowAgents extends ScenarioVisualization {
 					String.valueOf(i),
 					getOsmContext());
 			
-			OsmAgent<OsmAgentProperties, BasicBehavior> newAgent = new OsmAgent<>(
+			OsmAgent<BasicBehavior> newAgent = new OsmAgent<>(
 					String.valueOf(i),
 					body,
 					new BasicBehavior(body),

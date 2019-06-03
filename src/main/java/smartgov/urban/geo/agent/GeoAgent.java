@@ -2,7 +2,6 @@ package smartgov.urban.geo.agent;
 
 import smartgov.core.agent.AbstractAgent;
 import smartgov.core.agent.behavior.AbstractBehavior;
-import smartgov.core.agent.properties.AgentProperties;
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.environment.graph.GeoNode;
 
@@ -22,17 +21,16 @@ import smartgov.urban.geo.environment.graph.GeoNode;
  * @param <P> Properties associated to the GeoAgent bahavior.
  * @param <B> GeoAgent behavior
  */
-public abstract class GeoAgent<Tnode extends GeoNode, Tarc extends GeoArc, Tbody extends GeoAgentBody<?, ?>, B extends AbstractBehavior<Tbody>> extends AbstractAgent<Tbody> {
+public abstract class GeoAgent<Tnode extends GeoNode, Tarc extends GeoArc, B extends AbstractBehavior> extends AbstractAgent {
 
 	private B behavior;
 	
 	public GeoAgent(
 			String id,
-			Tbody body,
-			B behavior,
-			AgentProperties agentProperties) {
-		super(id, body, agentProperties);
-		this.body.setSpeed(0.0);
+			GeoAgentBody<?> body,
+			B behavior) {
+		super(id, body);
+		body.setSpeed(0.0);
 		this.behavior = behavior;
 	}
 
@@ -56,7 +54,6 @@ public abstract class GeoAgent<Tnode extends GeoNode, Tarc extends GeoArc, Tbody
 	 */
 	@Override
 	public void initialize() {
-		agentProperties.initialize();
 		behavior.initialize();
 		body.initialize();
 	}

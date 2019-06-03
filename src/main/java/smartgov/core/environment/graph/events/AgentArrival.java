@@ -10,7 +10,7 @@ import smartgov.core.agent.AbstractAgent;
  */
 public class AgentArrival extends AgentEvent {
 
-	public AgentArrival(AbstractAgent<?> agent) {
+	public AgentArrival(AbstractAgent agent) {
 		super(agent);
 	}
 

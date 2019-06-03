@@ -59,8 +59,8 @@ public abstract class AbstractOsmSinkSourceNode extends OsmNode {
 					thisNode.triggerSinkAgentListeners(new SinkAgentEvent(event.getAgent()));
 					
 					// Agent reached the sink node, and this is its destination.
-					AbstractAgentBody<?> agentBody = event.getAgent().getBody();
-					AbstractAgent<?> agent = agentBody.getAgent();
+					AbstractAgentBody agentBody = event.getAgent().getBody();
+					AbstractAgent agent = agentBody.getAgent();
 					
 					agent.initialize();
 				}

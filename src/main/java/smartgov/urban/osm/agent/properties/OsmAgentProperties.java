@@ -5,7 +5,6 @@ import java.util.Random;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import smartgov.core.agent.properties.AgentProperties;
 import smartgov.core.output.node.NodeIdSerializer;
 import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.osm.environment.OsmContext;
@@ -16,7 +15,7 @@ import smartgov.urban.osm.environment.graph.sinkSourceNodes.AbstractOsmSinkSourc
  * @author Simon
  *
  */
-public class OsmAgentProperties extends AgentProperties {
+public class OsmAgentProperties {
 
 	@JsonIgnore
 	private OsmContext context;
@@ -31,7 +30,6 @@ public class OsmAgentProperties extends AgentProperties {
 	/**
 	 * Called to re-initialize properties.
 	 */
-	@Override
 	public void initialize() {
 		Random rnd = new Random();
 		

@@ -4,7 +4,7 @@ import smartgov.core.agent.AbstractAgent;
 
 public class SinkAgentEvent extends AgentArrival {
 
-	public SinkAgentEvent(AbstractAgent<?> agent) {
+	public SinkAgentEvent(AbstractAgent agent) {
 		super(agent);
 	}
 

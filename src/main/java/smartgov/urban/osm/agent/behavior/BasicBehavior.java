@@ -4,7 +4,7 @@ import smartgov.core.agent.behavior.AbstractBehavior;
 import smartgov.core.environment.LowLevelAction;
 import smartgov.urban.osm.agent.OsmAgentBody;
 
-public class BasicBehavior extends AbstractBehavior<OsmAgentBody>{
+public class BasicBehavior extends AbstractBehavior {
 
 	public BasicBehavior(OsmAgentBody agentBody) {
 		super(agentBody);
