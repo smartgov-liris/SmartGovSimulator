@@ -13,9 +13,9 @@ public class ArcSerializationTest {
 
 	@Test
 	public void serializeArc() throws JsonProcessingException {
-		Node<?> startNode = new Node<>("1");
-		Node<?> targetNode = new Node<>("2");
-		Arc<?> arc = new Arc<>("1", startNode, targetNode, 2.36);
+		Node startNode = new Node("1");
+		Node targetNode = new Node("2");
+		Arc arc = new Arc("1", startNode, targetNode, 2.36);
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		String json = objectMapper.writeValueAsString(arc);

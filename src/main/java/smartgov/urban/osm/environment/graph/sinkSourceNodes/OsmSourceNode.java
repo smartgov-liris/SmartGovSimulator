@@ -5,8 +5,8 @@ import java.util.List;
 import org.locationtech.jts.geom.Coordinate;
 
 import smartgov.core.environment.graph.SourceNode;
+import smartgov.core.environment.graph.arc.Arc;
 import smartgov.urban.osm.environment.OsmContext;
-import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmNode;
 
 /**
@@ -27,8 +27,8 @@ public class OsmSourceNode extends AbstractOsmSinkSourceNode implements SourceNo
 			OsmContext environment,
 			String id,
 			Coordinate coordinate,
-			List<OsmArc> outgoingArcs) {
+			List<? extends Arc> outgoingArcs) {
 		super(environment, id, coordinate);
-		this.outgoingArcs = outgoingArcs;
+		this.outgoingArcs.addAll(outgoingArcs);
 	}
 }

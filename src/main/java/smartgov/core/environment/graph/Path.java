@@ -12,7 +12,7 @@ import smartgov.core.environment.graph.node.Node;
  * @author Simon, pbreugnot
  *
  */
-public class Path<Tnode extends Node<?>, Tbody extends AbstractAgentBody<?, ?, ?>> {
+public class Path<Tnode extends Node, Tbody extends AbstractAgentBody<?>> {
 	
 	private String id;
 	protected Map<String, String> attributes;

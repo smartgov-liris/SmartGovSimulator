@@ -41,7 +41,7 @@ public class PollutionScenarioTest {
 	@Test
 	public void testArcsType() {
 		SmartGov smartGov = loadSmartGov();
-		for(Arc<?> arc : smartGov.getContext().arcs.values()) {
+		for(Arc arc : smartGov.getContext().arcs.values()) {
 			assertThat(
 					arc instanceof PollutableOsmArc,
 					equalTo(true)

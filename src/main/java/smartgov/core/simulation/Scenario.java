@@ -16,11 +16,11 @@ public abstract class Scenario {
 	 * @return Updated context used by SmartGov simulator
 	 */
 	public void loadWorld(SmartGovContext context) {
-		for (Node<?> node : buildNodes()) {
+		for (Node node : buildNodes()) {
 			context.nodes.put(node.getId(), node);
 		}
 		SmartGov.logger.info(context.nodes.size() + " nodes added to SmartGovContext");
-		for (Arc<?> arc : buildArcs()) {
+		for (Arc arc : buildArcs()) {
 			context.arcs.put(arc.getId(), arc);
 		}
 		SmartGov.logger.info(context.arcs.size() + " arcs added to SmartGovContext");
@@ -30,7 +30,7 @@ public abstract class Scenario {
 		SmartGov.logger.info(context.agents.size() + " agents added to SmartGovContext");
 	}
 	
-	public abstract Collection<Node<?>> buildNodes();
-	public abstract Collection<Arc<?>> buildArcs();
+	public abstract Collection<Node> buildNodes();
+	public abstract Collection<Arc> buildArcs();
 	public abstract Collection<AbstractAgent<?>> buildAgents();
 }

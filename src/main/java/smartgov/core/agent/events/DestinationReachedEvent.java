@@ -12,7 +12,7 @@ import smartgov.core.environment.graph.node.Node;
  */
 public class DestinationReachedEvent extends NodeReachedEvent {
 
-	public DestinationReachedEvent(Node<?> destination) {
+	public DestinationReachedEvent(Node destination) {
 		super(destination);
 	}
 	

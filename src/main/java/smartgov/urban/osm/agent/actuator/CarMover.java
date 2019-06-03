@@ -41,11 +41,11 @@ public class CarMover extends AbstractMover {
 		// TODO : make destination a parameter, and perform updates using listeners.
 		updateAgentSpeed(agentBody);
 		double distance = agentBody.getSpeed() * SimulationBuilder.TICK_DURATION;
-		Plan<OsmNode, OsmArc> plan = agentBody.getPlan();
+		Plan plan = agentBody.getPlan();
 		Coordinate currentPosition = agentBody.getPosition();
 		if(!plan.isPathComplete()){
-			OsmArc arc = plan.getCurrentArc();
-			Coordinate destination = plan.getNextNode().getPosition();
+			OsmArc arc = (OsmArc) plan.getCurrentArc();
+			Coordinate destination = ((OsmNode) plan.getNextNode()).getPosition();
 			
 			// updateAgent(arc, agentBody);
 			double remainingDistanceToNode = GISComputation.GPS2Meter(currentPosition, destination);
@@ -55,7 +55,7 @@ public class CarMover extends AbstractMover {
 				currentPosition = destination;
 				plan.reachANode();
 				
-				arc = plan.getCurrentArc();
+				arc = (OsmArc) plan.getCurrentArc();
 				
 				if(arc != null){
 					// If this is not the last node, cross the remaining distance on the next arc
@@ -111,7 +111,7 @@ public class CarMover extends AbstractMover {
 	}
 	
 	private void updateAgentSpeed(OsmAgentBody agentBody) {
-		OsmAgentBody leader = agentBody.getPlan().getCurrentArc().getRoad().getLeaderOfAgent(agentBody);
+		OsmAgentBody leader = ((OsmArc) agentBody.getPlan().getCurrentArc()).getRoad().getLeaderOfAgent(agentBody);
 		if (leader != null) {
 			agentBody.setSpeed(
 					gippsSteering.getSpeed(

@@ -11,14 +11,14 @@ import smartgov.core.events.Event;
  */
 public abstract class ArcEvent extends Event {
 	
-	private Arc<?> arc;
+	private Arc arc;
 
-	public ArcEvent(Arc<?> arc) {
+	public ArcEvent(Arc arc) {
 		super();
 		this.arc = arc;
 	}
 
-	public Arc<?> getArc() {
+	public Arc getArc() {
 		return arc;
 	}
 }

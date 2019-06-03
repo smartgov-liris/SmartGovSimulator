@@ -14,13 +14,13 @@ import smartgov.core.output.node.NodeIdSerializer;
  *
  * @param <Tnode> associated Node type.
  */
-public class Arc<Tnode extends Node<?>> extends GraphObject {
+public class Arc extends GraphObject {
 
 	private String id;
 	@JsonSerialize(using = NodeIdSerializer.class)
-	private final Tnode startNode;
+	private final Node startNode;
 	@JsonSerialize(using = NodeIdSerializer.class)
-	private final Tnode targetNode;
+	private final Node targetNode;
 	protected double length;
 
 	/**
@@ -31,7 +31,7 @@ public class Arc<Tnode extends Node<?>> extends GraphObject {
 	 * @param targetNode Target Node
 	 * @param distance Length of the Arc
 	 */
-	public Arc(String id, Tnode startNode, Tnode targetNode, double length) {
+	public Arc(String id, Node startNode, Node targetNode, double length) {
 		this.id = id;
 		this.startNode = startNode;
 		this.targetNode = targetNode;
@@ -42,11 +42,11 @@ public class Arc<Tnode extends Node<?>> extends GraphObject {
 		return id;
 	}
 	
-	public Tnode getStartNode() {
+	public Node getStartNode() {
 		return startNode;
 	}
 	
-	public Tnode getTargetNode() {
+	public Node getTargetNode() {
 		return targetNode;
 	}
 

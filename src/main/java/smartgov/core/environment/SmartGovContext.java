@@ -40,8 +40,8 @@ public class SmartGovContext extends AbstractContext {
 	
 	public Map<String, AbstractAgent<?>> agents;
 
-	public Map<String, Node<?>> nodes;
-	public Map<String, Arc<?>> arcs;
+	public Map<String, Node> nodes;
+	public Map<String, Arc> arcs;
 	public OrientedGraph graph;
 	private Map<String, SourceNode> sourceNodes;
 	private Map<String, SinkNode> sinkNodes;

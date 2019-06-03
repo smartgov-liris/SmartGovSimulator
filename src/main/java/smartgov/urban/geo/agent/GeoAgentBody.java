@@ -9,22 +9,22 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import smartgov.core.agent.AbstractAgentBody;
 import smartgov.core.agent.Plan;
 import smartgov.core.agent.mover.AbstractMover;
+import smartgov.core.environment.graph.arc.Arc;
+import smartgov.core.environment.graph.node.Node;
 import smartgov.core.main.SimulationBuilder;
 import smartgov.core.output.coordinate.CoordinateSerializer;
 import smartgov.urban.geo.agent.event.GeoMoveEvent;
-import smartgov.urban.geo.environment.graph.GeoArc;
-import smartgov.urban.geo.environment.graph.GeoNode;
 /**
  * A generic abstract child of an AbstractAgentBody, built to be represented on a map.
  * 
  * @author pbreugnot
  *
- * @param <Tnode> GeoNode type
- * @param <Tarc> GeoArc type
+ * @param <Node> GeoNode type
+ * @param <Arc> GeoArc type
  * @param <Tmover> Mover used to move agents in the structure.
  * @param <Tsensor> Sensor used to sense data in the environment.
  */
-public abstract class GeoAgentBody<Tnode extends GeoNode<Tarc>, Tarc extends GeoArc<Tnode>, Tagent extends GeoAgent<?, ?, ?, ?>, Tmover extends AbstractMover> extends AbstractAgentBody<Tagent, Tnode, Tarc> {
+public abstract class GeoAgentBody<Tagent extends GeoAgent<?, ?, ?, ?>, Tmover extends AbstractMover> extends AbstractAgentBody<Tagent> {
 
 	@JsonIgnore
 	protected Vector2D direction;
@@ -43,7 +43,7 @@ public abstract class GeoAgentBody<Tnode extends GeoNode<Tarc>, Tarc extends Geo
 		super();
 		speed = 0.0;
 		direction = new Vector2D();
-		plan = new Plan<Tnode, Tarc>();
+		plan = new Plan();
 	}
 
 	public Coordinate getPosition() {
@@ -85,16 +85,16 @@ public abstract class GeoAgentBody<Tnode extends GeoNode<Tarc>, Tarc extends Geo
 	@Override
 	public GeoMoveEvent move() {
 		Coordinate oldCoordinate = getPosition();
-		Tarc oldArc = plan.getCurrentArc();
-		Tnode oldNode = plan.getCurrentNode();
+		Arc oldArc = plan.getCurrentArc();
+		Node oldNode = plan.getCurrentNode();
 		
 		// Distance to cross in one tick
 		double distance = getSpeed() * SimulationBuilder.TICK_DURATION;
 		setPosition(this.mover.moveOn(distance));
 		
 		Coordinate newCoordinate = getPosition();
-		Tarc newArc = plan.getCurrentArc();
-		Tnode newNode = plan.getCurrentNode();
+		Arc newArc = plan.getCurrentArc();
+		Node newNode = plan.getCurrentNode();
 		
 		return new GeoMoveEvent(
 				oldCoordinate,

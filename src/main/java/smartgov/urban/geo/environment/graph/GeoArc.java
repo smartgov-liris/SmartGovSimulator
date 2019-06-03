@@ -15,7 +15,7 @@ import smartgov.urban.geo.simulation.GISComputation;
  *
  * @param <Tnode> GeoNode type
  */
-public class GeoArc<Tnode extends GeoNode<?>> extends Arc<Tnode> {
+public class GeoArc extends Arc {
 
 	@JsonIgnore
 	protected Vector2D direction;
@@ -29,7 +29,7 @@ public class GeoArc<Tnode extends GeoNode<?>> extends Arc<Tnode> {
 	 * @param targetNode Target Node
 	 * @param polyLine Shape of the Arc
 	 */
-	public GeoArc(String id, Tnode startNode, Tnode targetNode){
+	public GeoArc(String id, GeoNode startNode, GeoNode targetNode){
 		super(id, startNode, targetNode, GISComputation.GPS2Meter(startNode.getPosition(), targetNode.getPosition()));
 		this.direction = new Vector2D(startNode.getPosition(), targetNode.getPosition());
 		this.direction.normalize();

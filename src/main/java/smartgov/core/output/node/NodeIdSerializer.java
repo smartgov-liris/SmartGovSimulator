@@ -14,7 +14,7 @@ import smartgov.core.environment.graph.node.Node;
  * @author pbreugnot
  *
  */
-public class NodeIdSerializer extends StdSerializer<Node<?>>{
+public class NodeIdSerializer extends StdSerializer<Node>{
 
 	private static final long serialVersionUID = 1L;
 
@@ -22,12 +22,12 @@ public class NodeIdSerializer extends StdSerializer<Node<?>>{
 		this(null);
 	}
 	
-	protected NodeIdSerializer(Class<Node<?>> t) {
+	protected NodeIdSerializer(Class<Node> t) {
 		super(t);
 	}
 
 	@Override
-	public void serialize(Node<?> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+	public void serialize(Node value, JsonGenerator gen, SerializerProvider provider) throws IOException {
 		gen.writeString(value.getId());
 	}
 	

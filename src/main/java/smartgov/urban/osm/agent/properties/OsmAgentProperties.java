@@ -21,9 +21,9 @@ public class OsmAgentProperties extends AgentProperties {
 	@JsonIgnore
 	private OsmContext context;
 	@JsonSerialize(using=NodeIdSerializer.class)
-	private GeoNode<?> beginNode;
+	private GeoNode beginNode;
 	@JsonSerialize(using=NodeIdSerializer.class)
-	private GeoNode<?> endNode;
+	private GeoNode endNode;
 	
 	public OsmAgentProperties(OsmContext context) {
 		this.context = context;
@@ -52,16 +52,16 @@ public class OsmAgentProperties extends AgentProperties {
 		return (AbstractOsmSinkSourceNode) context.getSinkNodes().get(randomSinkNodeId);
 	}
 
-	public OsmAgentProperties(GeoNode<?> beginNode, GeoNode<?> endNode){
+	public OsmAgentProperties(GeoNode beginNode, GeoNode endNode){
 		this.beginNode = beginNode;
 		this.endNode = endNode;
 	}
 
-	public GeoNode<?> getBeginNode() {
+	public GeoNode getBeginNode() {
 		return beginNode;
 	}
 
-	public GeoNode<?> getEndNode() {
+	public GeoNode getEndNode() {
 		return endNode;
 	}
 	

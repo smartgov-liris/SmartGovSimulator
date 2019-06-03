@@ -12,23 +12,23 @@ import smartgov.core.environment.graph.node.Node;
  * @see Node
  * @author pbreugnot
  *
- * @param <Tnode> Node type
- * @param <Tarc> Arc type
+ * @param <Node> Node type
+ * @param <Arc> Arc type
  */
-public class Graph<Tnode extends Node<?>, Tarc extends Arc<?>> {
-	private Map<String, ? extends Tnode> nodes;
-	private Map<String, ? extends Tarc> arcs;
+public class Graph {
+	private Map<String, ? extends Node> nodes;
+	private Map<String, ? extends Arc> arcs;
 	
-	public Graph(Map<String, ? extends Tnode> nodes, Map<String, ? extends Tarc> arcs) {
+	public Graph(Map<String, ? extends Node> nodes, Map<String, ? extends Arc> arcs) {
 		this.nodes = nodes;
 		this.arcs = arcs;
 	}
 	
-	public Map<String, ? extends Tnode> getNodes() {
+	public Map<String, ? extends Node> getNodes() {
 		return nodes;
 	}
 	
-	public Map<String, ? extends Tarc> getArcs() {
+	public Map<String, ? extends Arc> getArcs() {
 		return arcs;
 	}
 

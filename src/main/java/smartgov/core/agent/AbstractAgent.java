@@ -16,7 +16,7 @@ import smartgov.core.agent.properties.AgentProperties;
  *
  * @param <B> Body type of the agent.
  */
-public abstract class AbstractAgent<B extends AbstractAgentBody<?, ?, ?>> {
+public abstract class AbstractAgent<B extends AbstractAgentBody<?>> {
 	
 	protected String id;
 	protected B body;

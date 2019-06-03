@@ -17,19 +17,19 @@ import smartgov.core.output.arc.ArcListIdSerializer;
  *
  * @param <T> Associated Arc type
  */
-public class Node<T extends Arc<?>> extends GraphObject {
+public class Node extends GraphObject {
 	
 	public String id;
 	@JsonSerialize(using = ArcListIdSerializer.class)
-	protected List<T> outgoingArcs;
+	protected List<Arc> outgoingArcs;
 	@JsonSerialize(using = ArcListIdSerializer.class)
-	protected List<T> incomingArcs;
+	protected List<Arc> incomingArcs;
 	
 	public Node(String id) {
 		this(id, new ArrayList<>(), new ArrayList<>());
 	}
 	
-	public Node(String id, List<T> outgoingArcs, List<T> incomingArcs) {
+	public Node(String id, List<Arc> outgoingArcs, List<Arc> incomingArcs) {
 		this.id = id;
 		this.outgoingArcs = outgoingArcs;
 		this.incomingArcs = incomingArcs;
@@ -39,41 +39,31 @@ public class Node<T extends Arc<?>> extends GraphObject {
 		return id;
 	}
 	
-	public void setIncomingArcs(List<T> incomingArcs) {
+	public void setIncomingArcs(List<Arc> incomingArcs) {
 		this.incomingArcs = incomingArcs;
 	}
 	
-	public void setOutgoingArcs(List<T> outgoingArcs) {
+	public void setOutgoingArcs(List<Arc> outgoingArcs) {
 		this.outgoingArcs = outgoingArcs;
 	}
 	
-	public void addAnIncomingArc(T incomingArc){
-		/*
-		if(!outgoingArcs.contains(incomingArc)){
-			outgoingArcs.add(incomingArc);
-		}
-		*/
+	public void addIncomingArc(Arc incomingArc){
 		if(!incomingArcs.contains(incomingArc)){
 			incomingArcs.add(incomingArc);
 		}
 	}
 	
-	public void addAnOutgoingArc(T outgoingArc){
-		/*
-		if(!incomingArcs.contains(outgoingArc)){
-			incomingArcs.add(outgoingArc);
-		}
-		*/
+	public void addOutgoingArc(Arc outgoingArc){
 		if(!outgoingArcs.contains(outgoingArc)){
 			outgoingArcs.add(outgoingArc);
 		}
 	}
 	
-	public List<T> getIncomingArcs() {
+	public List<Arc> getIncomingArcs() {
 		return incomingArcs;
 	}
 	
-	public List<T> getOutgoingArcs() {
+	public List<Arc> getOutgoingArcs() {
 		return outgoingArcs;
 	}
 }

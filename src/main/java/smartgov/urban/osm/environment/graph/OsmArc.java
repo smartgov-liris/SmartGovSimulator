@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import smartgov.urban.geo.environment.graph.GeoArc;
+import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.geo.simulation.GISComputation;
 import smartgov.urban.osm.environment.city.ParkingSpot;
 
@@ -19,7 +20,7 @@ import smartgov.urban.osm.environment.city.ParkingSpot;
  *
  */
 @JsonIgnoreProperties({"road", "lanes", "spots", "closeSpot", "spotCloseToNode", "aspotAvailable"})
-public class OsmArc extends GeoArc<OsmNode> {
+public class OsmArc extends GeoArc {
 	
 	protected Road road;
 	protected String type;
@@ -76,7 +77,7 @@ public class OsmArc extends GeoArc<OsmNode> {
 	
 	public ParkingSpot getSpotCloseToNode(){
 		for(int i = 0; i < spots.size(); i++){
-			if(GISComputation.GPS2Meter(getStartNode().getPosition(), spots.get(i).getPosition()) < 25.0){
+			if(GISComputation.GPS2Meter(((GeoNode) getStartNode()).getPosition(), spots.get(i).getPosition()) < 25.0){
 				return spots.get(i);
 			}
 		}

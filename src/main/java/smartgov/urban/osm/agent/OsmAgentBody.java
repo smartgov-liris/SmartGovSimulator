@@ -6,8 +6,6 @@ import smartgov.core.environment.SmartGovContext;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.osm.agent.actuator.CarMover;
 import smartgov.urban.osm.agent.properties.OsmAgentProperties;
-import smartgov.urban.osm.environment.graph.OsmArc;
-import smartgov.urban.osm.environment.graph.OsmNode;
 
 /**
  * An OSM implementation of a {@link smartgov.urban.geo.agent.GeoAgentBody GeoAgentBody}.
@@ -18,7 +16,7 @@ import smartgov.urban.osm.environment.graph.OsmNode;
  * @author pbreugnot
  *
  */
-public class OsmAgentBody extends GeoAgentBody<OsmNode, OsmArc, OsmAgent<?, ?>, CarMover> {
+public class OsmAgentBody extends GeoAgentBody<OsmAgent<?, ?>, CarMover> {
 
 	@JsonIgnore
 	private SmartGovContext environment;

@@ -18,23 +18,23 @@ import smartgov.core.environment.graph.node.Node;
  * @see Graph
  * @author pbreugnot
  *
- * @param <Tnode> Node type
- * @param <Tarc> Arc type
+ * @param <Node> Node type
+ * @param <Arc> Arc type
  */
 
-public class OrientedGraph<Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> extends Graph<Tnode, Tarc> {
+public class OrientedGraph extends Graph {
 
 	private MultiGraph orientedGraph;
 
-	public OrientedGraph(Map<String, Tnode> nodes, Map<String, Tarc> arcs){
+	public OrientedGraph(Map<String, ? extends Node> nodes, Map<String, ? extends Arc> arcs){
 		super(nodes, new HashMap<>());
 		MultiGraph g = new MultiGraph("graph");
 		g.setStrict(true);
-		for(Tnode node : nodes.values()){
+		for(Node node : nodes.values()){
 			g.addNode(node.getId());
 		}
-		
-		for(Tarc arc : arcs.values()) {
+
+		for(Arc arc : arcs.values()) {
 			g.addEdge(
 						arc.getId(),
 						arc.getStartNode().getId(),
@@ -45,7 +45,7 @@ public class OrientedGraph<Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> ex
 		orientedGraph = g;
 	}
 
-	private List<String> pathBetween(Node<?> from, Node<?> to){
+	private List<String> pathBetween(Node from, Node to){
 		 AStar astar = new AStar(orientedGraph);
 		 astar.setCosts(new AStar.DefaultCosts("distance"));
 		 astar.compute(from.getId(), to.getId());
@@ -60,15 +60,15 @@ public class OrientedGraph<Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> ex
 		 return nodesId;
 	}
 
-	private List<Tnode> pathStringToNode(List<String> nodesId){
-		List<Tnode> nodesPath = new ArrayList<>();
+	private List<Node> pathStringToNode(List<String> nodesId){
+		List<Node> nodesPath = new ArrayList<>();
 		for(int i = 0; i < nodesId.size(); i++){
 			nodesPath.add(getNodes().get(nodesId.get(i)));
 		}
 		return nodesPath;
 	}
 
-	public List<Tnode> shortestPath(Node<?> from, Node<?> to){
+	public List<Node> shortestPath(Node from, Node to){
 		return pathStringToNode(pathBetween(from, to));
 	}
 

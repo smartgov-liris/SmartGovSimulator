@@ -15,10 +15,10 @@ public class GeoMoveEvent extends MoveEvent {
 	public GeoMoveEvent(
 			Coordinate oldCoordinate,
 			Coordinate newCoordinate,
-			Arc<?> oldArc,
-			Arc<?> newArc,
-			Node<?> oldNode,
-			Node<?> newNode,
+			Arc oldArc,
+			Arc newArc,
+			Node oldNode,
+			Node newNode,
 			double distanceCrossed) {
 		super(oldArc, newArc, oldNode, newNode);
 		this.oldCoordinate = oldCoordinate;

@@ -27,19 +27,19 @@ import smartgov.core.output.arc.ArcIdSerializer;
  * 
  * @author pbreugnot
  *
- * @param <Tnode> Node type
- * @param <Tarc> Arc type
+ * @param <Node> Node type
+ * @param <Arc> Arc type
  */
-public class Plan <Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
+public class Plan {
 
 	@JsonSerialize(using=NodeListIdSerializer.class)
-	private List<Tnode> nodes;
+	private List<Node> nodes;
 	@JsonIgnore
-	private Queue<Tnode> remainingNodes;
+	private Queue<Node> remainingNodes;
 	@JsonSerialize(using=NodeIdSerializer.class)
-	private Tnode currentNode;
+	private Node currentNode;
 	@JsonSerialize(using=ArcIdSerializer.class)
-	private Tarc currentArc;
+	private Arc currentArc;
 	@JsonIgnore
 	private boolean pathComplete;
 	@JsonIgnore
@@ -52,7 +52,7 @@ public class Plan <Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
 		this.nodes = new ArrayList<>();
 	}
 	
-	public Plan(List<Tnode> nodes){
+	public Plan(List<Node> nodes){
 		update(nodes);
 	}
 	
@@ -60,14 +60,14 @@ public class Plan <Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
 		this.agent = agent;
 	}
 	
-	private Tarc findCurrentArc() {
-		List<Tarc> arcs = currentNode.getOutgoingArcs();
-		Tnode nextNode = remainingNodes.peek();
+	private Arc findCurrentArc() {
+		List<Arc> arcs = currentNode.getOutgoingArcs();
+		Node nextNode = remainingNodes.peek();
 		if(nextNode != null){
 			if(arcs.size() == 1){
 				return arcs.get(0);
 			} else {
-				for(Tarc arc : arcs){
+				for(Arc arc : arcs){
 					if(arc.getTargetNode().getId().equals(nextNode.getId())){
 						return arc;
 					}
@@ -77,11 +77,11 @@ public class Plan <Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
 		return null; //Should not happen !
 	}
 	
-	public Tarc getCurrentArc() {
+	public Arc getCurrentArc() {
 		return currentArc;
 	}
 	
-	public void update(List<? extends Tnode> nodes) {
+	public void update(List<? extends Node> nodes) {
 		this.nodes.clear();
 		this.nodes.addAll(nodes);
 		this.remainingNodes = new LinkedList<>();
@@ -101,15 +101,15 @@ public class Plan <Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
 	}
 	
 	@JsonIgnore
-	public Tnode getNextNode(){
+	public Node getNextNode(){
 		return remainingNodes.peek();
 	}
 	
 	// TODO: Is it useful?
-//	public Tarc getNextArc(){
-//		List<Tarc> arcs = remainingNodes.peek().getOutgoingArcs();
+//	public Arc getNextArc(){
+//		List<Arc> arcs = remainingNodes.peek().getOutgoingArcs();
 //		try {
-//			Tnode futurNode = nodes.get(indexOfCurrentNode+2);
+//			Node futurNode = nodes.get(indexOfCurrentNode+2);
 //			if(futurNode != null){
 //				if(arcs.size() == 1){
 //					return arcs.get(0);
@@ -127,20 +127,20 @@ public class Plan <Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
 //		return null;
 //	}
 	@JsonIgnore
-	public Tnode getLastNode() {
+	public Node getLastNode() {
 		return nodes.get(nodes.size() - 1);
 	}
 	
 	@JsonIgnore
-	public Tnode getPreviousNode() {
+	public Node getPreviousNode() {
 		return nodes.get(nodes.size() - 2);
 	}
 	
-	public Tnode getCurrentNode() {
+	public Node getCurrentNode() {
 		return currentNode;
 	}
 	
-	public List<Tnode> getNodes() {
+	public List<Node> getNodes() {
 		return nodes;
 	}
 	
@@ -180,7 +180,7 @@ public class Plan <Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
 		
 	}
 	
-	public void addANode(Tnode node){
+	public void addANode(Node node){
 		this.nodes.add(node);
 		this.remainingNodes.add(node);
 		this.pathComplete = false;

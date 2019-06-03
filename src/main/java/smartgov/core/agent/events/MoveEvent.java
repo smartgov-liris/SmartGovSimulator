@@ -12,16 +12,16 @@ import smartgov.core.events.Event;
  */
 public class MoveEvent extends Event {
 	
-	private Arc<?> oldArc;
-	private Arc<?> newArc;
-	private Node<?> oldNode;
-	private Node<?> newNode;
+	private Arc oldArc;
+	private Arc newArc;
+	private Node oldNode;
+	private Node newNode;
 	
 	public MoveEvent(
-			Arc<?> oldArc,
-			Arc<?> newArc,
-			Node<?> oldNode,
-			Node<?> newNode) {
+			Arc oldArc,
+			Arc newArc,
+			Node oldNode,
+			Node newNode) {
 		super();
 		this.oldArc = oldArc;
 		this.newArc = newArc;
@@ -29,19 +29,19 @@ public class MoveEvent extends Event {
 		this.newNode = newNode;
 	}
 
-	public Arc<?> getOldArc() {
+	public Arc getOldArc() {
 		return oldArc;
 	}
 
-	public Arc<?> getNewArc() {
+	public Arc getNewArc() {
 		return newArc;
 	}
 
-	public Node<?> getOldNode() {
+	public Node getOldNode() {
 		return oldNode;
 	}
 
-	public Node<?> getNewNode() {
+	public Node getNewNode() {
 		return newNode;
 	}
 	

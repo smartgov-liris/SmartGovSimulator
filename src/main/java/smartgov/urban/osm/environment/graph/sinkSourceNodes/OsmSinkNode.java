@@ -5,8 +5,8 @@ import java.util.List;
 import org.locationtech.jts.geom.Coordinate;
 
 import smartgov.core.environment.graph.SinkNode;
+import smartgov.core.environment.graph.arc.Arc;
 import smartgov.urban.osm.environment.OsmContext;
-import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmNode;
 
 /**
@@ -27,9 +27,9 @@ public class OsmSinkNode extends AbstractOsmSinkSourceNode implements SinkNode {
 			OsmContext environment,
 			String id,
 			Coordinate coordinate,
-			List<OsmArc> incomingArcs) {
+			List<? extends Arc> incomingArcs) {
 		super(environment, id, coordinate);
-		this.incomingArcs = incomingArcs;
+		this.incomingArcs.addAll(incomingArcs);
 		
 		registerSinkBehavior();
 	}

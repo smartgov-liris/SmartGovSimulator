@@ -10,7 +10,7 @@ import smartgov.core.environment.graph.arc.Arc;
  */
 public class ArcReachedEvent extends ArcEvent {
 
-	public ArcReachedEvent(Arc<?> arc) {
+	public ArcReachedEvent(Arc arc) {
 		super(arc);
 	}
 	

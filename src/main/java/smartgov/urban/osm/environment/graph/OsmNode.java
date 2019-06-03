@@ -15,7 +15,7 @@ import smartgov.urban.geo.environment.graph.GeoNode;
  * @author pbreugnot
  *
  */
-public class OsmNode extends GeoNode<OsmArc> {
+public class OsmNode extends GeoNode {
 
 	@JsonIgnore
 	private boolean needToSlow = true;

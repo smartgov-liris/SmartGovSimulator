@@ -24,9 +24,9 @@ import smartgov.core.events.EventHandler;
  *
  */
 @JsonIgnoreProperties({"agent", "agentMoveListeners", "nodeReachedListeners", "arcReachedListeners", "arcLeftListeners", "destinationReachedListeners"})
-public abstract class AbstractAgentBody<Tagent extends AbstractAgent<?>, Tnode extends Node<Tarc>, Tarc extends Arc<Tnode>> {
+public abstract class AbstractAgentBody<Tagent extends AbstractAgent<?>> {
 
-	protected Plan<Tnode, Tarc> plan;
+	protected Plan plan;
 	protected Tagent agent;
 	
 	// Listeners collections for each event type
@@ -55,11 +55,11 @@ public abstract class AbstractAgentBody<Tagent extends AbstractAgent<?>, Tnode e
 		return agent;
 	}
 
-	public Plan<Tnode, Tarc> getPlan() {
+	public Plan getPlan() {
 		return plan;
 	}
 
-	public void updatePlan(List<Tnode> nodes) {
+	public void updatePlan(List<Node> nodes) {
 		plan.update(nodes);
 	}
 	

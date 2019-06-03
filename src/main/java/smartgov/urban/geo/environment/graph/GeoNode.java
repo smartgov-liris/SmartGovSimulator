@@ -17,7 +17,7 @@ import smartgov.core.environment.graph.node.Node;
  *
  * @param <Tarc> GeoArc type
  */
-public class GeoNode<Tarc extends GeoArc<?>> extends Node<Tarc> {
+public class GeoNode extends Node {
 	
 	// Ignore the Coordinate field : uses the getPositionAsArray getter instead.
 	@JsonIgnore
@@ -28,13 +28,13 @@ public class GeoNode<Tarc extends GeoArc<?>> extends Node<Tarc> {
 		this.position = position;
 	}
 	
-	public GeoNode(String id, Coordinate position, List<Tarc> outgoingArcs, List<Tarc> incomingArcs) {
+	public GeoNode(String id, Coordinate position, List<GeoArc> outgoingArcs, List<GeoArc> incomingArcs) {
 		this(id, position);
-		this.outgoingArcs = outgoingArcs;
-		this.incomingArcs = incomingArcs;
+		this.outgoingArcs.addAll(outgoingArcs);
+		this.incomingArcs.addAll(incomingArcs);
 	}
 	
-	public GeoNode(String id, double latitude, double longitude, List<Tarc> outgoingArcs, List<Tarc> incomingArcs){
+	public GeoNode(String id, double latitude, double longitude, List<GeoArc> outgoingArcs, List<GeoArc> incomingArcs){
 		this(id,  new Coordinate(latitude, longitude), outgoingArcs, incomingArcs);
 	}
 	

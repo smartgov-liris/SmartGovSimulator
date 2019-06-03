@@ -65,26 +65,26 @@ public class TestLoadWorldScenario {
 	
 	private class TestScenario extends Scenario {
 		
-		private List<Node<?>> nodes;
-		private List<Arc<?>> arcs;
+		private List<Node> nodes;
+		private List<Arc> arcs;
 		
 		public TestScenario() {
 			nodes = new ArrayList<>();
-			Node<Arc<?>> node1 = new Node<Arc<?>>("1");
-			Node<Arc<?>> node2 = new Node<Arc<?>>("2");
-			Node<Arc<?>> node3 = new Node<Arc<?>>("3");
-			Node<Arc<?>> node4 = new Node<Arc<?>>("4");
+			Node node1 = new Node("1");
+			Node node2 = new Node("2");
+			Node node3 = new Node("3");
+			Node node4 = new Node("4");
 			nodes.add(node1);
 			nodes.add(node2);
 			nodes.add(node3);
 			nodes.add(node4);
 			
 			arcs = new ArrayList<>();
-			Arc<Node<?>> arc1 = new Arc<>("1", node1, node2, 1);
-			Arc<Node<?>> arc2 = new Arc<>("2", node2, node3, 1);
-			Arc<Node<?>> arc3 = new Arc<>("3", node3, node4, 1);
-			Arc<Node<?>> arc4 = new Arc<>("4", node3, node1, 1);
-			Arc<Node<?>> arc5 = new Arc<>("5", node4, node4, 1);
+			Arc arc1 = new Arc("1", node1, node2, 1);
+			Arc arc2 = new Arc("2", node2, node3, 1);
+			Arc arc3 = new Arc("3", node3, node4, 1);
+			Arc arc4 = new Arc("4", node3, node1, 1);
+			Arc arc5 = new Arc("5", node4, node4, 1);
 			arcs.add(arc1);
 			arcs.add(arc2);
 			arcs.add(arc3);
@@ -93,12 +93,12 @@ public class TestLoadWorldScenario {
 		}
 
 		@Override
-		public Collection<Node<?>> buildNodes() {
+		public Collection<Node> buildNodes() {
 			return nodes;
 		}
 
 		@Override
-		public Collection<Arc<?>> buildArcs() {
+		public Collection<Arc> buildArcs() {
 			return arcs;
 		}
 

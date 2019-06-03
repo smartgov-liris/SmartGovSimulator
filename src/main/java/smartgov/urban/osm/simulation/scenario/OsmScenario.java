@@ -52,7 +52,7 @@ public abstract class OsmScenario extends Scenario {
 		createGraph();
 		createOrientedGraph();
 	}
-	
+
 	public OsmContext getOsmContext() {
 		return environment;
 	}
@@ -100,7 +100,7 @@ public abstract class OsmScenario extends Scenario {
 		SmartGov.logger.info("Time to process 'parseOSMFiles': " + (System.currentTimeMillis() - beginTime) + "ms.");
 	}
 
-	private GeoGraph<OsmNode, OsmArc> createGraph() {
+	private GeoGraph createGraph() {
 		OsmGraph roadGraph = new OsmGraph(environment, osmNodes, osmArcs);
 		roadGraph.addParkingToRoad(environment.parkingSpots, osmArcs.values());
 		return roadGraph;
@@ -108,16 +108,16 @@ public abstract class OsmScenario extends Scenario {
 
 	private void createOrientedGraph() {
 		long beginTime = System.currentTimeMillis();
-		OrientedGraph<OsmNode, OsmArc> orientedGraph = new OrientedGraph<OsmNode, OsmArc>(osmNodes, osmArcs);
+		OrientedGraph orientedGraph = new OrientedGraph(osmNodes, osmArcs);
 		SmartGov.logger.info("Time to create an oriented graph: " + (System.currentTimeMillis() - beginTime) + "ms.");
 		beginTime = System.currentTimeMillis();
 		environment.graph = orientedGraph;
 	}
 
 	@Override
-	public Collection<Node<?>> buildNodes() {
-		Collection<Node<?>> nodes = new ArrayList<>();
-		for(Node<?> node : osmNodes.values()) {
+	public Collection<Node> buildNodes() {
+		Collection<Node> nodes = new ArrayList<>();
+		for(Node node : osmNodes.values()) {
 			// This is why I hate Java and its strong typing.
 			nodes.add(node);
 		}
@@ -125,9 +125,9 @@ public abstract class OsmScenario extends Scenario {
 	}
 
 	@Override
-	public Collection<Arc<?>> buildArcs() {
-		Collection<Arc<?>> arcs = new ArrayList<>();
-		for(Arc<?> arc : osmArcs.values()) {
+	public Collection<Arc> buildArcs() {
+		Collection<Arc> arcs = new ArrayList<>();
+		for(Arc arc : osmArcs.values()) {
 			// This is again why I hate Java and its strong typing.
 			arcs.add(arc);
 		}
@@ -199,14 +199,14 @@ public abstract class OsmScenario extends Scenario {
 		SmartGov.logger.info("Number of source nodes : " + environment.getSourceNodes().size());
 		SmartGov.logger.info("Number of sink nodes : " + environment.getSinkNodes().size());
 	}
-	
+
 	/**
 	 * This function behaves has an arc factory. It is called by the OSMparser to generate
 	 * an arc from the OSM data, that are represented by the arguments of this function.
-	 * 
+	 *
 	 * It can be overridden by sub-scenarios to generate other OsmArcs types, but without
 	 * altering the parsing functions.
-	 * 
+	 *
 	 * @param geography Current Geometry
 	 * @param id Arc id
 	 * @param road Road to which the Arc belongs to.

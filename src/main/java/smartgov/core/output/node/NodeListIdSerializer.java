@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import smartgov.core.environment.graph.node.Node;
 
-public class NodeListIdSerializer extends StdSerializer<List<? extends Node<?>>>{
+public class NodeListIdSerializer extends StdSerializer<List<? extends Node>>{
 
 	private static final long serialVersionUID = 1L;
 
@@ -18,15 +18,15 @@ public class NodeListIdSerializer extends StdSerializer<List<? extends Node<?>>>
 		this(null);
 	}
 	
-	protected NodeListIdSerializer(Class<List<? extends Node<?>>> t) {
+	protected NodeListIdSerializer(Class<List<? extends Node>> t) {
 		super(t);
 	}
 
 	@Override
-	public void serialize(List<? extends Node<?>> value, JsonGenerator gen, SerializerProvider provider)
+	public void serialize(List<? extends Node> value, JsonGenerator gen, SerializerProvider provider)
 			throws IOException {
 		List<String> nodeIds = new ArrayList<>();
-		for(Node<?> node : value) {
+		for(Node node : value) {
 			nodeIds.add(node.getId());
 		}
 		gen.writeObject(nodeIds);

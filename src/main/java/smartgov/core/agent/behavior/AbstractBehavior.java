@@ -12,7 +12,7 @@ import smartgov.core.environment.LowLevelAction;
  * @param <W> AbstractProperties
  * @param <B> AbstractAgentBody
  */
-public abstract class AbstractBehavior<B extends AbstractAgentBody<?, ?, ?>> {
+public abstract class AbstractBehavior<B extends AbstractAgentBody<?>> {
 	
 	private B agentBody;
 	

@@ -13,13 +13,13 @@ import smartgov.core.events.Event;
  */
 public class NodeReachedEvent extends Event {
 	
-	private Node<?> node;
+	private Node node;
 	
-	public NodeReachedEvent(Node<?> node) {
+	public NodeReachedEvent(Node node) {
 		this.node = node;
 	}
 	
-	public Node<?> getNode() {
+	public Node getNode() {
 		return node;
 	}
 

@@ -22,7 +22,7 @@ import smartgov.urban.geo.environment.graph.GeoNode;
  * @param <P> Properties associated to the GeoAgent bahavior.
  * @param <B> GeoAgent behavior
  */
-public abstract class GeoAgent<Tnode extends GeoNode<Tarc>, Tarc extends GeoArc<Tnode>, Tbody extends GeoAgentBody<?, ?, ?, ?>, B extends AbstractBehavior<Tbody>> extends AbstractAgent<Tbody> {
+public abstract class GeoAgent<Tnode extends GeoNode, Tarc extends GeoArc, Tbody extends GeoAgentBody<?, ?>, B extends AbstractBehavior<Tbody>> extends AbstractAgent<Tbody> {
 
 	private B behavior;
 	

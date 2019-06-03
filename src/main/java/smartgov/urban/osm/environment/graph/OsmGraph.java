@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import smartgov.SmartGov;
+import smartgov.core.environment.graph.node.Node;
 import smartgov.urban.geo.environment.graph.GeoGraph;
+import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.geo.simulation.GISComputation;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.city.ParkingSpot;
@@ -20,7 +22,7 @@ import smartgov.urban.osm.environment.city.ParkingSpot;
  * @author pbreugnot
  *
  */
-public class OsmGraph extends GeoGraph<OsmNode, OsmArc> {
+public class OsmGraph extends GeoGraph {
 
 	private OsmContext environment;
 
@@ -47,8 +49,10 @@ public class OsmGraph extends GeoGraph<OsmNode, OsmArc> {
 
 
 			if(edge!=null){
-				OsmNode node;
-				if(GISComputation.GPS2Meter(edge.getStartNode().getPosition(), spot.getPosition()) < GISComputation.GPS2Meter(edge.getTargetNode().getPosition(), spot.getPosition()))
+				Node node;
+				if(GISComputation.GPS2Meter(
+						((GeoNode) edge.getStartNode()).getPosition(), spot.getPosition())
+							< GISComputation.GPS2Meter(((GeoNode) edge.getTargetNode()).getPosition(), spot.getPosition()))
 					node = edge.getStartNode();
 				else
 					node = edge.getTargetNode();

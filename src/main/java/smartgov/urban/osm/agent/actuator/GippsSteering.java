@@ -55,7 +55,7 @@ public class GippsSteering {
 		return getAcceleration(v_n_t, V_n);
 	}
 	//*/
-//	public double getSpeed(double v_n_t, double V_n, GeoNode<?> targetType, double v_n_1_t, double s_n_1, double b_n_1, Coordinate x_n_t){
+//	public double getSpeed(double v_n_t, double V_n, GeoNode targetType, double v_n_1_t, double s_n_1, double b_n_1, Coordinate x_n_t){
 //		Coordinate positionOfTarget = targetType.getPosition();
 //		// TODO: clear thar function
 //		// targetType used to be a WorldObject, but this is no more the case.

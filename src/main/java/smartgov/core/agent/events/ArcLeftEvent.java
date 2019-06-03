@@ -10,7 +10,7 @@ import smartgov.core.environment.graph.arc.Arc;
  */
 public class ArcLeftEvent extends ArcEvent {
 
-	public ArcLeftEvent(Arc<?> arc) {
+	public ArcLeftEvent(Arc arc) {
 		super(arc);
 	}
 

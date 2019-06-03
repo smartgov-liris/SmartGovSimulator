@@ -15,7 +15,7 @@ import smartgov.urban.geo.environment.graph.GeoNode;
  * @author pbreugnot
  *
  */
-public abstract class Building extends GeoNode<GeoArc<?>> {
+public abstract class Building extends GeoNode {
 	
 	@SuppressWarnings("serial")
 	public static List<String> OFFICE_TYPE = new ArrayList<String>(){
@@ -26,7 +26,7 @@ public abstract class Building extends GeoNode<GeoArc<?>> {
 		}
 	};
 	
-	public List<? extends GeoNode<?>> closestNodesWithSpots;
+	public List<? extends GeoNode> closestNodesWithSpots;
 	private Map<String, String> osmTags;
 	private BuildingType type;
 	private String closestNodeId;
@@ -56,16 +56,16 @@ public abstract class Building extends GeoNode<GeoArc<?>> {
 		this.type = type;
 	}
 	
-	public GeoNode<?> getClosestNode(Map<String, GeoNode<?>> nodes){
+	public GeoNode getClosestNode(Map<String, GeoNode> nodes){
 		// return OsmBuilder.environment.nodes.get(closestNodeId);
 		return nodes.get(closestNodeId);
 	}
 	
-	public void setClosestNodesWithSpots(List<? extends GeoNode<?>> closestNodesWithSpots) {
+	public void setClosestNodesWithSpots(List<? extends GeoNode> closestNodesWithSpots) {
 		this.closestNodesWithSpots = closestNodesWithSpots;
 	}
 	
-	public List<? extends GeoNode<?>> getClosestNodesWithSpots() {
+	public List<? extends GeoNode> getClosestNodesWithSpots() {
 		return closestNodesWithSpots;
 	}
 

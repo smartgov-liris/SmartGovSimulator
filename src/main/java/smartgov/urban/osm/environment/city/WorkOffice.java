@@ -20,7 +20,7 @@ public class WorkOffice extends Building {
 			Map<String, String> attributes, 
 			Coordinate[] polygon){
 		super(id, attributes, polygon);
-		closestNodesWithSpots = new ArrayList<GeoNode<GeoArc<?>>>();
+		closestNodesWithSpots = new ArrayList<GeoNode>();
 	}
 	
 }
