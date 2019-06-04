@@ -1,6 +1,7 @@
 package smartgov.core.agent;
 
-import smartgov.core.agent.behavior.AbstractBehavior;
+import smartgov.core.agent.behavior.Behavior;
+import smartgov.core.agent.behavior.AgentAction;
 
 //import repast.simphony.engine.schedule.ScheduledMethod;
 
@@ -14,16 +15,18 @@ import smartgov.core.agent.behavior.AbstractBehavior;
  *
  * @param <B> Body type of the agent.
  */
-public abstract class Agent<A extends Enum<?>> {
+public abstract class Agent<A extends AgentAction> {
 	
 	protected String id;
 	protected AgentBody<A> body;
-	protected AbstractBehavior<A> behavior;
+	protected Behavior<A> behavior;
 	
-	public Agent(String id, AgentBody<A> body, AbstractBehavior<A> behavior){
+	public Agent(String id, AgentBody<A> body, Behavior<A> behavior){
 		this.id = id;
 		this.body = body;
 		this.behavior = behavior;
+		
+		body.setAgent(this);
 	}
 	
 	public AgentBody<A> getBody(){

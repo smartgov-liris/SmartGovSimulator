@@ -11,11 +11,11 @@ import smartgov.core.agent.AgentBody;
  * @param <W> AbstractProperties
  * @param <B> AbstractAgentBody<A>
  */
-public abstract class AbstractBehavior<A extends Enum<?>> {
+public abstract class Behavior<A extends AgentAction> {
 	
 	private AgentBody<A> agentBody;
 	
-	public AbstractBehavior(AgentBody<A> agentBody) {
+	public Behavior(AgentBody<A> agentBody) {
 		this.agentBody = agentBody;
 	}
 	

@@ -2,6 +2,8 @@ package smartgov.core.agent;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import smartgov.core.agent.behavior.AgentAction;
+
 /**
  * An agent body represents its physical part, that is distinct from its "mind".
  * @see Agent
@@ -10,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  *
  */
 @JsonIgnoreProperties({"agent", "agentMoveListeners", "nodeReachedListeners", "arcReachedListeners", "arcLeftListeners", "destinationReachedListeners"})
-public abstract class AgentBody<A extends Enum<?>> {
+public abstract class AgentBody<A extends AgentAction> {
 
 	protected Agent<A> agent;
 	

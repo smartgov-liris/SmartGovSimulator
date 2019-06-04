@@ -10,10 +10,9 @@ public class DeliveryDriver extends OsmAgentBody {
 	private DeliveryVehicle vehicle;
 
 	public DeliveryDriver(
-			String id,
 			DeliveryVehicle vehicle,
 			OsmContext environment) {
-		super(id, new PollutantCarMover(), environment);
+		super(new PollutantCarMover(), environment);
 		this.vehicle = vehicle;
 	}
 	

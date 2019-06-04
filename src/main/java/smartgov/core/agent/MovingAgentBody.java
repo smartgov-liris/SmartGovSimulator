@@ -33,12 +33,9 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 		this.destinationReachedListeners = new ArrayList<>();
 	}
 	
-	
-	public void setAgent(MovingAgent agent) {
-		super.setAgent(agent);
-		plan.setAgent(agent);
+	public void setPlan(Plan plan) {
+		this.plan = plan;
 	}
-	
 
 	public Plan getPlan() {
 		return plan;
@@ -50,11 +47,11 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	
 	public void doAction(MoverAction action){
 		// TODO : event listeners
-		switch(action){
+		switch(action.getType()){
 		case MOVE:
 			Arc oldArc = plan.getCurrentArc();
 			Node oldNode = plan.getCurrentNode();
-			move();
+			handleMove();
 			triggerOnMoveListeners(new MoveEvent(
 					oldArc,
 					plan.getCurrentArc(),
@@ -64,23 +61,23 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 					);
 			break;
 		case ENTER:
-			enter();
+			handleEnter(action.getParkingArea());
 			break;
 		case LEAVE:
-			leave();
+			handleLeave(action.getParkingArea());
 			break;
 		default:
-			idle();
+			handleWait();
 		}
 	}
 	
-	public abstract void move();
+	public abstract void handleMove();
 	
-	public abstract void enter();
+	public abstract void handleEnter(ParkingArea parkingArea);
 	
-	public abstract void leave();
+	public abstract void handleLeave(ParkingArea parkingArea);
 	
-	public abstract void idle();
+	public abstract void handleWait();
 	
 	// Move listeners
 	public void addOnMoveListener(EventHandler<MoveEvent> moveListener) {
@@ -98,7 +95,7 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	}
 
 	// Node reached listeners
-	public void addOnNodeReachedListener(EventHandler<? extends NodeReachedEvent> nodeReachedListener) {
+	public void addOnNodeReachedListener(EventHandler<NodeReachedEvent> nodeReachedListener) {
 		nodeReachedListeners.add((EventHandler<NodeReachedEvent>) nodeReachedListener);
 	}
 	
@@ -113,7 +110,7 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	}
 
 	// Arc reached listeners
-	public void addOnArcReachedListener(EventHandler<? extends ArcReachedEvent> arcReachedListener) {
+	public void addOnArcReachedListener(EventHandler<ArcReachedEvent> arcReachedListener) {
 		arcReachedListeners.add((EventHandler<ArcReachedEvent>) arcReachedListener);
 	}
 	
@@ -128,7 +125,7 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	}
 
 	// Arc left listeners
-	public void addOnArcLeftListener(EventHandler<? extends ArcLeftEvent> arcLeftListener) {
+	public void addOnArcLeftListener(EventHandler<ArcLeftEvent> arcLeftListener) {
 		arcLeftListeners.add((EventHandler<ArcLeftEvent>) arcLeftListener);
 	}
 	
@@ -143,7 +140,7 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	}
 
 	// Destination reached listeners
-	public void addOnDestinationReachedListener(EventHandler<? extends NodeReachedEvent> nodeReachedListener) {
+	public void addOnDestinationReachedListener(EventHandler<DestinationReachedEvent> nodeReachedListener) {
 		destinationReachedListeners.add((EventHandler<DestinationReachedEvent>) nodeReachedListener);
 	}
 	

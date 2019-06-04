@@ -1,10 +1,10 @@
 package smartgov.urban.osm.agent.behavior;
 
-import smartgov.core.agent.behavior.AbstractBehavior;
 import smartgov.core.agent.behavior.MoverAction;
+import smartgov.core.agent.behavior.MovingBehavior;
 import smartgov.urban.osm.agent.OsmAgentBody;
 
-public class BasicBehavior extends AbstractBehavior {
+public class BasicBehavior extends MovingBehavior {
 
 	public BasicBehavior(OsmAgentBody agentBody) {
 		super(agentBody);
@@ -16,7 +16,7 @@ public class BasicBehavior extends AbstractBehavior {
 	}
 	
 	private MoverAction doAction(){
-		return MoverAction.MOVE;
+		return MoverAction.MOVE();
 
 	}
 }

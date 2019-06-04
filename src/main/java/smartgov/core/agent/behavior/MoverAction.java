@@ -1,7 +1,6 @@
 package smartgov.core.agent.behavior;
 
-import java.util.ArrayList;
-import java.util.List;
+import smartgov.core.agent.ParkingArea;
 
 /**
  * Action allows agents to interact with the environment.
@@ -11,22 +10,54 @@ import java.util.List;
  * @author spageaud
  *
  */
-public enum MoverAction {
+public class MoverAction extends AgentAction{
 	
-	IDLE(0),
-	MOVE(1),
-	ENTER(2),
-	LEAVE(3),
-	MOVETO(4);
+	public enum ActionType {
+		WAIT(0),
+		MOVE(1),
+		ENTER(2),
+		LEAVE(3);
+	
+		private final int index;
+		
+		ActionType(int index){
+			this.index = index;
+		}
+		
+		public int getIndex() {
+			return index;
+		}
+	}
+	
+	private ActionType type;
+	private ParkingArea parkingArea;
+	
+	private MoverAction(ActionType type, ParkingArea parkingArea) {
+		this.type = type;
+		this.parkingArea = parkingArea;
+	}
 
-	private final int index;
-	
-	MoverAction(int index){
-		this.index = index;
+	public ActionType getType() {
+		return type;
+	}
+
+	public ParkingArea getParkingArea() {
+		return parkingArea;
 	}
 	
-	public int getIndex() {
-		return index;
+	public static MoverAction MOVE() {
+		return new MoverAction(ActionType.MOVE, null);
 	}
 	
+	public static MoverAction WAIT() {
+		return new MoverAction(ActionType.WAIT, null);
+	}
+	
+	public static MoverAction ENTER(ParkingArea parkingArea) {
+		return new MoverAction(ActionType.MOVE, parkingArea);
+	}
+	
+	public static MoverAction LEAVE(ParkingArea parkingArea) {
+		return new MoverAction(ActionType.LEAVE, parkingArea);
+	}
 }

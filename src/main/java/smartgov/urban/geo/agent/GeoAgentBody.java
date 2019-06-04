@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.core.agent.MovingAgentBody;
+import smartgov.core.agent.ParkingArea;
 import smartgov.core.agent.Plan;
 import smartgov.core.main.SimulationBuilder;
 import smartgov.core.output.coordinate.CoordinateSerializer;
@@ -20,7 +21,7 @@ import smartgov.core.output.coordinate.CoordinateSerializer;
  * @param <Tmover> Mover used to move agents in the structure.
  * @param <Tsensor> Sensor used to sense data in the environment.
  */
-public abstract class GeoAgentBody extends MovingAgentBody {
+public class GeoAgentBody extends MovingAgentBody {
 
 	@JsonIgnore
 	protected Vector2D direction;
@@ -38,7 +39,6 @@ public abstract class GeoAgentBody extends MovingAgentBody {
 		this.mover = mover;
 		speed = 0.0;
 		direction = new Vector2D();
-		plan = new Plan();
 	}
 
 	public Coordinate getPosition() {
@@ -78,27 +78,34 @@ public abstract class GeoAgentBody extends MovingAgentBody {
 	}
 
 	@Override
-	public void move() {
+	public void handleMove() {
 		// Distance to cross in one tick
 		double distance = getSpeed() * SimulationBuilder.TICK_DURATION;
 		setPosition(this.mover.moveOn(distance));
 	}
 
 	@Override
-	public void enter() {
-
-	}
-
-	@Override
-	public void leave() {
-
-	}
-
-	@Override
-	public void idle() {
+	public void handleEnter(ParkingArea parkingArea) {
 		// TODO Auto-generated method stub
-
+		
 	}
-	
+
+	@Override
+	public void handleLeave(ParkingArea parkingArea) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleWait() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

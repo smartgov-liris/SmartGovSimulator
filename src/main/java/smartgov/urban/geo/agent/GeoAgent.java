@@ -1,8 +1,7 @@
 package smartgov.urban.geo.agent;
 
 import smartgov.core.agent.MovingAgent;
-import smartgov.core.agent.behavior.AbstractBehavior;
-import smartgov.core.agent.behavior.MoverAction;
+import smartgov.core.agent.behavior.MovingBehavior;
 
 /**
  * A generic {@link smartgov.core.agent.Agent AbstractAgent} used to represent an agent in a
@@ -25,7 +24,7 @@ public abstract class GeoAgent extends MovingAgent {
 	public GeoAgent(
 			String id,
 			GeoAgentBody body,
-			AbstractBehavior<MoverAction> behavior) {
+			MovingBehavior behavior) {
 		super(id, body, behavior);
 		body.setSpeed(0.0);
 		this.behavior = behavior;

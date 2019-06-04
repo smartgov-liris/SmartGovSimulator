@@ -67,10 +67,8 @@ public class PollutionScenario extends ScenarioLowAgents {
 	
 	@Override
 	public OsmAgentBody createAgentBody(
-			String id,
 			OsmContext environment) {
 		return new DeliveryDriver(
-				id,
 				vehiclesStock.poll(),
 				environment);
 	}

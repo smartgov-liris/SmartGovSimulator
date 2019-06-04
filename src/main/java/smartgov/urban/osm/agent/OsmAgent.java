@@ -24,9 +24,6 @@ public class OsmAgent extends GeoAgent {
 			OsmAgentProperties agentProperties) {
 		super(id, body, basicBehavior);
 		this.agentProperties = agentProperties;
-		
-		// TODO: This can easily be forgotten in other implementing classes...
-		body.setAgent(this);
 	}
 	
 	public OsmAgentProperties getAgentProperties() {

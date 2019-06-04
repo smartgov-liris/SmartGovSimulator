@@ -48,16 +48,13 @@ public class Plan {
 	/**
 	 * Empty plan for agent body pool. Need to be updated.
 	 */
-	public Plan() {
+	public Plan(MovingAgent agent) {
 		this.nodes = new ArrayList<>();
+		this.agent = agent;
 	}
 	
 	public Plan(List<Node> nodes){
 		update(nodes);
-	}
-	
-	public void setAgent(MovingAgent agent) {
-		this.agent = agent;
 	}
 	
 	private Arc findCurrentArc() {
