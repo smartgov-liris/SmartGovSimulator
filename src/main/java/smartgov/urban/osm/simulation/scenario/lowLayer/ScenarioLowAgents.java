@@ -52,7 +52,7 @@ public class ScenarioLowAgents extends ScenarioVisualization {
 					String.valueOf(i),
 					getOsmContext());
 			
-			OsmAgent<BasicBehavior> newAgent = new OsmAgent<>(
+			OsmAgent newAgent = new OsmAgent(
 					String.valueOf(i),
 					body,
 					new BasicBehavior(body),

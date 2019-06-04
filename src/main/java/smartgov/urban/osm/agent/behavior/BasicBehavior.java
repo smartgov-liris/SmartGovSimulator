@@ -19,11 +19,4 @@ public class BasicBehavior extends AbstractBehavior {
 		return LowLevelAction.MOVE;
 
 	}
-
-	@Override
-	public void initialize() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

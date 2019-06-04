@@ -30,12 +30,8 @@ public abstract class AbstractBehavior {
 	 * @author pbreugnot
 	 * 
 	 * @param perceptions
-	 * @param properties
-	 * @param body
 	 * @return
 	 */
 	public abstract LowLevelAction provideAction();
-	
-	public abstract void initialize();
 	
 }

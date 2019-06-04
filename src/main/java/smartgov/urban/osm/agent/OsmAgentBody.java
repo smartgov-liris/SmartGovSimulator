@@ -15,7 +15,7 @@ import smartgov.urban.osm.agent.actuator.CarMover;
  * @author pbreugnot
  *
  */
-public class OsmAgentBody extends GeoAgentBody<CarMover> {
+public class OsmAgentBody extends GeoAgentBody {
 
 	@JsonIgnore
 	private SmartGovContext environment;
@@ -47,18 +47,18 @@ public class OsmAgentBody extends GeoAgentBody<CarMover> {
 	public void initialize() {
 		updatePlan(
 			environment.graph.shortestPath(
-					((OsmAgent<?>) agent).getAgentProperties().getBeginNode(),
-					((OsmAgent<?>) agent).getAgentProperties().getEndNode()
+					((OsmAgent) agent).getAgentProperties().getBeginNode(),
+					((OsmAgent) agent).getAgentProperties().getEndNode()
 					)
 			);
 
 		// Make the current agent available for the source node.
 		environment.agentsStock.get(
-				((OsmAgent<?>) agent).getAgentProperties().getBeginNode().getId()
+				((OsmAgent) agent).getAgentProperties().getBeginNode().getId()
 				).add(agent);
 		
 		// Set up body position
-		setPosition(((OsmAgent<?>) agent).getAgentProperties().getBeginNode().getPosition());
+		setPosition(((OsmAgent) agent).getAgentProperties().getBeginNode().getPosition());
 	}
 	
 }

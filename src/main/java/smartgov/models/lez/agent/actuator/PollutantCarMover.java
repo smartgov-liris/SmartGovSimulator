@@ -40,7 +40,7 @@ public class PollutantCarMover extends CarMover {
 	}
 	
 	private void setUpPollutionListeners() {
-		agentBody.getMover().addCarMovedEventListener(new EventHandler<CarMovedEvent>() {
+		((CarMover) agentBody.getMover()).addCarMovedEventListener(new EventHandler<CarMovedEvent>() {
 
 			@Override
 			public void handle(CarMovedEvent event) {

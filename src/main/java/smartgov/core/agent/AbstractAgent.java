@@ -1,5 +1,7 @@
 package smartgov.core.agent;
 
+import smartgov.core.agent.behavior.AbstractBehavior;
+
 //import repast.simphony.engine.schedule.ScheduledMethod;
 
 /**
@@ -16,10 +18,12 @@ public abstract class AbstractAgent {
 	
 	protected String id;
 	protected AbstractAgentBody body;
+	protected AbstractBehavior behavior;
 	
-	public AbstractAgent(String id, AbstractAgentBody body){
+	public AbstractAgent(String id, AbstractAgentBody body, AbstractBehavior behavior){
 		this.id = id;
 		this.body = body;
+		this.behavior = behavior;
 	}
 
 	/**
@@ -48,8 +52,12 @@ public abstract class AbstractAgent {
 	 * This function is called to initialize, or re-initialize an agent. It is notably 
 	 * used on SinkNodes, to re-initialized agents without removing them from the Context. 
 	 */
-	public abstract void initialize();
+	public void initialize() {
+		body.initialize();
+	}
 	// public abstract void recycleAgent(int id);
 	
-	public abstract void live();
+	public void live() {
+		this.body.doAction(behavior.provideAction());
+	}
 }

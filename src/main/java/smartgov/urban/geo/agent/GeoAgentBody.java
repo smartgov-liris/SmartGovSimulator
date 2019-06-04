@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import smartgov.core.agent.AbstractAgentBody;
 import smartgov.core.agent.Plan;
 import smartgov.core.agent.mover.AbstractMover;
-import smartgov.core.environment.graph.arc.Arc;
-import smartgov.core.environment.graph.node.Node;
 import smartgov.core.main.SimulationBuilder;
 import smartgov.core.output.coordinate.CoordinateSerializer;
 /**
@@ -23,7 +21,7 @@ import smartgov.core.output.coordinate.CoordinateSerializer;
  * @param <Tmover> Mover used to move agents in the structure.
  * @param <Tsensor> Sensor used to sense data in the environment.
  */
-public abstract class GeoAgentBody<Tmover extends AbstractMover> extends AbstractAgentBody {
+public abstract class GeoAgentBody extends AbstractAgentBody {
 
 	@JsonIgnore
 	protected Vector2D direction;
@@ -36,7 +34,7 @@ public abstract class GeoAgentBody<Tmover extends AbstractMover> extends Abstrac
 	protected Coordinate position;
 
 	@JsonIgnore
-	protected Tmover mover;
+	protected AbstractMover mover;
 
 	public GeoAgentBody() {
 		super();
@@ -77,7 +75,7 @@ public abstract class GeoAgentBody<Tmover extends AbstractMover> extends Abstrac
 		this.direction = direction;
 	}
 	
-	public Tmover getMover() {
+	public AbstractMover getMover() {
 		return mover;
 	}
 

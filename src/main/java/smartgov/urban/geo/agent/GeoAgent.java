@@ -2,8 +2,6 @@ package smartgov.urban.geo.agent;
 
 import smartgov.core.agent.AbstractAgent;
 import smartgov.core.agent.behavior.AbstractBehavior;
-import smartgov.urban.geo.environment.graph.GeoArc;
-import smartgov.urban.geo.environment.graph.GeoNode;
 
 /**
  * A generic {@link smartgov.core.agent.AbstractAgent AbstractAgent} used to represent an agent in a
@@ -21,24 +19,15 @@ import smartgov.urban.geo.environment.graph.GeoNode;
  * @param <P> Properties associated to the GeoAgent bahavior.
  * @param <B> GeoAgent behavior
  */
-public abstract class GeoAgent<Tnode extends GeoNode, Tarc extends GeoArc, B extends AbstractBehavior> extends AbstractAgent {
-
-	private B behavior;
+public abstract class GeoAgent extends AbstractAgent {
 	
 	public GeoAgent(
 			String id,
-			GeoAgentBody<?> body,
-			B behavior) {
-		super(id, body);
+			GeoAgentBody body,
+			AbstractBehavior behavior) {
+		super(id, body, behavior);
 		body.setSpeed(0.0);
 		this.behavior = behavior;
-	}
-
-	@Override
-	public void live() {
-//		perceptions.filterPerception(this.getBody().getPerception());
-		this.getBody().doAction(behavior.provideAction());
-//		perceptions.clear();
 	}
 	
 	/**
@@ -54,7 +43,6 @@ public abstract class GeoAgent<Tnode extends GeoNode, Tarc extends GeoArc, B ext
 	 */
 	@Override
 	public void initialize() {
-		behavior.initialize();
 		body.initialize();
 	}
 }
