@@ -1,7 +1,6 @@
 package smartgov.core.agent.behavior;
 
-import smartgov.core.agent.AbstractAgentBody;
-import smartgov.core.environment.LowLevelAction;
+import smartgov.core.agent.AgentBody;
 
 /**
  * Provide an action for specified perceptions, properties and agent body.
@@ -10,17 +9,17 @@ import smartgov.core.environment.LowLevelAction;
  *
  * @param <T> AbstractPerception
  * @param <W> AbstractProperties
- * @param <B> AbstractAgentBody
+ * @param <B> AbstractAgentBody<A>
  */
-public abstract class AbstractBehavior {
+public abstract class AbstractBehavior<A extends Enum<?>> {
 	
-	private AbstractAgentBody agentBody;
+	private AgentBody<A> agentBody;
 	
-	public AbstractBehavior(AbstractAgentBody agentBody) {
+	public AbstractBehavior(AgentBody<A> agentBody) {
 		this.agentBody = agentBody;
 	}
 	
-	public AbstractAgentBody getAgentBody() {
+	public AgentBody<A> getAgentBody() {
 		return agentBody;
 	}
 
@@ -32,6 +31,6 @@ public abstract class AbstractBehavior {
 	 * @param perceptions
 	 * @return
 	 */
-	public abstract LowLevelAction provideAction();
+	public abstract A provideAction();
 	
 }

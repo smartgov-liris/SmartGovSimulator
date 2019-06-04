@@ -33,7 +33,7 @@ public class OsmAgentBody extends GeoAgentBody {
 			String id,
 			CarMover carMover,
 			SmartGovContext environment) {
-		this.mover = carMover;
+		super(carMover);
 		carMover.setAgentBody(this);
 		this.environment = environment;
 	}

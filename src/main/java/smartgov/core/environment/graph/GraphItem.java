@@ -17,14 +17,14 @@ import smartgov.core.events.EventHandler;
  * @author pbreugnot
  *
  */
-public abstract class GraphObject {
+public abstract class GraphItem {
 	
 	@JsonIgnore
 	private Collection<EventHandler<AgentArrival>> agentArrivalListeners;
 	@JsonIgnore
 	private Collection<EventHandler<AgentDeparture>> agentDepartureListeners;
 	
-	public GraphObject() {
+	public GraphItem() {
 		agentArrivalListeners = new ArrayList<>();
 		agentDepartureListeners = new ArrayList<>();
 	}

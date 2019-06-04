@@ -2,7 +2,7 @@ package smartgov.core.environment.graph.arc;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import smartgov.core.environment.graph.GraphObject;
+import smartgov.core.environment.graph.GraphItem;
 import smartgov.core.environment.graph.node.Node;
 import smartgov.core.output.node.NodeIdSerializer;
 
@@ -14,7 +14,7 @@ import smartgov.core.output.node.NodeIdSerializer;
  *
  * @param <Tnode> associated Node type.
  */
-public class Arc extends GraphObject {
+public class Arc extends GraphItem {
 
 	private String id;
 	@JsonSerialize(using = NodeIdSerializer.class)

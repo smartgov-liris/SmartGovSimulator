@@ -6,9 +6,9 @@ import java.util.Collection;
 import org.locationtech.jts.geom.Coordinate;
 
 import smartgov.core.agent.Plan;
-import smartgov.core.agent.mover.AbstractMover;
 import smartgov.core.events.EventHandler;
 import smartgov.core.main.SimulationBuilder;
+import smartgov.urban.geo.agent.GeoMover;
 import smartgov.urban.geo.agent.event.CarMovedEvent;
 import smartgov.urban.geo.simulation.GISComputation;
 import smartgov.urban.osm.agent.OsmAgentBody;
@@ -21,7 +21,7 @@ import smartgov.urban.osm.environment.graph.OsmNode;
  * @author pbreugnot
  *
  */
-public class CarMover extends AbstractMover {
+public class CarMover implements GeoMover {
 	
 	protected OsmAgentBody agentBody;
 	private GippsSteering gippsSteering;
@@ -145,23 +145,6 @@ public class CarMover extends AbstractMover {
 						agentBody.getSpeed(),
 						40)
 					);
-		}
-	}
-
-	/**
-	 * Go towards destination for one tick duration.
-	 * 
-	 * TODO: Doesn't work actually because the agent moves on its arc.
-	 * Destination must be a parameter of moveOn(distance).
-	 */
-	@Override
-	public Coordinate moveOn(Coordinate destination) {
-		Coordinate currentPosition = agentBody.getPosition();
-		double distanceToTravel = GISComputation.GPS2Meter(currentPosition, destination);
-		if(distanceToTravel <= agentBody.getSpeed() * SimulationBuilder.TICK_DURATION){
-			return destination;
-		} else {
-			return moveOn(agentBody.getSpeed() * SimulationBuilder.TICK_DURATION);
 		}
 	}
 	

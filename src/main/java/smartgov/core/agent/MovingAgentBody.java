@@ -4,30 +4,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import smartgov.core.agent.behavior.MoverAction;
 import smartgov.core.agent.events.ArcLeftEvent;
 import smartgov.core.agent.events.ArcReachedEvent;
 import smartgov.core.agent.events.DestinationReachedEvent;
 import smartgov.core.agent.events.MoveEvent;
 import smartgov.core.agent.events.NodeReachedEvent;
-import smartgov.core.environment.LowLevelAction;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.node.Node;
 import smartgov.core.events.EventHandler;
 
-/**
- * An agent body represents its physical part, that is distinct from its "mind".
- * @see AbstractAgent
- * 
- * @author pbreugnot
- *
- */
-@JsonIgnoreProperties({"agent", "agentMoveListeners", "nodeReachedListeners", "arcReachedListeners", "arcLeftListeners", "destinationReachedListeners"})
-public abstract class AbstractAgentBody {
+public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 
 	protected Plan plan;
-	protected AbstractAgent agent;
 	
 	// Listeners collections for each event type
 	protected Collection<EventHandler<MoveEvent>> agentMoveListeners;
@@ -36,7 +25,7 @@ public abstract class AbstractAgentBody {
 	protected Collection<EventHandler<ArcLeftEvent>> arcLeftListeners;
 	protected Collection<EventHandler<DestinationReachedEvent>> destinationReachedListeners;
 	
-	public AbstractAgentBody() {
+	public MovingAgentBody() {
 		this.agentMoveListeners = new ArrayList<>();
 		this.nodeReachedListeners = new ArrayList<>();
 		this.arcReachedListeners = new ArrayList<>();
@@ -44,16 +33,12 @@ public abstract class AbstractAgentBody {
 		this.destinationReachedListeners = new ArrayList<>();
 	}
 	
-	public abstract void initialize();
 	
-	public void setAgent(AbstractAgent agent) {
-		this.agent = agent;
+	public void setAgent(MovingAgent agent) {
+		super.setAgent(agent);
 		plan.setAgent(agent);
 	}
 	
-	public AbstractAgent getAgent() {
-		return agent;
-	}
 
 	public Plan getPlan() {
 		return plan;
@@ -63,7 +48,7 @@ public abstract class AbstractAgentBody {
 		plan.update(nodes);
 	}
 	
-	public void doAction(LowLevelAction action){
+	public void doAction(MoverAction action){
 		// TODO : event listeners
 		switch(action){
 		case MOVE:
@@ -84,9 +69,6 @@ public abstract class AbstractAgentBody {
 		case LEAVE:
 			leave();
 			break;
-		case MOVETO:
-			moveTo();
-			break;
 		default:
 			idle();
 		}
@@ -97,8 +79,6 @@ public abstract class AbstractAgentBody {
 	public abstract void enter();
 	
 	public abstract void leave();
-	
-	public abstract void moveTo();
 	
 	public abstract void idle();
 	

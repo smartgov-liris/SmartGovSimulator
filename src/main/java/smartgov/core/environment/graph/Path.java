@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import smartgov.core.agent.AbstractAgentBody;
+import smartgov.core.agent.AgentBody;
 import smartgov.core.environment.graph.node.Node;
 
 /**
@@ -12,7 +12,7 @@ import smartgov.core.environment.graph.node.Node;
  * @author Simon, pbreugnot
  *
  */
-public class Path<Tnode extends Node, Tbody extends AbstractAgentBody> {
+public class Path<Tnode extends Node, Tbody extends AgentBody> {
 	
 	private String id;
 	protected Map<String, String> attributes;

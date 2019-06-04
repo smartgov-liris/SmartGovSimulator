@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import smartgov.core.environment.graph.GraphObject;
+import smartgov.core.environment.graph.GraphItem;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.output.arc.ArcListIdSerializer;
 
@@ -17,7 +17,7 @@ import smartgov.core.output.arc.ArcListIdSerializer;
  *
  * @param <T> Associated Arc type
  */
-public class Node extends GraphObject {
+public class Node extends GraphItem {
 	
 	public String id;
 	@JsonSerialize(using = ArcListIdSerializer.class)

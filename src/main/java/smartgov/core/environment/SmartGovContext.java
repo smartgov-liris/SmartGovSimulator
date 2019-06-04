@@ -7,7 +7,7 @@ import java.util.Queue;
 import org.locationtech.jts.geom.GeometryFactory;
 
 import smartgov.SmartGov;
-import smartgov.core.agent.AbstractAgent;
+import smartgov.core.agent.Agent;
 import smartgov.core.environment.graph.OrientedGraph;
 import smartgov.core.environment.graph.SinkNode;
 import smartgov.core.environment.graph.SourceNode;
@@ -33,7 +33,7 @@ public class SmartGovContext extends AbstractContext {
 	//Repast Static Variables
 	public static final GeometryFactory GEOFACTORY = new GeometryFactory();
 	
-	public Map<String, AbstractAgent> agents;
+	public Map<String, Agent> agents;
 
 	public Map<String, Node> nodes;
 	public Map<String, Arc> arcs;
@@ -43,7 +43,7 @@ public class SmartGovContext extends AbstractContext {
 	
 	//Manage human agent creation and allocation
 	public static int AGENT_MAX; //Max agents in the simulation (determine by parameters)
-	public Map<String, Queue<AbstractAgent>> agentsStock; // Map SourceNodes ids to available agents
+	public Map<String, Queue<Agent>> agentsStock; // Map SourceNodes ids to available agents
 	
 	//File names
 	public static String outputFile;

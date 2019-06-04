@@ -14,29 +14,23 @@ import smartgov.core.agent.behavior.AbstractBehavior;
  *
  * @param <B> Body type of the agent.
  */
-public abstract class AbstractAgent {
+public abstract class Agent<A extends Enum<?>> {
 	
 	protected String id;
-	protected AbstractAgentBody body;
-	protected AbstractBehavior behavior;
+	protected AgentBody<A> body;
+	protected AbstractBehavior<A> behavior;
 	
-	public AbstractAgent(String id, AbstractAgentBody body, AbstractBehavior behavior){
+	public Agent(String id, AgentBody<A> body, AbstractBehavior<A> behavior){
 		this.id = id;
 		this.body = body;
 		this.behavior = behavior;
 	}
-
-	/**
-	 * Live method, called every tick. All the agent activity is in here.
-	 */
-//	@ScheduledMethod(start = 1, interval = 1)
-//	public abstract void live();
 	
-	public AbstractAgentBody getBody(){
+	public AgentBody<A> getBody(){
 		return body;
 	}
 	
-	public void setBody(AbstractAgentBody body) {
+	public void setBody(AgentBody<A> body) {
 		this.body = body;
 	}
 	

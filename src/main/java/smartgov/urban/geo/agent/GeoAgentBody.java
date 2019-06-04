@@ -6,9 +6,8 @@ import org.locationtech.jts.math.Vector2D;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import smartgov.core.agent.AbstractAgentBody;
+import smartgov.core.agent.MovingAgentBody;
 import smartgov.core.agent.Plan;
-import smartgov.core.agent.mover.AbstractMover;
 import smartgov.core.main.SimulationBuilder;
 import smartgov.core.output.coordinate.CoordinateSerializer;
 /**
@@ -21,7 +20,7 @@ import smartgov.core.output.coordinate.CoordinateSerializer;
  * @param <Tmover> Mover used to move agents in the structure.
  * @param <Tsensor> Sensor used to sense data in the environment.
  */
-public abstract class GeoAgentBody extends AbstractAgentBody {
+public abstract class GeoAgentBody extends MovingAgentBody {
 
 	@JsonIgnore
 	protected Vector2D direction;
@@ -32,12 +31,11 @@ public abstract class GeoAgentBody extends AbstractAgentBody {
 	protected Coordinate destination;
 	@JsonSerialize(using=CoordinateSerializer.class)
 	protected Coordinate position;
-
 	@JsonIgnore
-	protected AbstractMover mover;
+	protected GeoMover mover;
 
-	public GeoAgentBody() {
-		super();
+	public GeoAgentBody(GeoMover mover) {
+		this.mover = mover;
 		speed = 0.0;
 		direction = new Vector2D();
 		plan = new Plan();
@@ -75,7 +73,7 @@ public abstract class GeoAgentBody extends AbstractAgentBody {
 		this.direction = direction;
 	}
 	
-	public AbstractMover getMover() {
+	public GeoMover getMover() {
 		return mover;
 	}
 
@@ -94,11 +92,6 @@ public abstract class GeoAgentBody extends AbstractAgentBody {
 	@Override
 	public void leave() {
 
-	}
-
-	@Override
-	public void moveTo() {
-		// TODO: to do.
 	}
 
 	@Override

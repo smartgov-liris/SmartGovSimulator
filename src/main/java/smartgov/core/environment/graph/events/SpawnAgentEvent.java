@@ -1,6 +1,6 @@
 package smartgov.core.environment.graph.events;
 
-import smartgov.core.agent.AbstractAgent;
+import smartgov.core.agent.MovingAgent;
 
 /**
  * Event triggered when an agent spawn on a SourceNode.
@@ -10,7 +10,7 @@ import smartgov.core.agent.AbstractAgent;
  */
 public class SpawnAgentEvent extends AgentEvent {
 
-	public SpawnAgentEvent(AbstractAgent agent) {
+	public SpawnAgentEvent(MovingAgent agent) {
 		super(agent);
 	}
 	

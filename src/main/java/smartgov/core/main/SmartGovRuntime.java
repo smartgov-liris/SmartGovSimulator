@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import smartgov.core.agent.AbstractAgent;
+import smartgov.core.agent.Agent;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.events.EventHandler;
 import smartgov.core.main.events.SimulationStopped;
@@ -70,7 +70,7 @@ public class SmartGovRuntime {
 	}
 	
 	private void _step() {
-		for (AbstractAgent agent : context.agents.values()) {
+		for (Agent agent : context.agents.values()) {
 			agent.live();
 		}
 		if(tickCount >= maxTicks) {

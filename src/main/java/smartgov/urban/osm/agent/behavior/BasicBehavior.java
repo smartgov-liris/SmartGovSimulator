@@ -1,7 +1,7 @@
 package smartgov.urban.osm.agent.behavior;
 
 import smartgov.core.agent.behavior.AbstractBehavior;
-import smartgov.core.environment.LowLevelAction;
+import smartgov.core.agent.behavior.MoverAction;
 import smartgov.urban.osm.agent.OsmAgentBody;
 
 public class BasicBehavior extends AbstractBehavior {
@@ -11,12 +11,12 @@ public class BasicBehavior extends AbstractBehavior {
 	}
 
 	@Override
-	public LowLevelAction provideAction() {
+	public MoverAction provideAction() {
 		return doAction();
 	}
 	
-	private LowLevelAction doAction(){
-		return LowLevelAction.MOVE;
+	private MoverAction doAction(){
+		return MoverAction.MOVE;
 
 	}
 }

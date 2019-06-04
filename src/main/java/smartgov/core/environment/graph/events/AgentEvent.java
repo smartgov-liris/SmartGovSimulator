@@ -1,6 +1,6 @@
 package smartgov.core.environment.graph.events;
 
-import smartgov.core.agent.AbstractAgent;
+import smartgov.core.agent.MovingAgent;
 import smartgov.core.events.Event;
 
 /**
@@ -11,13 +11,13 @@ import smartgov.core.events.Event;
  */
 public abstract class AgentEvent extends Event {
 
-	private AbstractAgent agent;
+	private MovingAgent agent;
 	
-	public AgentEvent(AbstractAgent agent) {
+	public AgentEvent(MovingAgent agent) {
 		this.agent = agent;
 	}
 	
-	public AbstractAgent getAgent() {
+	public MovingAgent getAgent() {
 		return agent;
 	}
 }

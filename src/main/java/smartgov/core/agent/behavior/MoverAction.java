@@ -1,4 +1,4 @@
-package smartgov.core.environment;
+package smartgov.core.agent.behavior;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * @author spageaud
  *
  */
-public enum LowLevelAction {
+public enum MoverAction {
 	
 	IDLE(0),
 	MOVE(1),
@@ -21,7 +21,7 @@ public enum LowLevelAction {
 
 	private final int index;
 	
-	LowLevelAction(int index){
+	MoverAction(int index){
 		this.index = index;
 	}
 	

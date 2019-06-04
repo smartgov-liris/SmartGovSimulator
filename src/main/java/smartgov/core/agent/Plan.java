@@ -43,7 +43,7 @@ public class Plan {
 	@JsonIgnore
 	private boolean pathComplete;
 	@JsonIgnore
-	private AbstractAgent agent;
+	private MovingAgent agent;
 	
 	/**
 	 * Empty plan for agent body pool. Need to be updated.
@@ -56,7 +56,7 @@ public class Plan {
 		update(nodes);
 	}
 	
-	public void setAgent(AbstractAgent agent) {
+	public void setAgent(MovingAgent agent) {
 		this.agent = agent;
 	}
 	
@@ -148,7 +148,7 @@ public class Plan {
 		// Departure events
 		if (this.currentArc != null) {
 			this.currentArc.triggerAgentDepartureListeners(new AgentDeparture(agent));
-			agent.getBody().triggerArcLeftListeners(new ArcLeftEvent(currentArc));
+			((MovingAgentBody) agent.getBody()).triggerArcLeftListeners(new ArcLeftEvent(currentArc));
 		}
 		if (this.currentNode != null) {
 			this.currentNode.triggerAgentDepartureListeners(new AgentDeparture(agent));
@@ -163,19 +163,19 @@ public class Plan {
 		
 		if (remainingNodes.size() == 0) {
 			pathComplete = true;
-			agent.getBody().triggerDestinationReachedListeners(new DestinationReachedEvent(currentNode));
+			((MovingAgentBody) agent.getBody()).triggerDestinationReachedListeners(new DestinationReachedEvent(currentNode));
 		}
 		else {
 			this.currentArc = findCurrentArc();
 			// Arrival event
 			this.currentArc.triggerAgentArrivalListeners(new AgentArrival(agent));
-			agent.getBody().triggerArcReachedListeners(new ArcReachedEvent(this.currentArc));
+			((MovingAgentBody) agent.getBody()).triggerArcReachedListeners(new ArcReachedEvent(this.currentArc));
 		}
 		
 		if (this.currentNode != null) {
 			// Agent arrival will also trigger SinkNode behavior. pathComplete = true must be set before.
 			this.currentNode.triggerAgentArrivalListeners(new AgentArrival(agent));
-			agent.getBody().triggerNodeReachedListeners(new NodeReachedEvent(currentNode));
+			((MovingAgentBody) agent.getBody()).triggerNodeReachedListeners(new NodeReachedEvent(currentNode));
 		}
 		
 	}

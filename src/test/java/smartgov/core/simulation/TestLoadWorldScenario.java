@@ -9,7 +9,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import smartgov.SmartGov;
-import smartgov.core.agent.AbstractAgent;
+import smartgov.core.agent.Agent;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.node.Node;
@@ -103,7 +103,7 @@ public class TestLoadWorldScenario {
 		}
 
 		@Override
-		public Collection<AbstractAgent> buildAgents() {
+		public Collection<Agent> buildAgents() {
 			// TODO Auto-generated method stub
 			return new ArrayList<>();
 		}

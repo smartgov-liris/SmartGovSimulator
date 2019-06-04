@@ -1,10 +1,10 @@
 package smartgov.core.environment.graph.events;
 
-import smartgov.core.agent.AbstractAgent;
+import smartgov.core.agent.MovingAgent;
 
 public class SinkAgentEvent extends AgentArrival {
 
-	public SinkAgentEvent(AbstractAgent agent) {
+	public SinkAgentEvent(MovingAgent agent) {
 		super(agent);
 	}
 
