@@ -24,10 +24,10 @@ public abstract class Scenario {
 		for (Arc arc : buildArcs(context)) {
 			context.arcs.put(arc.getId(), arc);
 		}
+		SmartGov.logger.info(context.arcs.size() + " arcs added to SmartGovContext");
 		
 		createGraph(context);
 		
-		SmartGov.logger.info(context.arcs.size() + " arcs added to SmartGovContext");
 		for (Agent agent : buildAgents(context)) {
 			context.agents.put(agent.getId(), agent);
 		}
