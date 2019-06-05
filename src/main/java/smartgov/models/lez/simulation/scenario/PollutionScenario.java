@@ -1,9 +1,9 @@
 package smartgov.models.lez.simulation.scenario;
 
-import java.io.File;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import smartgov.core.environment.SmartGovContext;
 import smartgov.models.lez.agent.DeliveryDriver;
 import smartgov.models.lez.agent.vehicle.DeliveryVehicle;
 import smartgov.models.lez.agent.vehicle.DeliveryVehicleFactory;
@@ -67,10 +67,10 @@ public class PollutionScenario extends ScenarioLowAgents {
 	
 	@Override
 	public OsmAgentBody createAgentBody(
-			OsmContext environment) {
+			SmartGovContext environment) {
 		return new DeliveryDriver(
 				vehiclesStock.poll(),
-				environment);
+				(OsmContext) environment);
 	}
 	
 		

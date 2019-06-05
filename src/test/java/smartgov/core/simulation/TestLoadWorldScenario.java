@@ -93,17 +93,17 @@ public class TestLoadWorldScenario {
 		}
 
 		@Override
-		public Collection<Node> buildNodes() {
+		public Collection<Node> buildNodes(SmartGovContext context) {
 			return nodes;
 		}
 
 		@Override
-		public Collection<Arc> buildArcs() {
+		public Collection<Arc> buildArcs(SmartGovContext context) {
 			return arcs;
 		}
 
 		@Override
-		public Collection<Agent> buildAgents() {
+		public Collection<Agent> buildAgents(SmartGovContext context) {
 			// TODO Auto-generated method stub
 			return new ArrayList<>();
 		}

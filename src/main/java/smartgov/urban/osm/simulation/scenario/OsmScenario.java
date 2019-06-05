@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import smartgov.SmartGov;
+import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.graph.OrientedGraph;
 import smartgov.core.environment.graph.SourceNode;
 import smartgov.core.environment.graph.arc.Arc;
@@ -115,7 +116,7 @@ public abstract class OsmScenario extends Scenario {
 	}
 
 	@Override
-	public Collection<Node> buildNodes() {
+	public Collection<Node> buildNodes(SmartGovContext context) {
 		Collection<Node> nodes = new ArrayList<>();
 		for(Node node : osmNodes.values()) {
 			// This is why I hate Java and its strong typing.
@@ -125,7 +126,7 @@ public abstract class OsmScenario extends Scenario {
 	}
 
 	@Override
-	public Collection<Arc> buildArcs() {
+	public Collection<Arc> buildArcs(SmartGovContext context) {
 		Collection<Arc> arcs = new ArrayList<>();
 		for(Arc arc : osmArcs.values()) {
 			// This is again why I hate Java and its strong typing.

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import smartgov.core.agent.core.Agent;
+import smartgov.core.environment.SmartGovContext;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmNode;
@@ -27,7 +28,7 @@ public class ScenarioVisualization extends OsmScenario {
 	}
 
 	@Override
-	public Collection<Agent> buildAgents() {
+	public Collection<Agent> buildAgents(SmartGovContext context) {
 		return new ArrayList<>();
 	}
 
