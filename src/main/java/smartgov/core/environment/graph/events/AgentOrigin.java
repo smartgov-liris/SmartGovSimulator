@@ -2,9 +2,9 @@ package smartgov.core.environment.graph.events;
 
 import smartgov.core.agent.moving.MovingAgent;
 
-public class SinkAgentEvent extends AgentArrival {
+public class AgentOrigin extends AgentArrival {
 
-	public SinkAgentEvent(MovingAgent agent) {
+	public AgentOrigin(MovingAgent agent) {
 		super(agent);
 	}
 

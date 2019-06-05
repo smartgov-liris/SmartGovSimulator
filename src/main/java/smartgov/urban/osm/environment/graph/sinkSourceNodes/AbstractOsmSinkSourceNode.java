@@ -1,15 +1,10 @@
 package smartgov.urban.osm.environment.graph.sinkSourceNodes;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.locationtech.jts.geom.Coordinate;
 
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.Plan;
 import smartgov.core.environment.graph.events.AgentArrival;
-import smartgov.core.environment.graph.events.SinkAgentEvent;
-import smartgov.core.environment.graph.events.SpawnAgentEvent;
 import smartgov.core.events.EventHandler;
 import smartgov.urban.osm.agent.OsmAgent;
 import smartgov.urban.osm.environment.OsmContext;
@@ -20,9 +15,6 @@ public abstract class AbstractOsmSinkSourceNode extends OsmNode {
 	protected OsmContext environment;
 	
 	private AbstractOsmSinkSourceNode closestDespawnNode;
-	private Collection<EventHandler<SpawnAgentEvent>> spawnAgentListeners;
-	private Collection<EventHandler<SinkAgentEvent>> sinkAgentListeners;
-	
 	
 	public AbstractOsmSinkSourceNode(
 			OsmContext environment,
@@ -30,8 +22,6 @@ public abstract class AbstractOsmSinkSourceNode extends OsmNode {
 			Coordinate coordinate) {
 		super(id, coordinate);
 		this.environment = environment;
-		this.spawnAgentListeners = new ArrayList<>();
-		this.sinkAgentListeners = new ArrayList<>();
 	}
 	
 	public void setClosestDespawnNode(AbstractOsmSinkSourceNode sinkNode) {
@@ -50,59 +40,17 @@ public abstract class AbstractOsmSinkSourceNode extends OsmNode {
 	 * added to an other SourceNode to respawn for example.   
 	 */
 	protected void registerSinkBehavior() {
-		AbstractOsmSinkSourceNode thisNode = this;
 		this.addAgentArrivalListener(new EventHandler<AgentArrival>() {
 
 			@Override
 			public void handle(AgentArrival event) {
 				Plan plan = ((MovingAgentBody) event.getAgent().getBody()).getPlan();
 				if(plan != null && plan.isPathComplete()) {
-					// Triggers sink listeners on this node.
-					thisNode.triggerSinkAgentListeners(new SinkAgentEvent(event.getAgent()));
-					
 					// Agent reached the sink node, and this is its destination.					
 					((OsmAgent) event.getAgent()).initialize();
 				}
 			}
 			
 		});
-	}
-	
-	/**
-	 * Sink behavior when used in learning scenarios
-	 */
-	// TODO : if reused, must be registered with events.
-//	protected void learningSinkBehavior() {
-//		if(!environment.agents.isEmpty()){
-//			for(OsmAgent<?, ?> agent : environment.agents.values()){
-//				if(agent.getBody().getPosition().equals2D(this.getPosition())){
-//					// TODO : Concurrent modification exception?
-//					environment.agents.remove(agent.getId());
-//					context.remove(agent.getBody());
-//					context.remove(agent);
-//					agent = null;
-//				}
-//			}
-//		}
-//	}
-	
-	public void addSpawnAgentListener(EventHandler<SpawnAgentEvent> spawnAgentListener) {
-		spawnAgentListeners.add(spawnAgentListener);
-	}
-	
-	public void triggerSpawnAgentListeners(SpawnAgentEvent event) {
-		for (EventHandler<SpawnAgentEvent> listener : spawnAgentListeners) {
-			listener.handle(event);
-		}
-	}
-	
-	public void addSinkAgentListener(EventHandler<SinkAgentEvent> sinkAgentListener) {
-		sinkAgentListeners.add(sinkAgentListener);
-	}
-	
-	public void triggerSinkAgentListeners(SinkAgentEvent event) {
-		for (EventHandler<SinkAgentEvent> listener : sinkAgentListeners) {
-			listener.handle(event);
-		}
 	}
 }

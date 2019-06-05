@@ -12,11 +12,11 @@ import smartgov.core.agent.moving.events.ArcLeftEvent;
 import smartgov.core.agent.moving.events.ArcReachedEvent;
 import smartgov.core.agent.moving.events.DestinationReachedEvent;
 import smartgov.core.agent.moving.events.NodeReachedEvent;
-import smartgov.core.environment.graph.SourceNode;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.events.AgentArrival;
 import smartgov.core.environment.graph.events.AgentDeparture;
-import smartgov.core.environment.graph.events.SpawnAgentEvent;
+import smartgov.core.environment.graph.events.AgentOrigin;
+import smartgov.core.environment.graph.events.AgentDestination;
 import smartgov.core.environment.graph.node.Node;
 import smartgov.core.output.node.NodeListIdSerializer;
 import smartgov.core.output.node.NodeIdSerializer;
@@ -149,8 +149,7 @@ public class Plan {
 		}
 		else {
 			// Trigger spawn listeners.
-			// Assumes that the first node of the Plan is necessarily a source node.
-			((SourceNode) this.remainingNodes.peek()).triggerSpawnAgentListeners(new SpawnAgentEvent(agent));
+			this.remainingNodes.peek().triggerAgentOriginListeners(new AgentOrigin(agent));
 		}
 		
 		this.currentNode = remainingNodes.poll();
@@ -158,6 +157,8 @@ public class Plan {
 		if (remainingNodes.size() == 0) {
 			pathComplete = true;
 			((MovingAgentBody) agent.getBody()).triggerDestinationReachedListeners(new DestinationReachedEvent(currentNode));
+			// Triggers sink listeners on this node.
+			currentNode.triggerAgentDestinationListeners(new AgentDestination(agent));
 		}
 		else {
 			this.currentArc = findCurrentArc();

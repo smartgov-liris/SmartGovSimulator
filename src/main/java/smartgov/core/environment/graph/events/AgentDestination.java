@@ -8,9 +8,9 @@ import smartgov.core.agent.moving.MovingAgent;
  * @author pbreugnot
  *
  */
-public class SpawnAgentEvent extends AgentEvent {
+public class AgentDestination extends AgentEvent {
 
-	public SpawnAgentEvent(MovingAgent agent) {
+	public AgentDestination(MovingAgent agent) {
 		super(agent);
 	}
 	
