@@ -46,8 +46,7 @@ public class ScenarioLowAgents extends ScenarioVisualization {
 		int agentCount = Integer.valueOf((String) getOsmContext().getConfig().get("AgentNumber"));
 		for(int i = 0; i < agentCount; i++){
 			
-			OsmAgentBody body = createAgentBody(
-					getOsmContext());
+			OsmAgentBody body = createAgentBody(getOsmContext());
 			
 			OsmAgent newAgent = new OsmAgent(
 					String.valueOf(i),

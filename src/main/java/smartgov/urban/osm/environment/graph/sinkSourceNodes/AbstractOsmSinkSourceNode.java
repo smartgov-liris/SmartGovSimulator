@@ -5,9 +5,8 @@ import java.util.Collection;
 
 import org.locationtech.jts.geom.Coordinate;
 
-import smartgov.core.agent.core.Agent;
-import smartgov.core.agent.core.AgentBody;
 import smartgov.core.agent.moving.MovingAgentBody;
+import smartgov.core.agent.moving.Plan;
 import smartgov.core.environment.graph.events.AgentArrival;
 import smartgov.core.environment.graph.events.SinkAgentEvent;
 import smartgov.core.environment.graph.events.SpawnAgentEvent;
@@ -55,15 +54,13 @@ public abstract class AbstractOsmSinkSourceNode extends OsmNode {
 
 			@Override
 			public void handle(AgentArrival event) {
-				if(((MovingAgentBody) event.getAgent().getBody()).getPlan().isPathComplete()) {
+				Plan plan = ((MovingAgentBody) event.getAgent().getBody()).getPlan();
+				if(plan != null && plan.isPathComplete()) {
 					// Triggers sink listeners on this node.
 					thisNode.triggerSinkAgentListeners(new SinkAgentEvent(event.getAgent()));
 					
-					// Agent reached the sink node, and this is its destination.
-					AgentBody agentBody = event.getAgent().getBody();
-					Agent agent = agentBody.getAgent();
-					
-					agent.initialize();
+					// Agent reached the sink node, and this is its destination.					
+					event.getAgent().initialize();
 				}
 			}
 			

@@ -13,6 +13,9 @@ public class BasicBehavior extends MovingBehavior {
 	
 	public BasicBehavior(OsmAgentBody agentBody, SmartGovContext context) {
 		super(agentBody, null, null, context);
+		Random rnd = new Random();
+		origin = selectRandomSourceNode(rnd);
+		destination = selectRandomSinkNode(rnd, origin);
 	}
 	
 	public void refresh() {

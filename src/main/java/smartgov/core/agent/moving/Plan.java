@@ -48,12 +48,9 @@ public class Plan {
 	/**
 	 * Empty plan for agent body pool. Need to be updated.
 	 */
-	public Plan(MovingAgent agent) {
+	public Plan(MovingAgent agent, List<? extends Node> nodes) {
 		this.nodes = new ArrayList<>();
 		this.agent = agent;
-	}
-	
-	public Plan(List<Node> nodes){
 		update(nodes);
 	}
 	

@@ -14,9 +14,9 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 	private SmartGovContext context;
 	
 	@JsonSerialize(using=NodeIdSerializer.class)
-	private Node origin;
+	protected Node origin;
 	@JsonSerialize(using=NodeIdSerializer.class)
-	private Node destination;
+	protected Node destination;
 	
 	public MovingBehavior(MovingAgentBody agentBody, Node origin, Node destination, SmartGovContext context) {
 		super(agentBody);
