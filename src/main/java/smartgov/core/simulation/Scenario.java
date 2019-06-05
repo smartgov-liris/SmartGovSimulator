@@ -5,6 +5,7 @@ import java.util.Collection;
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
+import smartgov.core.environment.graph.OrientedGraph;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.node.Node;
 
@@ -23,11 +24,20 @@ public abstract class Scenario {
 		for (Arc arc : buildArcs(context)) {
 			context.arcs.put(arc.getId(), arc);
 		}
+		
+		createGraph(context);
+		
 		SmartGov.logger.info(context.arcs.size() + " arcs added to SmartGovContext");
 		for (Agent agent : buildAgents(context)) {
 			context.agents.put(agent.getId(), agent);
 		}
 		SmartGov.logger.info(context.agents.size() + " agents added to SmartGovContext");
+	}
+	
+	private void createGraph(SmartGovContext context) {
+		SmartGov.logger.info("Creating the simulation OrientedGraph");
+		OrientedGraph orientedGraph = new OrientedGraph(context.nodes, context.arcs);
+		context.graph = orientedGraph;
 	}
 	
 	public abstract Collection<Node> buildNodes(SmartGovContext context);

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import smartgov.SmartGov;
 import smartgov.core.environment.SmartGovContext;
-import smartgov.core.environment.graph.OrientedGraph;
 import smartgov.core.environment.graph.SourceNode;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.node.Node;
@@ -51,7 +50,6 @@ public abstract class OsmScenario extends Scenario {
 		jsonReader = new OsmJSONReader(this);
 		loadOsmFeatures();
 		createGraph();
-		createOrientedGraph();
 	}
 
 	public OsmContext getOsmContext() {
@@ -105,14 +103,6 @@ public abstract class OsmScenario extends Scenario {
 		OsmGraph roadGraph = new OsmGraph(environment, osmNodes, osmArcs);
 		roadGraph.addParkingToRoad(environment.parkingSpots, osmArcs.values());
 		return roadGraph;
-	}
-
-	private void createOrientedGraph() {
-		long beginTime = System.currentTimeMillis();
-		OrientedGraph orientedGraph = new OrientedGraph(osmNodes, osmArcs);
-		SmartGov.logger.info("Time to create an oriented graph: " + (System.currentTimeMillis() - beginTime) + "ms.");
-		beginTime = System.currentTimeMillis();
-		environment.graph = orientedGraph;
 	}
 
 	@Override
