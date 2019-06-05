@@ -9,7 +9,7 @@ import static org.hamcrest.Matchers.*;
 
 public class SmartGovTest {
 	
-	private SmartGov loadSmartGov() {
+	public static SmartGov loadSmartGov() {
 		return new SmartGov(TestSmartGovContext.loadTestContext());
 	}
 	

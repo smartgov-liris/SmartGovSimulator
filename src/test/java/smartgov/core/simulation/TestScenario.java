@@ -5,7 +5,11 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import smartgov.core.agent.core.Agent;
+import smartgov.core.agent.moving.TestMovingAgent;
+import smartgov.core.agent.moving.TestMovingAgentBody;
+import smartgov.core.agent.moving.behavior.TestMovingBehavior;
 import smartgov.core.environment.SmartGovContext;
+import smartgov.core.environment.TestContext;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.node.Node;
 
@@ -45,8 +49,35 @@ public class TestScenario extends Scenario {
 
 	@Override
 	public Collection<Agent> buildAgents(SmartGovContext context) {
-		// TODO Auto-generated method stub
-		return new ArrayList<>();
+		// New body for the first shuttle
+		TestMovingAgentBody shuttleBody = new TestMovingAgentBody();
+		
+		// The first shuttle will perform round trips between nodes 1 and 5.
+		TestMovingAgent shuttle1 = new TestMovingAgent(
+				"1",
+				shuttleBody,
+				new TestMovingBehavior(
+						shuttleBody,
+						context.nodes.get("1"),
+						context.nodes.get("5"),
+						(TestContext) context)
+				);
+		
+		// New body for the second shuttle
+		shuttleBody = new TestMovingAgentBody();
+		
+		// The first shuttle will perform round trips between nodes 2 and 4.
+		TestMovingAgent shuttle2 = new TestMovingAgent(
+				"2",
+				shuttleBody,
+				new TestMovingBehavior(
+						shuttleBody,
+						context.nodes.get("2"),
+						context.nodes.get("4"),
+						(TestContext) context)
+				);
+		
+		return Arrays.asList(shuttle1, shuttle2);
 	}
 	
 }
