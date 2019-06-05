@@ -10,13 +10,9 @@ import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.AbstractOsmSinkSourceNode;
 
 public class BasicBehavior extends MovingBehavior {
-
-	private SmartGovContext context;
 	
 	public BasicBehavior(OsmAgentBody agentBody, SmartGovContext context) {
-		super(agentBody, null, null);
-		this.context = context;
-		refresh();
+		super(agentBody, null, null, context);
 	}
 	
 	public void refresh() {
@@ -27,16 +23,16 @@ public class BasicBehavior extends MovingBehavior {
 	}
 	
 	private AbstractOsmSinkSourceNode selectRandomSourceNode(Random rnd) {
-		String randomSourceNodeId = (String) context.getSourceNodes().keySet().toArray()[rnd.nextInt(context.getSourceNodes().size())];
-		return (AbstractOsmSinkSourceNode) context.getSourceNodes().get(randomSourceNodeId);
+		String randomSourceNodeId = (String) getContext().getSourceNodes().keySet().toArray()[rnd.nextInt(getContext().getSourceNodes().size())];
+		return (AbstractOsmSinkSourceNode) getContext().getSourceNodes().get(randomSourceNodeId);
 	}
 	
 	private AbstractOsmSinkSourceNode selectRandomSinkNode(Random rnd, Node sourceNode) {
-		String randomSinkNodeId = (String) context.getSinkNodes().keySet().toArray()[rnd.nextInt(context.getSinkNodes().size())];
+		String randomSinkNodeId = (String) getContext().getSinkNodes().keySet().toArray()[rnd.nextInt(getContext().getSinkNodes().size())];
 		while(randomSinkNodeId == sourceNode.getId()) {
-			randomSinkNodeId = (String) context.getSinkNodes().keySet().toArray()[rnd.nextInt(context.getSinkNodes().size())];
+			randomSinkNodeId = (String) getContext().getSinkNodes().keySet().toArray()[rnd.nextInt(getContext().getSinkNodes().size())];
 		}
-		return (AbstractOsmSinkSourceNode) context.getSinkNodes().get(randomSinkNodeId);
+		return (AbstractOsmSinkSourceNode) getContext().getSinkNodes().get(randomSinkNodeId);
 	}
 	
 	@Override

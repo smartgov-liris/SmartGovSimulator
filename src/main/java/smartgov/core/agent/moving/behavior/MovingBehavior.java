@@ -33,6 +33,10 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 		return destination;
 	}
 	
+	public SmartGovContext getContext() {
+		return context;
+	}
+	
 	public void refresh(Node origin, Node destination) {
 		this.origin = origin;
 		this.destination = destination;
