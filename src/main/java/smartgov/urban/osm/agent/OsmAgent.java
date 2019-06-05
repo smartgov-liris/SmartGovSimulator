@@ -19,9 +19,8 @@ public class OsmAgent extends GeoAgent {
 		super(id, body, basicBehavior);
 	}
 	
-	@Override
 	public void initialize() {
 		((BasicBehavior) getBehavior()).refresh();
-		super.initialize();
+		((OsmAgentBody) body).initialize();
 	}
 }

@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.ParkingArea;
-import smartgov.core.agent.moving.Plan;
 import smartgov.core.main.SimulationBuilder;
 import smartgov.core.output.coordinate.CoordinateSerializer;
 /**
@@ -98,12 +97,6 @@ public class GeoAgentBody extends MovingAgentBody {
 
 	@Override
 	public void handleWait() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void initialize() {
 		// TODO Auto-generated method stub
 		
 	}

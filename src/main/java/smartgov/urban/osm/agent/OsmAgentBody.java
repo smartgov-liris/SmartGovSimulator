@@ -44,7 +44,6 @@ public class OsmAgentBody extends GeoAgentBody {
 	 * 
 	 * @see smartgov.urban.osm.agent.properties.OsmAgentProperties#initialize()
 	 */
-	@Override
 	public void initialize() {
 		updatePlan(
 			environment.graph.shortestPath(

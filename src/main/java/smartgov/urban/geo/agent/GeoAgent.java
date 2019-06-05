@@ -29,20 +29,4 @@ public abstract class GeoAgent extends MovingAgent {
 		body.setSpeed(0.0);
 		this.behavior = behavior;
 	}
-	
-	/**
-	 * Called each time an agent spawns as a new agents.
-	 *
-	 * Will perform :
-	 * <ol>
-	 * 	<li> Agent properties initialization : initialize origin and destination.
-	 *  <li> Agent behavior initialization, that can depend on previously initialized properties.
-	 *  <li> Agent body initialization : can depend on previously initialized properties and 
-	 *  behavior. Will for example update agent body's Plan according to the new origin and destination..
-	 * </ol>
-	 */
-	@Override
-	public void initialize() {
-		body.initialize();
-	}
 }

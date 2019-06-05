@@ -41,13 +41,6 @@ public abstract class Agent<A extends AgentAction> {
 		return behavior;
 	}
 
-	/**
-	 * This function is called to initialize, or re-initialize an agent. It is notably 
-	 * used on SinkNodes, to re-initialized agents without removing them from the Context. 
-	 */
-	public void initialize() {
-		body.initialize();
-	}
 	// public abstract void recycleAgent(int id);
 	
 	public void live() {

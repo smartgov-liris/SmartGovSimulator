@@ -24,7 +24,5 @@ public abstract class AgentBody<A extends AgentAction> {
 		return agent;
 	}
 	
-	public abstract void initialize();
-	
 	public abstract void doAction(A action);
 }

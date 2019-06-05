@@ -11,6 +11,7 @@ import smartgov.core.environment.graph.events.AgentArrival;
 import smartgov.core.environment.graph.events.SinkAgentEvent;
 import smartgov.core.environment.graph.events.SpawnAgentEvent;
 import smartgov.core.events.EventHandler;
+import smartgov.urban.osm.agent.OsmAgent;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.OsmNode;
 
@@ -60,7 +61,7 @@ public abstract class AbstractOsmSinkSourceNode extends OsmNode {
 					thisNode.triggerSinkAgentListeners(new SinkAgentEvent(event.getAgent()));
 					
 					// Agent reached the sink node, and this is its destination.					
-					event.getAgent().initialize();
+					((OsmAgent) event.getAgent()).initialize();
 				}
 			}
 			
