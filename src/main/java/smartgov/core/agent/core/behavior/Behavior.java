@@ -1,6 +1,8 @@
-package smartgov.core.agent.behavior;
+package smartgov.core.agent.core.behavior;
 
-import smartgov.core.agent.AgentBody;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import smartgov.core.agent.core.AgentBody;
 
 /**
  * Provide an action for specified perceptions, properties and agent body.
@@ -12,7 +14,7 @@ import smartgov.core.agent.AgentBody;
  * @param <B> AbstractAgentBody<A>
  */
 public abstract class Behavior<A extends AgentAction> {
-	
+	@JsonIgnore
 	private AgentBody<A> agentBody;
 	
 	public Behavior(AgentBody<A> agentBody) {

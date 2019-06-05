@@ -1,10 +1,10 @@
 package smartgov.urban.geo.agent;
 
-import smartgov.core.agent.MovingAgent;
-import smartgov.core.agent.behavior.MovingBehavior;
+import smartgov.core.agent.moving.MovingAgent;
+import smartgov.core.agent.moving.behavior.MovingBehavior;
 
 /**
- * A generic {@link smartgov.core.agent.Agent AbstractAgent} used to represent an agent in a
+ * A generic {@link smartgov.core.agent.core.Agent AbstractAgent} used to represent an agent in a
  * geographical environment.
  * 
  * If you want to use an agent that live in an OSM environment, please consider using directly an

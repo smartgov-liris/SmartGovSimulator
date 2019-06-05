@@ -1,6 +1,6 @@
 package smartgov.core.environment.graph.events;
 
-import smartgov.core.agent.MovingAgent;
+import smartgov.core.agent.moving.MovingAgent;
 import smartgov.core.events.Event;
 
 /**

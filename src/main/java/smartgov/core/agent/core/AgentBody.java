@@ -1,8 +1,8 @@
-package smartgov.core.agent;
+package smartgov.core.agent.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import smartgov.core.agent.behavior.AgentAction;
+import smartgov.core.agent.core.behavior.AgentAction;
 
 /**
  * An agent body represents its physical part, that is distinct from its "mind".

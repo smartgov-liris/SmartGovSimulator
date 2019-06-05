@@ -1,7 +1,7 @@
 package smartgov.models.lez.simulation.scenario;
 
 import smartgov.SmartGov;
-import smartgov.core.agent.Agent;
+import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.models.lez.agent.DeliveryDriver;
 import smartgov.models.lez.environment.LezContext;

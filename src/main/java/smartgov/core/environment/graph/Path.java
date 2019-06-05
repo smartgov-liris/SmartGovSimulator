@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import smartgov.core.agent.AgentBody;
+import smartgov.core.agent.core.AgentBody;
 import smartgov.core.environment.graph.node.Node;
 
 /**

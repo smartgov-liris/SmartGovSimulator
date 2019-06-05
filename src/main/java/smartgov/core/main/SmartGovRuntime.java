@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import smartgov.core.agent.Agent;
+import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.events.EventHandler;
 import smartgov.core.main.events.SimulationStopped;

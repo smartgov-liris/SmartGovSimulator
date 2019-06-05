@@ -3,7 +3,7 @@ package smartgov.urban.osm.simulation.scenario.lowLayer;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import smartgov.core.agent.Agent;
+import smartgov.core.agent.core.Agent;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmNode;

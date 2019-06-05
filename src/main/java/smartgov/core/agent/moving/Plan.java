@@ -1,4 +1,4 @@
-package smartgov.core.agent;
+package smartgov.core.agent.moving;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -8,10 +8,10 @@ import java.util.Queue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import smartgov.core.agent.events.ArcLeftEvent;
-import smartgov.core.agent.events.ArcReachedEvent;
-import smartgov.core.agent.events.DestinationReachedEvent;
-import smartgov.core.agent.events.NodeReachedEvent;
+import smartgov.core.agent.moving.events.ArcLeftEvent;
+import smartgov.core.agent.moving.events.ArcReachedEvent;
+import smartgov.core.agent.moving.events.DestinationReachedEvent;
+import smartgov.core.agent.moving.events.NodeReachedEvent;
 import smartgov.core.environment.graph.SourceNode;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.events.AgentArrival;

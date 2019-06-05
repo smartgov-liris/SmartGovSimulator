@@ -1,4 +1,4 @@
-package smartgov.core.agent;
+package smartgov.core.agent.moving;
 
 public interface ParkingArea {
 

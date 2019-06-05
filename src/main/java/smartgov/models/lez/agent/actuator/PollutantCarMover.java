@@ -2,8 +2,8 @@ package smartgov.models.lez.agent.actuator;
 
 import java.util.ArrayList;
 
-import smartgov.core.agent.MovingAgentBody;
-import smartgov.core.agent.events.ArcLeftEvent;
+import smartgov.core.agent.moving.MovingAgentBody;
+import smartgov.core.agent.moving.events.ArcLeftEvent;
 import smartgov.core.events.EventHandler;
 import smartgov.models.lez.agent.DeliveryDriver;
 import smartgov.models.lez.copert.fields.Pollutant;

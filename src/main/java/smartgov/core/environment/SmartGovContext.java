@@ -7,7 +7,7 @@ import java.util.Queue;
 import org.locationtech.jts.geom.GeometryFactory;
 
 import smartgov.SmartGov;
-import smartgov.core.agent.Agent;
+import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.graph.OrientedGraph;
 import smartgov.core.environment.graph.SinkNode;
 import smartgov.core.environment.graph.SourceNode;

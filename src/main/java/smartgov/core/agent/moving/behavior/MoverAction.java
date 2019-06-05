@@ -1,6 +1,7 @@
-package smartgov.core.agent.behavior;
+package smartgov.core.agent.moving.behavior;
 
-import smartgov.core.agent.ParkingArea;
+import smartgov.core.agent.core.behavior.AgentAction;
+import smartgov.core.agent.moving.ParkingArea;
 
 /**
  * Action allows agents to interact with the environment.

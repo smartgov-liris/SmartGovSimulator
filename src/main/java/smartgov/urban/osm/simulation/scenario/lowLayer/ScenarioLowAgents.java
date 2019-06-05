@@ -3,13 +3,11 @@ package smartgov.urban.osm.simulation.scenario.lowLayer;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import smartgov.core.agent.Agent;
-import smartgov.core.agent.Plan;
+import smartgov.core.agent.core.Agent;
 import smartgov.urban.osm.agent.OsmAgent;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.agent.actuator.CarMover;
 import smartgov.urban.osm.agent.behavior.BasicBehavior;
-import smartgov.urban.osm.agent.properties.OsmAgentProperties;
 import smartgov.urban.osm.environment.OsmContext;
 
 /**
@@ -47,7 +45,6 @@ public class ScenarioLowAgents extends ScenarioVisualization {
 		Collection<Agent> agents = new ArrayList<>();
 		int agentCount = Integer.valueOf((String) getOsmContext().getConfig().get("AgentNumber"));
 		for(int i = 0; i < agentCount; i++){
-			OsmAgentProperties properties = new OsmAgentProperties(getOsmContext());
 			
 			OsmAgentBody body = createAgentBody(
 					getOsmContext());
@@ -55,8 +52,7 @@ public class ScenarioLowAgents extends ScenarioVisualization {
 			OsmAgent newAgent = new OsmAgent(
 					String.valueOf(i),
 					body,
-					new BasicBehavior(body),
-					properties);
+					new BasicBehavior(body, getOsmContext()));
 
 			newAgent.initialize();
 			agents.add(newAgent);

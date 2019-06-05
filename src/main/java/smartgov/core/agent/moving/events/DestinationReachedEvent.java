@@ -1,10 +1,10 @@
-package smartgov.core.agent.events;
+package smartgov.core.agent.moving.events;
 
 import smartgov.core.environment.graph.node.Node;
 
 /**
  * Event triggered when an Agent reached his destination, defined in
- * its {@link smartgov.core.agent.Plan Plan}. More exactly, the event
+ * its {@link smartgov.core.agent.moving.Plan Plan}. More exactly, the event
  * is triggered when pathComplete is set to true in the Plan.
  * 
  * @author pbreugnot

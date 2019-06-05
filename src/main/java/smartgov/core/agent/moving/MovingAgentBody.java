@@ -1,15 +1,16 @@
-package smartgov.core.agent;
+package smartgov.core.agent.moving;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import smartgov.core.agent.behavior.MoverAction;
-import smartgov.core.agent.events.ArcLeftEvent;
-import smartgov.core.agent.events.ArcReachedEvent;
-import smartgov.core.agent.events.DestinationReachedEvent;
-import smartgov.core.agent.events.MoveEvent;
-import smartgov.core.agent.events.NodeReachedEvent;
+import smartgov.core.agent.core.AgentBody;
+import smartgov.core.agent.moving.behavior.MoverAction;
+import smartgov.core.agent.moving.events.ArcLeftEvent;
+import smartgov.core.agent.moving.events.ArcReachedEvent;
+import smartgov.core.agent.moving.events.DestinationReachedEvent;
+import smartgov.core.agent.moving.events.MoveEvent;
+import smartgov.core.agent.moving.events.NodeReachedEvent;
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.node.Node;
 import smartgov.core.events.EventHandler;

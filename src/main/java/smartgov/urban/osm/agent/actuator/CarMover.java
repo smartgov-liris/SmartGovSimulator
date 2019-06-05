@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.locationtech.jts.geom.Coordinate;
 
-import smartgov.core.agent.Plan;
+import smartgov.core.agent.moving.Plan;
 import smartgov.core.events.EventHandler;
 import smartgov.core.main.SimulationBuilder;
 import smartgov.urban.geo.agent.GeoMover;

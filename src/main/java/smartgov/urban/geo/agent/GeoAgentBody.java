@@ -6,9 +6,9 @@ import org.locationtech.jts.math.Vector2D;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import smartgov.core.agent.MovingAgentBody;
-import smartgov.core.agent.ParkingArea;
-import smartgov.core.agent.Plan;
+import smartgov.core.agent.moving.MovingAgentBody;
+import smartgov.core.agent.moving.ParkingArea;
+import smartgov.core.agent.moving.Plan;
 import smartgov.core.main.SimulationBuilder;
 import smartgov.core.output.coordinate.CoordinateSerializer;
 /**

@@ -1,4 +1,4 @@
-package smartgov.core.agent.behavior;
+package smartgov.core.agent.moving.behavior;
 
 public interface Movable {
 

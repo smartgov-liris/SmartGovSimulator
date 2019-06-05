@@ -1,4 +1,4 @@
-package smartgov.core.agent.events;
+package smartgov.core.agent.moving.events;
 
 import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.node.Node;

@@ -1,6 +1,6 @@
 package smartgov.core.environment.graph.events;
 
-import smartgov.core.agent.MovingAgent;
+import smartgov.core.agent.moving.MovingAgent;
 
 /**
  * Event triggered when an agent spawn on a SourceNode.

@@ -1,7 +1,8 @@
-package smartgov.core.agent;
+package smartgov.core.agent.moving;
 
-import smartgov.core.agent.behavior.MoverAction;
-import smartgov.core.agent.behavior.MovingBehavior;
+import smartgov.core.agent.core.Agent;
+import smartgov.core.agent.moving.behavior.MoverAction;
+import smartgov.core.agent.moving.behavior.MovingBehavior;
 
 public class MovingAgent extends Agent<MoverAction>{
 

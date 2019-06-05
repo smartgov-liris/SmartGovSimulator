@@ -5,9 +5,9 @@ import java.util.Collection;
 
 import org.locationtech.jts.geom.Coordinate;
 
-import smartgov.core.agent.Agent;
-import smartgov.core.agent.AgentBody;
-import smartgov.core.agent.MovingAgentBody;
+import smartgov.core.agent.core.Agent;
+import smartgov.core.agent.core.AgentBody;
+import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.environment.graph.events.AgentArrival;
 import smartgov.core.environment.graph.events.SinkAgentEvent;
 import smartgov.core.environment.graph.events.SpawnAgentEvent;
