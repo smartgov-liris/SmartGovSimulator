@@ -27,8 +27,6 @@ repositories {
 }
 
 dependencies {
-    // This dependency is found on compile classpath of this component and consumers.
-    implementation 'com.google.guava:guava:27.0.1-jre'
 
     implementation 'org.locationtech.jts:jts-core:1.16.1'
     implementation 'joda-time:joda-time:2.10.2'
