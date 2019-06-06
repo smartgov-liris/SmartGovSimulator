@@ -33,9 +33,10 @@ public class SmartGovRuntime {
 	 * Run the simulation until stop is called.
 	 */
 	public void start() {
-		logger.info("Start simulation");
 		run = true;
 		pause = false;
+		tickCount = 0;
+		logger.info("Start simulation");
 		simulationThread = new SimulationThread();
 		simulationThread.start();
 	}
@@ -60,6 +61,10 @@ public class SmartGovRuntime {
 		triggerSimulationStoppedListeners();
 	}
 	
+	public boolean isRunning() {
+		return run;
+	}
+	
 	/**
 	 * Performs a step, if the current simulation is running and paused.
 	 */
@@ -73,10 +78,10 @@ public class SmartGovRuntime {
 		for (Agent agent : context.agents.values()) {
 			agent.live();
 		}
+		tickCount ++;
 		if(tickCount >= maxTicks) {
 			stop();
 		}
-		tickCount ++;
 	}
 	
 	public int getTickCount() {

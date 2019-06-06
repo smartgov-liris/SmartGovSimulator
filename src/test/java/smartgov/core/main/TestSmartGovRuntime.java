@@ -19,17 +19,6 @@ import smartgov.core.main.events.SimulationStopped;
 
 public class TestSmartGovRuntime {
 	
-	private boolean simulationEnd1 = false;
-	private boolean simulationEnd2 = false;
-	
-	private void setSimulationEnd1(boolean simulationEnd1) {
-		this.simulationEnd1 = simulationEnd1;
-	}
-	
-	private void setSimulationEnd2(boolean simulationEnd2) {
-		this.simulationEnd2 = simulationEnd2;
-	}
-	
 	private SmartGovRuntime loadRuntime() {
 		SmartGovTest.loadSmartGov();
 		return SmartGov.getRuntime();
@@ -43,47 +32,27 @@ public class TestSmartGovRuntime {
 				runtime,
 				notNullValue()
 				);
-
-		runtime.addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
-
-			@Override
-			public void handle(SimulationStopped event) {
-				assertThat(
-						runtime.getTickCount(),
-						equalTo(10)
-						);
-				setSimulationEnd1(true);
-			}
-			
-		});
-		setSimulationEnd1(false);
 		
 		runtime.start(10);
 		
-		while(!simulationEnd1) {
+		while(runtime.isRunning()) {
 			// Wait
 			TimeUnit.MICROSECONDS.sleep(10);
 		}
+		
+		assertThat(
+				runtime.getTickCount(),
+				equalTo(10)
+				);
 	}
 	
 	@Test
 	public void testDynamicBehavior() throws InterruptedException {
 		SmartGov smartGov = SmartGovTest.loadSmartGov();
-		
-		setSimulationEnd2(false);
-		
-		SmartGov.getRuntime().addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
 
-			@Override
-			public void handle(SimulationStopped event) {
-				setSimulationEnd2(true);
-			}
-			
-		});
-
-		SmartGov.getRuntime().start(5);
+		SmartGov.getRuntime().start(7);
 		
-		while(!simulationEnd2) {
+		while(SmartGov.getRuntime().isRunning()) {
 			// Wait
 			TimeUnit.MICROSECONDS.sleep(10);
 		}
