@@ -18,7 +18,6 @@ import smartgov.core.main.SmartGovRuntime;
 import smartgov.core.main.events.SimulationStopped;
 import smartgov.models.lez.environment.LezContext;
 import smartgov.models.lez.environment.pollution.Pollution;
-import smartgov.urban.osm.environment.OsmContext;
 
 public class SmartGov {
 	
@@ -97,7 +96,6 @@ public class SmartGov {
 			}
 			
 		}
-		
         getRuntime().start(43200);
     }
     

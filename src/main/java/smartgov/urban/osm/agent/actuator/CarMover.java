@@ -5,9 +5,9 @@ import java.util.Collection;
 
 import org.locationtech.jts.geom.Coordinate;
 
+import smartgov.SmartGov;
 import smartgov.core.agent.moving.Plan;
 import smartgov.core.events.EventHandler;
-import smartgov.core.main.SimulationBuilder;
 import smartgov.urban.geo.agent.GeoMover;
 import smartgov.urban.geo.agent.event.CarMovedEvent;
 import smartgov.urban.geo.simulation.GISComputation;
@@ -48,7 +48,7 @@ public class CarMover implements GeoMover {
 	public Coordinate moveOn(double timeToMove){
 		// TODO : make destination a parameter, and perform updates using listeners.
 		updateAgentSpeed(agentBody);
-		double distance = agentBody.getSpeed() * SimulationBuilder.TICK_DURATION;
+		double distance = agentBody.getSpeed() * SmartGov.getRuntime().getTickDuration();
 		Plan plan = agentBody.getPlan();
 		Coordinate currentPosition = agentBody.getPosition();
 		if(!plan.isPathComplete()){

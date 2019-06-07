@@ -6,9 +6,9 @@ import org.locationtech.jts.math.Vector2D;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import smartgov.SmartGov;
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.ParkingArea;
-import smartgov.core.main.SimulationBuilder;
 import smartgov.core.output.coordinate.CoordinateSerializer;
 /**
  * A generic abstract child of an AbstractAgentBody, built to be represented on a map.
@@ -79,7 +79,7 @@ public class GeoAgentBody extends MovingAgentBody {
 	@Override
 	public void handleMove() {
 		// Distance to cross in one tick
-		double distance = getSpeed() * SimulationBuilder.TICK_DURATION;
+		double distance = getSpeed() * SmartGov.getRuntime().getTickDuration();
 		setPosition(this.mover.moveOn(distance));
 	}
 

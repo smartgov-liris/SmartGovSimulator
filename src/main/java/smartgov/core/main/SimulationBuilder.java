@@ -13,9 +13,6 @@ import smartgov.core.environment.SmartGovContext;
  *
  */
 public class SimulationBuilder {
-	
-	// Time that correspond to a tick, in seconds
-	public static final double TICK_DURATION = 1.0;
 
 	private SmartGovContext context;
 

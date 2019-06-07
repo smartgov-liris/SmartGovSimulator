@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.events.EventHandler;
@@ -22,6 +23,13 @@ public class SmartGovRuntime {
 	private int maxTicks = Integer.MAX_VALUE;
 	private boolean run = false;
 	private boolean pause = true;
+
+	// Time that correspond to a tick, in seconds
+	public double tickDuration = 1.0;
+	
+	// Delay between each ticks in ms
+	public long tickDelay = 0;
+	
 	private SimulationThread simulationThread;
 
 	private Collection<EventHandler<SimulationStarted>> simulationStartedEventHandlers;
@@ -82,6 +90,7 @@ public class SmartGovRuntime {
 	}
 	
 	private void _step() {
+		long begin = System.currentTimeMillis();
 		for (Agent agent : context.agents.values()) {
 			agent.live();
 		}
@@ -90,10 +99,39 @@ public class SmartGovRuntime {
 		if(tickCount >= maxTicks) {
 			stop();
 		}
+		if(tickDelay > 0) {
+			long timeLeft = tickDelay - (System.currentTimeMillis() - begin);
+			if (timeLeft > 0) {
+				try {
+					Thread.sleep(timeLeft);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			else {
+				SmartGov.logger.warn("Overflow");
+			}
+		}
 	}
 	
 	public int getTickCount() {
 		return tickCount;
+	}
+	
+	public double getTickDuration() {
+		return tickDuration;
+	}
+	
+	public void setTickDuration(double tickDuration) {
+		this.tickDuration = tickDuration;
+	}
+
+	public double getTickDelay() {
+		return tickDelay;
+	}
+
+	public void setTickDelay(long tickDelay) {
+		this.tickDelay = tickDelay;
 	}
 	
 	private class SimulationThread extends Thread {
