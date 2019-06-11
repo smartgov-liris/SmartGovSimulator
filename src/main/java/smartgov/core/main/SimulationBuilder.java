@@ -16,7 +16,7 @@ public class SimulationBuilder {
 
 	private SmartGovContext context;
 
-	public SimulationBuilder(SmartGovContext context) {
+	public SmartGovContext build(SmartGovContext context) {
 		this.context = context;
 		long beginTime = System.currentTimeMillis();
 
@@ -32,6 +32,7 @@ public class SimulationBuilder {
 		else {
 			SmartGov.logger.error("Scenario not found");
 		}
+		return context;
 	}
 	
 	public SmartGovContext getContext() {
