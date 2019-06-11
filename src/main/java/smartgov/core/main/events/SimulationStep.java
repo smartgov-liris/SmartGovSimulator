@@ -1,7 +1,9 @@
 package smartgov.core.main.events;
 
-import smartgov.core.events.Event;
+public class SimulationStep extends TimedEvent {
 
-public class SimulationStep extends Event {
+	public SimulationStep(int tick) {
+		super(tick);
+	}
 
 }

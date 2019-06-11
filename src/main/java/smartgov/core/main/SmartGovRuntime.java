@@ -10,6 +10,8 @@ import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.events.EventHandler;
+import smartgov.core.main.events.SimulationPaused;
+import smartgov.core.main.events.SimulationResumed;
 import smartgov.core.main.events.SimulationStarted;
 import smartgov.core.main.events.SimulationStep;
 import smartgov.core.main.events.SimulationStopped;
@@ -34,12 +36,16 @@ public class SmartGovRuntime {
 
 	private Collection<EventHandler<SimulationStarted>> simulationStartedEventHandlers;
 	private Collection<EventHandler<SimulationStopped>> simulationStoppedEventHandlers;
+	private Collection<EventHandler<SimulationPaused>> simulationPausedEventHandlers;
+	private Collection<EventHandler<SimulationResumed>> simulationResumedEventHandlers;
 	private Collection<EventHandler<SimulationStep>> simulationStepEventHandlers;
 	
 	public SmartGovRuntime(SmartGovContext context) {
 		this.context = context;
 		simulationStartedEventHandlers = new ArrayList<>();
 		simulationStoppedEventHandlers = new ArrayList<>();
+		simulationPausedEventHandlers = new ArrayList<>();
+		simulationResumedEventHandlers = new ArrayList<>();
 		simulationStepEventHandlers = new ArrayList<>();
 	}
 	
@@ -47,6 +53,9 @@ public class SmartGovRuntime {
 	 * Run the simulation until stop is called.
 	 */
 	public void start() {
+		if (run) {
+			throw new IllegalStateException("A Simulation is already running in this SmartGovRuntime.");
+		}
 		run = true;
 		pause = false;
 		tickCount = 0;
@@ -62,11 +71,15 @@ public class SmartGovRuntime {
 	}
 	
 	public void pause() {
+		logger.info("Simulation paused at " + tickCount + " ticks.");
 		pause = true;
+		triggerSimulationPausedListeners();
 	}
 	
 	public void resume() {
+		logger.info("Resume simulation from " + tickCount + " ticks.");
 		pause = false;
+		triggerSimulationResumedListeners();
 	}
 	
 	public void stop() {
@@ -163,8 +176,30 @@ public class SmartGovRuntime {
 	}
 	
 	private void triggerSimulationStoppedListeners() {
-		SimulationStopped event = new SimulationStopped();
+		SimulationStopped event = new SimulationStopped(tickCount);
 		for(EventHandler<SimulationStopped> listener : simulationStoppedEventHandlers) {
+			listener.handle(event);
+		}
+	}
+	
+	public void addSimulationPausedListener(EventHandler<SimulationPaused> listener) {
+		simulationPausedEventHandlers.add(listener);
+	}
+	
+	private void triggerSimulationPausedListeners() {
+		SimulationPaused event = new SimulationPaused(tickCount);
+		for(EventHandler<SimulationPaused> listener : simulationPausedEventHandlers) {
+			listener.handle(event);
+		}
+	}
+	
+	public void addSimulationResumedListener(EventHandler<SimulationResumed> listener) {
+		simulationResumedEventHandlers.add(listener);
+	}
+	
+	private void triggerSimulationResumedListeners() {
+		SimulationResumed event = new SimulationResumed(tickCount);
+		for(EventHandler<SimulationResumed> listener : simulationResumedEventHandlers) {
 			listener.handle(event);
 		}
 	}
@@ -174,7 +209,7 @@ public class SmartGovRuntime {
 	}
 	
 	private void triggerSimulationStepListeners() {
-		SimulationStep event = new SimulationStep();
+		SimulationStep event = new SimulationStep(tickCount);
 		for(EventHandler<SimulationStep> listener : simulationStepEventHandlers) {
 			listener.handle(event);
 		}

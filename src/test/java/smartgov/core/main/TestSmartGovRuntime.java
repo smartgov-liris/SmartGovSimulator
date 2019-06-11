@@ -15,6 +15,8 @@ import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.Plan;
 import smartgov.core.environment.graph.node.Node;
 import smartgov.core.events.EventHandler;
+import smartgov.core.main.events.SimulationPaused;
+import smartgov.core.main.events.SimulationStep;
 import smartgov.core.main.events.SimulationStopped;
 
 public class TestSmartGovRuntime {
@@ -77,5 +79,179 @@ public class TestSmartGovRuntime {
 				equalTo(Arrays.asList("4", "1", "2"))
 				);
 		
+	}
+	
+	private void increaseStepCount(int stepCount) {
+		stepCount ++;
+	}
+	
+	@Test
+	public void testPause() throws InterruptedException {
+		SmartGov smartGov = SmartGovTest.loadSmartGov();
+		
+		StepCounter stepCounter = new StepCounter();
+
+		SmartGov.getRuntime().addSimulationStepListener(new EventHandler<SimulationStep>() {
+
+			@Override
+			public void handle(SimulationStep event) {
+				stepCounter.stepCount ++;
+				if (event.getTick() == 5) {
+					SmartGov.getRuntime().pause();
+				}
+				
+			}
+			
+		});
+		
+		SmartGov.getRuntime().addSimulationPausedListener(new EventHandler<SimulationPaused>() {
+
+			@Override
+			public void handle(SimulationPaused event) {
+				assertThat(
+						event.getTick(),
+						equalTo(5)
+						);
+				
+				assertThat(
+						SmartGov.getRuntime().getTickCount(),
+						equalTo(5)
+						);
+				
+				try {
+					TimeUnit.SECONDS.sleep(2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				// Assert that the simulation is really on pause.
+				assertThat(
+						SmartGov.getRuntime().getTickCount(),
+						equalTo(5)
+						);
+				
+				// Finally, resume.
+				SmartGov.getRuntime().resume();
+			}
+			
+		});
+		
+		SmartGov.getRuntime().start(10);
+		
+		
+		while(SmartGov.getRuntime().isRunning()) {
+			TimeUnit.MICROSECONDS.sleep(10);
+		}
+		
+		// Assert that the simulation ended
+		assertThat(
+				SmartGov.getRuntime().getTickCount(),
+				equalTo(10));
+		
+		// Assert that we only performed 10 ticks during the all process
+		assertThat(
+				stepCounter.stepCount,
+				equalTo(10)
+				);
+	}
+	
+	private class StepCounter {
+		public int stepCount = 0;
+	}
+	
+	@Test
+	public void assertThatStartWhileRunningThrowsException() throws InterruptedException {
+		SmartGov smartGov = SmartGovTest.loadSmartGov();
+
+		ExceptionThrownChecker checker = new ExceptionThrownChecker();
+		
+		SmartGov.getRuntime().addSimulationStepListener(new EventHandler<SimulationStep>() {
+
+			@Override
+			public void handle(SimulationStep event) {
+				if (event.getTick() == 5) {
+					// Should throw an exception
+					try {
+						SmartGov.getRuntime().start(10);
+					}
+					catch (IllegalStateException e) {
+						checker.exceptionThrown = true;
+					}
+				}
+				
+			}
+			
+		});
+
+		// Give enough time to the second start to be triggered while the simulation is running
+		SmartGov.getRuntime().start(1000);
+		
+		while (!checker.exceptionThrown && SmartGov.getRuntime().isRunning()) {
+			TimeUnit.MICROSECONDS.sleep(10);
+		}
+		
+		SmartGov.getRuntime().stop();
+		
+		assertThat(
+				checker.exceptionThrown,
+				equalTo(true)
+				);
+	}
+	
+	@Test
+	public void assertThatStartWhilePauseThrowsException() throws InterruptedException {
+		SmartGov smartGov = SmartGovTest.loadSmartGov();
+
+		ExceptionThrownChecker checker = new ExceptionThrownChecker();
+		
+		SmartGov.getRuntime().addSimulationStepListener(new EventHandler<SimulationStep>() {
+
+			@Override
+			public void handle(SimulationStep event) {
+				if (event.getTick() == 5) {
+					// Should throw an exception
+					try {
+						SmartGov.getRuntime().pause();
+					}
+					catch (IllegalStateException e) {
+						checker.exceptionThrown = true;
+					}
+				}
+				
+			}
+			
+		});
+		
+		SmartGov.getRuntime().addSimulationPausedListener(new EventHandler<SimulationPaused>() {
+
+			@Override
+			public void handle(SimulationPaused event) {
+				try {
+					SmartGov.getRuntime().start();
+				}
+				catch(IllegalStateException e) {
+					checker.exceptionThrown = true;
+				}
+			}
+			
+		});
+		
+		SmartGov.getRuntime().start(10);
+		
+		while (!checker.exceptionThrown && SmartGov.getRuntime().isRunning()) {
+			TimeUnit.MICROSECONDS.sleep(10);
+		}
+		
+		SmartGov.getRuntime().stop();
+		
+		assertThat(
+				checker.exceptionThrown,
+				equalTo(true)
+				);
+		
+	}
+	
+	private class ExceptionThrownChecker {
+		public boolean exceptionThrown = false;
 	}
 }
