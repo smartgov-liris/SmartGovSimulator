@@ -36,8 +36,8 @@ public class SmartGov {
 		logger.info("Starting SmartGov");
 		this.context = context;
 		smartGovRuntime = new SmartGovRuntime(context);
-		simulationBuilder = new SimulationBuilder();
-		simulationBuilder.build(context);
+		simulationBuilder = new SimulationBuilder(context);
+		simulationBuilder.build();
 	
 	}
 

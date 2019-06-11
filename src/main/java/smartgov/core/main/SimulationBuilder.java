@@ -15,9 +15,12 @@ import smartgov.core.environment.SmartGovContext;
 public class SimulationBuilder {
 
 	private SmartGovContext context;
-
-	public SmartGovContext build(SmartGovContext context) {
+	
+	public SimulationBuilder(SmartGovContext context) {
 		this.context = context;
+	}
+
+	public void build() {
 		long beginTime = System.currentTimeMillis();
 
 		context.clear();
@@ -32,12 +35,11 @@ public class SimulationBuilder {
 		else {
 			SmartGov.logger.error("Scenario not found");
 		}
-		return context;
 	}
 	
 	public SmartGovContext getContext() {
 		return context;
-	}
+	} 
 
 	/**
 	 * Add custom user panel to track agent informations

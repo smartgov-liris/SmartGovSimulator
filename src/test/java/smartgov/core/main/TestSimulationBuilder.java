@@ -20,8 +20,8 @@ public class TestSimulationBuilder {
 
 	@Test
 	public void testLoadWorld() {
-		SimulationBuilder simulationBuilder = new SimulationBuilder();
-		simulationBuilder.build(TestSmartGovContext.loadTestContext());
+		SimulationBuilder simulationBuilder = new SimulationBuilder(TestSmartGovContext.loadTestContext());
+		simulationBuilder.build();
 		
 		assertThat(
 				simulationBuilder.getContext().getScenario() instanceof TestScenario,
@@ -51,8 +51,8 @@ public class TestSimulationBuilder {
 	
 	@Test
 	public void testBehaviorInitialization() {
-		SimulationBuilder simulationBuilder = new SimulationBuilder();
-		simulationBuilder.build(TestSmartGovContext.loadTestContext());
+		SimulationBuilder simulationBuilder = new SimulationBuilder(TestSmartGovContext.loadTestContext());
+		simulationBuilder.build();
 		
 		for(Agent agent : simulationBuilder.getContext().agents.values()) {
 			assertThat(
@@ -87,8 +87,8 @@ public class TestSimulationBuilder {
 	
 	@Test 
 	public void testPlanInitialization() {
-		SimulationBuilder simulationBuilder = new SimulationBuilder();
-		simulationBuilder.build(TestSmartGovContext.loadTestContext());
+		SimulationBuilder simulationBuilder = new SimulationBuilder(TestSmartGovContext.loadTestContext());
+		simulationBuilder.build();
 		
 		Plan plan1 = ((MovingAgentBody) simulationBuilder.getContext().agents.get("1").getBody()).getPlan();
 		ArrayList<String> expectedIds = new ArrayList<>();
