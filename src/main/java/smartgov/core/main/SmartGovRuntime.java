@@ -2,6 +2,7 @@ package smartgov.core.main;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -170,7 +171,11 @@ public class SmartGovRuntime {
 			while(run) {
 				_step();
 				while(pause) {
-					
+					try {
+						TimeUnit.MICROSECONDS.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
