@@ -98,7 +98,11 @@ public class SmartGovRuntime {
 	 */
 	public void step() {
 		if(run && pause) {
+			logger.info("Step at " + tickCount + " ticks.");
 			_step();
+		}
+		else {
+			throw new IllegalStateException("Unavailable operation when the simulation is not stopped.");
 		}
 	}
 	
@@ -107,8 +111,8 @@ public class SmartGovRuntime {
 		for (Agent agent : context.agents.values()) {
 			agent.live();
 		}
-		triggerSimulationStepListeners();
 		tickCount ++;
+		triggerSimulationStepListeners();
 		if(tickCount >= maxTicks) {
 			stop();
 		}
@@ -165,7 +169,7 @@ public class SmartGovRuntime {
 	}
 	
 	private void triggerSimulationStartedListeners() {
-		SimulationStarted event = new SimulationStarted();
+		SimulationStarted event = new SimulationStarted(maxTicks);
 		for(EventHandler<SimulationStarted> listener : simulationStartedEventHandlers) {
 			listener.handle(event);
 		}
