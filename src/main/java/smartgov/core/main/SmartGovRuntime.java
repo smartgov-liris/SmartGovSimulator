@@ -70,19 +70,31 @@ public class SmartGovRuntime {
 		start();
 	}
 	
-	public void pause() {
+	public void pause() throws IllegalArgumentException {
+		if(!run) {
+			throw new IllegalStateException("No simulation running.");
+		}
 		logger.info("Simulation paused at " + tickCount + " ticks.");
 		pause = true;
 		triggerSimulationPausedListeners();
 	}
 	
-	public void resume() {
+	public void resume() throws IllegalArgumentException {
+		if (!run) {
+			throw new IllegalStateException("No simulation running.");
+		}
+		if (!pause) {
+			throw new IllegalStateException("Simulation is not paused.");
+		}
 		logger.info("Resume simulation from " + tickCount + " ticks.");
 		pause = false;
 		triggerSimulationResumedListeners();
 	}
 	
 	public void stop() {
+		if(!run) {
+			throw new IllegalStateException("No simulation running.");
+		}
 		logger.info("Stop simulation after " + tickCount + " ticks.");
 		pause = false;
 		run = false;
