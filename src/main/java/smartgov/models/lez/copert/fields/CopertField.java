@@ -1,6 +1,5 @@
 package smartgov.models.lez.copert.fields;
 
-import smartgov.models.lez.agent.vehicle.BadCopertFieldException;
 import smartgov.models.lez.copert.tableParser.CopertHeader;
 
 /**

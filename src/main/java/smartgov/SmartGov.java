@@ -104,7 +104,7 @@ public class SmartGov {
     	return context;
     }
     
-    public SimulationBuilder getSimulationBuilder() {
+    public static SimulationBuilder getSimulationBuilder() {
     	return simulationBuilder;
     }
     

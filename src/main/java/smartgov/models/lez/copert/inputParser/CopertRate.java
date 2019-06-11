@@ -1,10 +1,5 @@
 package smartgov.models.lez.copert.inputParser;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import smartgov.models.lez.copert.tableParser.CopertHeader;
-
 public class CopertRate {
 	
 	private String value;
