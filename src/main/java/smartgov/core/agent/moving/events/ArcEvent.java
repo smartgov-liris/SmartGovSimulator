@@ -17,7 +17,10 @@ public abstract class ArcEvent extends Event {
 		super();
 		this.arc = arc;
 	}
-
+	
+	/**
+	 * Arc involved in the Event.
+	 */
 	public Arc getArc() {
 		return arc;
 	}

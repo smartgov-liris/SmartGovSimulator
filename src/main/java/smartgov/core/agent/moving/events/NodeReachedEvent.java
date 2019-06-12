@@ -5,6 +5,7 @@ import smartgov.core.events.Event;
 
 /**
  * Event triggered when an agent reach a node.
+ *
  * Reaching a node doesn't mean that the agent really stopped on this node,
  * but that he has at least crossed the node.
  * 

@@ -5,7 +5,12 @@ import smartgov.core.environment.graph.node.Node;
 import smartgov.core.events.Event;
 
 /**
- * Event triggered each time an agent moves.
+ * Event triggered each time a moving agent moves.
+ *
+ * More precisely, triggered when a MOVE action is
+ * handled by the moving agent.
+ *
+ * @see smartgov.core.agent.moving.MovingAgent
  * 
  * @author pbreugnot
  *

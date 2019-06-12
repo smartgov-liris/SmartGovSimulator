@@ -4,7 +4,7 @@ public class TestMovingAgentBody extends MovingAgentBody {
 
 	@Override
 	public void handleMove() {
-		plan.reachANode();
+		getPlan().reachANode();
 	}
 
 	@Override

@@ -144,38 +144,38 @@ public class Plan {
 	
 	public void reachANode(){
 		// Departure events
-		if (this.currentArc != null) {
-			this.currentArc.triggerAgentDepartureListeners(new AgentDeparture(agent));
-			((MovingAgentBody) agent.getBody()).triggerArcLeftListeners(new ArcLeftEvent(currentArc));
-		}
-		if (this.currentNode != null) {
-			this.currentNode.triggerAgentDepartureListeners(new AgentDeparture(agent));
-		}
-		else {
-			// Trigger spawn listeners.
-			this.remainingNodes.peek().triggerAgentOriginListeners(new AgentOrigin(agent));
-		}
+//		if (this.currentArc != null) {
+//			this.currentArc.triggerAgentDepartureListeners(new AgentDeparture(agent));
+//			((MovingAgentBody) agent.getBody()).triggerArcLeftListeners(new ArcLeftEvent(currentArc));
+//		}
+//		if (this.currentNode != null) {
+//			this.currentNode.triggerAgentDepartureListeners(new AgentDeparture(agent));
+//		}
+//		else {
+//			// Trigger spawn listeners.
+//			this.remainingNodes.peek().triggerAgentOriginListeners(new AgentOrigin(agent));
+//		}
 		
 		this.currentNode = remainingNodes.poll();
 		
 		if (remainingNodes.size() == 0) {
 			pathComplete = true;
-			((MovingAgentBody) agent.getBody()).triggerDestinationReachedListeners(new DestinationReachedEvent(currentNode));
-			// Triggers sink listeners on this node.
-			currentNode.triggerAgentDestinationListeners(new AgentDestination(agent));
+//			((MovingAgentBody) agent.getBody()).triggerDestinationReachedListeners(new DestinationReachedEvent(currentNode));
+//			// Triggers sink listeners on this node.
+//			currentNode.triggerAgentDestinationListeners(new AgentDestination(agent));
 		}
 		else {
 			this.currentArc = findCurrentArc();
 			// Arrival event
-			this.currentArc.triggerAgentArrivalListeners(new AgentArrival(agent));
-			((MovingAgentBody) agent.getBody()).triggerArcReachedListeners(new ArcReachedEvent(this.currentArc));
+//			this.currentArc.triggerAgentArrivalListeners(new AgentArrival(agent));
+//			((MovingAgentBody) agent.getBody()).triggerArcReachedListeners(new ArcReachedEvent(this.currentArc));
 		}
 		
-		if (this.currentNode != null) {
-			// Agent arrival will also trigger SinkNode behavior. pathComplete = true must be set before.
-			this.currentNode.triggerAgentArrivalListeners(new AgentArrival(agent));
-			((MovingAgentBody) agent.getBody()).triggerNodeReachedListeners(new NodeReachedEvent(currentNode));
-		}
+//		if (this.currentNode != null) {
+//			// Agent arrival will also trigger SinkNode behavior. pathComplete = true must be set before.
+//			this.currentNode.triggerAgentArrivalListeners(new AgentArrival(agent));
+//			((MovingAgentBody) agent.getBody()).triggerNodeReachedListeners(new NodeReachedEvent(currentNode));
+//		}
 		
 	}
 	
