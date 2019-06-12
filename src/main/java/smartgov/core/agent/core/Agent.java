@@ -3,24 +3,33 @@ package smartgov.core.agent.core;
 import smartgov.core.agent.core.behavior.AgentAction;
 import smartgov.core.agent.core.behavior.Behavior;
 
-//import repast.simphony.engine.schedule.ScheduledMethod;
-
 /**
  * 
- * Abstract class to represent a LowLayer agent. The body part of the agents represents
- * its physical. (eg: what will be displayed on a map for a given agent in a city)
+ * Abstract class used to represent a low level agent.
+ *
+ * This class represents the <i>mind</i> of the Agent, with its
+ * defined behavior.
+ *
+ * The {@link smartgov.core.agent.core.AgentBody AgentBody} of the agent represents
+ * its physical part, that can interact with the environment.
  * 
- * @author Simon
+ * @author spageaud
  * @author pbreugnot
  *
- * @param <B> Body type of the agent.
+ * @param <A> actions associated to this agent class.
  */
 public abstract class Agent<A extends AgentAction> {
 	
-	protected String id;
-	protected AgentBody<A> body;
-	protected Behavior<A> behavior;
-	
+	private String id;
+	private AgentBody<A> body;
+	private Behavior<A> behavior;
+	/**
+	 * Agent constructor.
+	 *
+	 * @param id id that can be used to retrieve agents in the {@link smartgov.core.environment.SmartGovContext SmartGovContext}
+	 * @param body body of this agent
+	 * @param behavior of this agent
+	 */
 	public Agent(String id, AgentBody<A> body, Behavior<A> behavior){
 		this.id = id;
 		this.body = body;
@@ -29,20 +38,35 @@ public abstract class Agent<A extends AgentAction> {
 		body.setAgent(this);
 	}
 	
+	/**
+	 * Agent id
+	 */
 	public String getId() {
 		return id;
 	}
 	
+	/**
+	 * Agent body
+	 */
 	public AgentBody<A> getBody(){
 		return body;
 	}
 	
+	/**
+	 * Agent behavior
+	 */
 	public Behavior<A> getBehavior() {
 		return behavior;
 	}
 
-	// public abstract void recycleAgent(int id);
-	
+	/**
+	 * Called each tick to make the agent live.
+	 *
+	 * <ol>
+	 * 	<li> Call the Behavior {@link smartgov.core.agent.core.behavior.Behavior#provideAction provideAction()} method </li>
+	 * 	<li> Make the AgentBody perform this action with the {@link smartgov.core.agent.core.AgentBody#doAction doAction()} method </li>
+	 * </ol>
+	 */
 	public void live() {
 		this.body.doAction(behavior.provideAction());
 	}

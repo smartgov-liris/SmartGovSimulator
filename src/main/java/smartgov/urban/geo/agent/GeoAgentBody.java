@@ -100,5 +100,11 @@ public class GeoAgentBody extends MovingAgentBody {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void handleWander() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

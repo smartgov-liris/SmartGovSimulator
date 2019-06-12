@@ -27,6 +27,5 @@ public abstract class GeoAgent extends MovingAgent {
 			MovingBehavior behavior) {
 		super(id, body, behavior);
 		body.setSpeed(0.0);
-		this.behavior = behavior;
 	}
 }

@@ -22,4 +22,10 @@ public class TestMovingAgentBody extends MovingAgentBody {
 		
 	}
 
+	@Override
+	public void handleWander() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

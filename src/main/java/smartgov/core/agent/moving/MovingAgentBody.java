@@ -61,6 +61,9 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 					)
 					);
 			break;
+		case WAIT:
+			handleWait();
+			break;
 		case ENTER:
 			handleEnter(action.getParkingArea());
 			break;
@@ -68,17 +71,19 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 			handleLeave(action.getParkingArea());
 			break;
 		default:
-			handleWait();
+			handleWander();
 		}
 	}
 	
 	public abstract void handleMove();
 	
+	public abstract void handleWait();
+	
+	public abstract void handleWander();
+	
 	public abstract void handleEnter(ParkingArea parkingArea);
 	
 	public abstract void handleLeave(ParkingArea parkingArea);
-	
-	public abstract void handleWait();
 	
 	// Move listeners
 	public void addOnMoveListener(EventHandler<MoveEvent> moveListener) {

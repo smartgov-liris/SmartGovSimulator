@@ -8,7 +8,8 @@ public class MovingAgent extends Agent<MoverAction>{
 
 	public MovingAgent(String id, MovingAgentBody body, MovingBehavior behavior) {
 		super(id, body, behavior);
-		body.setPlan(new Plan(this, behavior.getContext().graph.shortestPath(behavior.getOrigin(), behavior.getDestination())));
+		body.setPlan(new Plan(this));
+		behavior.updateAgentBodyPlan();
 	}
 
 }

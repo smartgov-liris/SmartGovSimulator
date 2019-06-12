@@ -45,12 +45,16 @@ public class Plan {
 	@JsonIgnore
 	private MovingAgent agent;
 	
+	public Plan(MovingAgent agent) {
+		this.nodes = new ArrayList<>();
+		this.agent = agent;
+	}
+	
 	/**
 	 * Empty plan for agent body pool. Need to be updated.
 	 */
 	public Plan(MovingAgent agent, List<? extends Node> nodes) {
-		this.nodes = new ArrayList<>();
-		this.agent = agent;
+		this(agent);
 		update(nodes);
 	}
 	

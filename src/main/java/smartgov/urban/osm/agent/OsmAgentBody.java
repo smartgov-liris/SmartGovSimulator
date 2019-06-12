@@ -47,18 +47,18 @@ public class OsmAgentBody extends GeoAgentBody {
 	public void initialize() {
 		updatePlan(
 			environment.graph.shortestPath(
-					((BasicBehavior) agent.getBehavior()).getOrigin(),
-					((BasicBehavior) agent.getBehavior()).getDestination()
+					((BasicBehavior) getAgent().getBehavior()).getOrigin(),
+					((BasicBehavior) getAgent().getBehavior()).getDestination()
 					)
 			);
 
 		// Make the current agent available for the source node.
 		environment.agentsStock.get(
-				((BasicBehavior) agent.getBehavior()).getOrigin().getId()
-				).add(agent);
+				((BasicBehavior) getAgent().getBehavior()).getOrigin().getId()
+				).add(getAgent());
 		
 		// Set up body position
-		setPosition(((GeoNode) ((BasicBehavior) agent.getBehavior()).getOrigin()).getPosition());
+		setPosition(((GeoNode) ((BasicBehavior) getAgent().getBehavior()).getOrigin()).getPosition());
 	}
 	
 }

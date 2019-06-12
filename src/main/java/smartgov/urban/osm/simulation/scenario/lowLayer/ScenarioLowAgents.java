@@ -2,6 +2,7 @@ package smartgov.urban.osm.simulation.scenario.lowLayer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 
 import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
@@ -10,6 +11,7 @@ import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.agent.actuator.CarMover;
 import smartgov.urban.osm.agent.behavior.BasicBehavior;
 import smartgov.urban.osm.environment.OsmContext;
+import smartgov.urban.osm.environment.graph.sinkSourceNodes.AbstractOsmSinkSourceNode;
 
 /**
  * Creates an osm environment with human agents without any particular objective.
@@ -49,10 +51,18 @@ public class ScenarioLowAgents extends ScenarioVisualization {
 			
 			OsmAgentBody body = createAgentBody(context);
 			
+			Random rnd = new Random();
+			AbstractOsmSinkSourceNode randomOrigin = BasicBehavior.selectRandomSourceNode(rnd, context);
+			AbstractOsmSinkSourceNode randomDestination = BasicBehavior.selectRandomSinkNode(rnd, randomOrigin, context);
+			
 			OsmAgent newAgent = new OsmAgent(
 					String.valueOf(i),
 					body,
-					new BasicBehavior(body, context));
+					new BasicBehavior(
+							body,
+							randomOrigin,
+							randomDestination,
+							context));
 
 			newAgent.initialize();
 			agents.add(newAgent);

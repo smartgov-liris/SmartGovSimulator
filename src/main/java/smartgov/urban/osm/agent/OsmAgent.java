@@ -21,6 +21,6 @@ public class OsmAgent extends GeoAgent {
 	
 	public void initialize() {
 		((BasicBehavior) getBehavior()).refresh();
-		((OsmAgentBody) body).initialize();
+		((OsmAgentBody) getBody()).initialize();
 	}
 }
