@@ -8,15 +8,7 @@ import java.util.Queue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import smartgov.core.agent.moving.events.ArcLeftEvent;
-import smartgov.core.agent.moving.events.ArcReachedEvent;
-import smartgov.core.agent.moving.events.DestinationReachedEvent;
-import smartgov.core.agent.moving.events.NodeReachedEvent;
 import smartgov.core.environment.graph.arc.Arc;
-import smartgov.core.environment.graph.events.AgentArrival;
-import smartgov.core.environment.graph.events.AgentDeparture;
-import smartgov.core.environment.graph.events.AgentOrigin;
-import smartgov.core.environment.graph.events.AgentDestination;
 import smartgov.core.environment.graph.node.Node;
 import smartgov.core.output.node.NodeListIdSerializer;
 import smartgov.core.output.node.NodeIdSerializer;
@@ -26,9 +18,6 @@ import smartgov.core.output.arc.ArcIdSerializer;
  * A Plan represents a path that an agent wants to follow in the environment graph.
  * 
  * @author pbreugnot
- *
- * @param <Node> Node type
- * @param <Arc> Arc type
  */
 public class Plan {
 
@@ -42,19 +31,18 @@ public class Plan {
 	private Arc currentArc;
 	@JsonIgnore
 	private boolean pathComplete;
-	@JsonIgnore
-	private MovingAgent agent;
-	
-	public Plan(MovingAgent agent) {
+	/**
+	 * Plan constructor.
+	 */
+	public Plan() {
 		this.nodes = new ArrayList<>();
-		this.agent = agent;
 	}
 	
 	/**
 	 * Empty plan for agent body pool. Need to be updated.
 	 */
-	public Plan(MovingAgent agent, List<? extends Node> nodes) {
-		this(agent);
+	public Plan(List<? extends Node> nodes) {
+		this();
 		update(nodes);
 	}
 	
@@ -89,10 +77,6 @@ public class Plan {
 		this.currentArc = null;
 		reachANode();
 	}
-	
-//	public void setPathComplete(boolean pathComplete) {
-//		this.pathComplete = pathComplete;
-//	}
 	
 	public boolean isPathComplete() {
 		return pathComplete;
@@ -143,39 +127,14 @@ public class Plan {
 	}
 	
 	public void reachANode(){
-		// Departure events
-//		if (this.currentArc != null) {
-//			this.currentArc.triggerAgentDepartureListeners(new AgentDeparture(agent));
-//			((MovingAgentBody) agent.getBody()).triggerArcLeftListeners(new ArcLeftEvent(currentArc));
-//		}
-//		if (this.currentNode != null) {
-//			this.currentNode.triggerAgentDepartureListeners(new AgentDeparture(agent));
-//		}
-//		else {
-//			// Trigger spawn listeners.
-//			this.remainingNodes.peek().triggerAgentOriginListeners(new AgentOrigin(agent));
-//		}
-		
 		this.currentNode = remainingNodes.poll();
 		
 		if (remainingNodes.size() == 0) {
 			pathComplete = true;
-//			((MovingAgentBody) agent.getBody()).triggerDestinationReachedListeners(new DestinationReachedEvent(currentNode));
-//			// Triggers sink listeners on this node.
-//			currentNode.triggerAgentDestinationListeners(new AgentDestination(agent));
 		}
 		else {
 			this.currentArc = findCurrentArc();
-			// Arrival event
-//			this.currentArc.triggerAgentArrivalListeners(new AgentArrival(agent));
-//			((MovingAgentBody) agent.getBody()).triggerArcReachedListeners(new ArcReachedEvent(this.currentArc));
 		}
-		
-//		if (this.currentNode != null) {
-//			// Agent arrival will also trigger SinkNode behavior. pathComplete = true must be set before.
-//			this.currentNode.triggerAgentArrivalListeners(new AgentArrival(agent));
-//			((MovingAgentBody) agent.getBody()).triggerNodeReachedListeners(new NodeReachedEvent(currentNode));
-//		}
 		
 	}
 	

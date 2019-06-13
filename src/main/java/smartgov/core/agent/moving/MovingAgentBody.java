@@ -53,13 +53,7 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 		this.arcLeftListeners = new ArrayList<>();
 		this.originReachedListeners = new ArrayList<>();
 		this.destinationReachedListeners = new ArrayList<>();
-	}
-
-	/**
-	 * Set the plan of this agent.
-	 */	
-	public void setPlan(Plan plan) {
-		this.plan = plan;
+		this.plan = new Plan();
 	}
 
 	/**
@@ -77,8 +71,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 * </p>
 	 *
 	 * <p>
-	 * Actually just an alias for <code>this.getPlan().update(nodes)</code>
-	 * </p>
+	 * Also triggers <em>origin</em>, <em>node reached</em> and <em>arc reached</em>
+	 * events on the first node and arc of the updated plan.
 	 *
 	 * @see Plan#update
 	 */
@@ -106,7 +100,7 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 * </p>
 	 */	
 	public void doAction(MoverAction action){
-		// TODO : event listeners
+		// TODO : other event listeners
 		switch(action.getType()){
 		case MOVE:
 			Arc oldArc = plan.getCurrentArc();
@@ -177,18 +171,40 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 			triggerDestinationReachedListeners(new DestinationReachedEvent(newNode));
 		}
 	}
-	
+
+	/**
+	 * Automatically called to perform a {@link smartgov.core.agent.moving.behavior.MoverAction#MOVE MOVE} action.
+	 */	
 	public abstract void handleMove();
-	
+
+	/**
+	 * Automatically called to perform a {@link smartgov.core.agent.moving.behavior.MoverAction#WAIT WAIT} action.
+	 */	
 	public abstract void handleWait();
-	
+
+	/**
+	 * Automatically called to perform a {@link smartgov.core.agent.moving.behavior.MoverAction#WANDER WANDER} action.
+	 */	
 	public abstract void handleWander();
-	
+
+	/**
+	 * Automatically called to perform a {@link smartgov.core.agent.moving.behavior.MoverAction#ENTER ENTER} action
+	 * in the specified ParkingArea.
+	 */	
 	public abstract void handleEnter(ParkingArea parkingArea);
-	
+
+	/**
+	 * Automatically called to perform a {@link smartgov.core.agent.moving.behavior.MoverAction#LEAVE LEAVE} action
+	 * in the specified ParkingArea.
+	 */	
 	public abstract void handleLeave(ParkingArea parkingArea);
 	
 	// Move listeners
+	/**
+	 * Adds a new handler for MoveEvents.
+	 *
+	 * Triggered each time a MOVE action is performed, just after {@link #handleMove} is called.
+	 */
 	public void addOnMoveListener(EventHandler<MoveEvent> moveListener) {
 		agentMoveListeners.add((EventHandler<MoveEvent>) moveListener);
 	}
@@ -198,12 +214,33 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 			eventHandler.handle(event);
 		}
 	}
-	
+
+	/**
+	 * EventHandlers for MoveEvents.
+	 */	
 	public Collection<EventHandler<MoveEvent>> getAgentMoveListeners() {
 		return agentMoveListeners;
 	}
 
 	// Node reached listeners
+	/**
+	 * Adds a new handler for NodeReachedEvents.
+	 *
+	 * <p> 
+	 * Triggered each time the agent cross a node, or stop on it. Also triggered when the
+	 * agent "reach" the origin node that correspond to its behavior. In consequence, in the
+	 * case of an agent that reach its node destination and has this same node as origin for
+	 * its new plan, listeners will be called twice on the same node : when the agent reach the
+	 * node as its destination, and again when it reaches it as its origin (even if, technically,
+	 * it has not moved).
+	 * </p>
+	 *
+	 * <p>
+	 * If what you want to implement is behaviors at origin and / or destination, please also consider
+	 * {@link #addOnOriginReachedListener addOnOriginReachedListener} and
+	 * {@link #addOnDestinationReachedListener addOnDestinationReachedListener}.
+	 * </p>
+	 */
 	public void addOnNodeReachedListener(EventHandler<NodeReachedEvent> nodeReachedListener) {
 		nodeReachedListeners.add((EventHandler<NodeReachedEvent>) nodeReachedListener);
 	}
@@ -214,11 +251,19 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 		}
 	}
 	
+	/**
+	 * EventHandlers for NodeReachedEvents.
+	 */
 	public Collection<EventHandler<NodeReachedEvent>> getNodeReachedListeners() {
 		return nodeReachedListeners;
 	}
 
 	// Arc reached listeners
+	/**
+	 * Adds a new handler for ArcReachedEvent.
+	 *
+	 * Triggered each time an agent reaches a new Arc.
+	 */
 	public void addOnArcReachedListener(EventHandler<ArcReachedEvent> arcReachedListener) {
 		arcReachedListeners.add((EventHandler<ArcReachedEvent>) arcReachedListener);
 	}
@@ -229,11 +274,19 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 		}
 	}
 	
+	/**
+	 * EventHandlers for ArcReachedEvents.
+	 */
 	public Collection<EventHandler<ArcReachedEvent>> getArcReachedListeners() {
 		return arcReachedListeners;
 	}
 
 	// Arc left listeners
+	/**
+	 * Adds a new handler for ArcLeftEvents.
+	 *
+	 * Called each time an agent leave an Arc.
+	 */
 	public void addOnArcLeftListener(EventHandler<ArcLeftEvent> arcLeftListener) {
 		arcLeftListeners.add((EventHandler<ArcLeftEvent>) arcLeftListener);
 	}
@@ -243,16 +296,28 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 			eventHandler.handle(event);
 		}
 	}
-	
+
+	/**
+	 * EventHandlers for ArcLeftEvents.
+	 */	
 	public Collection<EventHandler<ArcLeftEvent>> getArcLeftListeners() {
 		return arcLeftListeners;
 	}
 
 	// Destination reached listeners
-	public void addOnOriginReachedListener(EventHandler<OriginReachedEvent> nodeReachedListener) {
-		originReachedListeners.add((EventHandler<OriginReachedEvent>) nodeReachedListener);
+	/**
+	 * Adds a new handler for OriginReachedEvent.
+	 *
+	 * Triggered at the very first step of the agent Plan, when {@link #updatePlan updatePlan()} is called,
+	 * on the origin node of its {@link smartgov.core.agent.moving.behavior.MovingBehavior}. 
+	 */
+	public void addOnOriginReachedListener(EventHandler<OriginReachedEvent> originReachedListener) {
+		originReachedListeners.add((EventHandler<OriginReachedEvent>) originReachedListener);
 	}
-	
+
+	/**
+	 * EventHandlers for OriginReachedEvents.
+	 */	
 	private void triggerOriginReachedListeners(OriginReachedEvent event) {
 		for (EventHandler<OriginReachedEvent> eventHandler : originReachedListeners) {
 			eventHandler.handle(event);
@@ -260,8 +325,14 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	}
 		
 	// Destination reached listeners
-	public void addOnDestinationReachedListener(EventHandler<DestinationReachedEvent> nodeReachedListener) {
-		destinationReachedListeners.add((EventHandler<DestinationReachedEvent>) nodeReachedListener);
+	/**
+	 * Adds a new handler for DestinationReached.
+	 *
+	 * Triggered when the agent has reached the last node of its current {@link Plan}, that corresponds
+	 * to the destination node of its {@link smartgov.core.agent.moving.behavior.MovingBehavior}.
+	 */
+	public void addOnDestinationReachedListener(EventHandler<DestinationReachedEvent> destinationReachedListener) {
+		destinationReachedListeners.add((EventHandler<DestinationReachedEvent>) destinationReachedListener);
 	}
 	
 	private void triggerDestinationReachedListeners(DestinationReachedEvent event) {
@@ -270,6 +341,9 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 		}
 	}
 
+	/**
+	 * EventHandlers for DestinationReachedEvents.
+	 */
 	public Collection<EventHandler<DestinationReachedEvent>> getDestinationReachedListeners() {
 		return destinationReachedListeners;
 	}

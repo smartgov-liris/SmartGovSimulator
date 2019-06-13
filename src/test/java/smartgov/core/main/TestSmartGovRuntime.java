@@ -17,7 +17,6 @@ import smartgov.core.environment.graph.node.Node;
 import smartgov.core.events.EventHandler;
 import smartgov.core.main.events.SimulationPaused;
 import smartgov.core.main.events.SimulationStep;
-import smartgov.core.main.events.SimulationStopped;
 
 public class TestSmartGovRuntime {
 	
@@ -83,7 +82,7 @@ public class TestSmartGovRuntime {
 	
 	@Test
 	public void testPause() throws InterruptedException {
-		SmartGov smartGov = SmartGovTest.loadSmartGov();
+		SmartGovTest.loadSmartGov();
 		
 		StepCounter stepCounter = new StepCounter();
 
@@ -157,7 +156,7 @@ public class TestSmartGovRuntime {
 	
 	@Test
 	public void assertThatStartWhileRunningThrowsException() throws InterruptedException {
-		SmartGov smartGov = SmartGovTest.loadSmartGov();
+		SmartGovTest.loadSmartGov();
 
 		ExceptionThrownChecker checker = new ExceptionThrownChecker();
 		
@@ -181,13 +180,18 @@ public class TestSmartGovRuntime {
 		});
 
 		// Give enough time to the second start to be triggered while the simulation is running
-		SmartGov.getRuntime().start(1000);
+		SmartGov.getRuntime().start(10000);
 		
 		while (!checker.exceptionThrown && SmartGov.getRuntime().isRunning()) {
 			TimeUnit.MICROSECONDS.sleep(10);
 		}
 		
-		SmartGov.getRuntime().stop();
+		try {
+			SmartGov.getRuntime().stop();
+		}
+		catch(IllegalStateException e) {
+			// The simulation has already ended, everything is ok.
+		}
 		
 		assertThat(
 				checker.exceptionThrown,
@@ -197,7 +201,7 @@ public class TestSmartGovRuntime {
 	
 	@Test
 	public void assertThatStartWhilePauseThrowsException() throws InterruptedException {
-		SmartGov smartGov = SmartGovTest.loadSmartGov();
+		SmartGovTest.loadSmartGov();
 
 		ExceptionThrownChecker checker = new ExceptionThrownChecker();
 		
@@ -252,7 +256,7 @@ public class TestSmartGovRuntime {
 	
 	@Test(expected = IllegalStateException.class)
 	public void assertThatStepWhilePauseThrowsException() {
-		SmartGov smartGov = SmartGovTest.loadSmartGov();
+		SmartGovTest.loadSmartGov();
 
 		SmartGov.getRuntime().step();
 	
@@ -260,7 +264,7 @@ public class TestSmartGovRuntime {
 	
 	@Test
 	public void assertThatStepWhileRunningThrowsException() throws InterruptedException {
-		SmartGov smartGov = SmartGovTest.loadSmartGov();
+		SmartGovTest.loadSmartGov();
 
 		ExceptionThrownChecker checker = new ExceptionThrownChecker();
 		
@@ -284,7 +288,7 @@ public class TestSmartGovRuntime {
 		});
 
 		// Give enough time to step() to be called while the simulation is running
-		SmartGov.getRuntime().start(1000);
+		SmartGov.getRuntime().start(10000);
 		
 		while (!checker.exceptionThrown && SmartGov.getRuntime().isRunning()) {
 			TimeUnit.MICROSECONDS.sleep(10);
@@ -301,7 +305,7 @@ public class TestSmartGovRuntime {
 	
 	@Test
 	public void testStepOnPause() throws InterruptedException {
-		SmartGov smartGov = SmartGovTest.loadSmartGov();
+		SmartGovTest.loadSmartGov();
 		
 		SmartGov.getRuntime().addSimulationStepListener(new EventHandler<SimulationStep>() {
 
