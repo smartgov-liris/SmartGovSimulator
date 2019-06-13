@@ -9,8 +9,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.graph.Arc;
+import smartgov.core.environment.graph.Graph;
 import smartgov.core.environment.graph.Node;
-import smartgov.core.environment.graph.OrientedGraph;
 import smartgov.core.simulation.Scenario;
 
 /**
@@ -35,7 +35,7 @@ public class SmartGovContext extends AbstractContext {
 
 	public Map<String, Node> nodes;
 	public Map<String, Arc> arcs;
-	public OrientedGraph graph;
+	public Graph graph;
 	
 	//Manage human agent creation and allocation
 	public static int AGENT_MAX; //Max agents in the simulation (determine by parameters)

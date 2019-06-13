@@ -12,7 +12,8 @@ import smartgov.core.events.EventHandler;
 /**
  * Super class for nodes and arcs.
  * 
- * Define listeners for common events of nodes and arcs, such as agent arrival and departures.
+ * Convenient super class to define listeners for common events of nodes and arcs,
+ * such as agent arrival and departures.
  * 
  * @author pbreugnot
  *
@@ -24,41 +25,66 @@ public abstract class GraphItem {
 	@JsonIgnore
 	private Collection<EventHandler<AgentDeparture>> agentDepartureListeners;
 	
+	/**
+	 * GraphItem constructor.
+	 */
 	public GraphItem() {
 		agentArrivalListeners = new ArrayList<>();
 		agentDepartureListeners = new ArrayList<>();
 	}
 	
-	/*
-	 * Agent Arrival
+	// Agent Arrival
+	/**
+	 * Adds an EventHandler for AgentArrival events.
+	 *
+	 * Triggered when an agent reach the item.
 	 */
 	public void addAgentArrivalListener(EventHandler<AgentArrival> listener) {
 		agentArrivalListeners.add(listener);
 	}
-	
+
+	/**
+	 * Triggers registered listeners of AgentArrival events.
+	 *
+	 * @param event AgentArrival event to handle
+	 */	
 	public void triggerAgentArrivalListeners(AgentArrival event) {
 		for (EventHandler<AgentArrival> listener : agentArrivalListeners) {
 			listener.handle(event);
 		}
 	}
 
+	/**
+	 * EventHandlers for AgentArrival events.
+	 */
 	public Collection<EventHandler<AgentArrival>> getAgentArrivalListeners() {
 		return agentArrivalListeners;
 	}
 	
-	/*
-	 * Agent Departure
+	// Agent Departure
+	/**
+	 * Adds an EventHandler for AgentDeparture events.
+	 *
+	 * Triggered when an agent leave the item.
 	 */
 	public void addAgentDepartureListener(EventHandler<AgentDeparture> listener) {
 		agentDepartureListeners.add(listener);
 	}
 	
+	/**
+	 * Triggers registered listeners of AgentDeparture events.
+	 *
+	 * @param event AgentDeparture event to handle
+	 */	
 	public void triggerAgentDepartureListeners(AgentDeparture event) {
 		for (EventHandler<AgentDeparture> listener : agentDepartureListeners) {
 			listener.handle(event);
 		}
 	}
 
+	/**
+	 * EventHandlers for AgentDeparture events.
+	 */
 	public Collection<EventHandler<AgentDeparture>> getAgentDepartureListeners() {
 		return agentDepartureListeners;
 	}

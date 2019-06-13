@@ -6,8 +6,8 @@ import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.graph.Arc;
+import smartgov.core.environment.graph.Graph;
 import smartgov.core.environment.graph.Node;
-import smartgov.core.environment.graph.OrientedGraph;
 
 public abstract class Scenario {
 
@@ -36,7 +36,7 @@ public abstract class Scenario {
 	
 	private void createGraph(SmartGovContext context) {
 		SmartGov.logger.info("Creating the simulation OrientedGraph");
-		OrientedGraph orientedGraph = new OrientedGraph(context.nodes, context.arcs);
+		Graph orientedGraph = new Graph(context.nodes, context.arcs);
 		context.graph = orientedGraph;
 	}
 	
