@@ -44,3 +44,5 @@ dependencies {
 
 // Define the main class for the application
 mainClassName = 'smartgov.SmartGov'
+
+javadoc.destinationDir = file("docs")
