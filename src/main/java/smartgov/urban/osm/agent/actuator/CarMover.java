@@ -61,7 +61,7 @@ public class CarMover implements GeoMover {
 				// Reach a node on the distance to cross
 				arc.getRoad().getAgentsOnPath().remove(agentBody);
 				currentPosition = destination;
-				plan.reachANode();
+				plan.reachNextNode();
 				
 				arc = (OsmArc) plan.getCurrentArc();
 				

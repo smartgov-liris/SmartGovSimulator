@@ -91,7 +91,7 @@ public class Plan {
 		this.pathComplete = false;
 		this.currentNode = null;
 		this.currentArc = null;
-		reachANode();
+		reachNextNode();
 	}
 	
 	/*
@@ -162,7 +162,7 @@ public class Plan {
 	 * 
 	 * @throws IllegalStateException if the plan is already complete
 	 */
-	public void reachANode(){
+	public void reachNextNode(){
 		if (remainingNodes.size() == 0) {
 			throw new IllegalStateException("The Plan is already complete.");
 		}
