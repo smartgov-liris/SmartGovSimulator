@@ -39,13 +39,18 @@ public class Plan {
 	}
 	
 	/**
-	 * Empty plan for agent body pool. Need to be updated.
+	 * Construct a Plan and update it with the provided nodes.
+	 *
+	 * @param nodes initial nodes
 	 */
 	public Plan(List<? extends Node> nodes) {
 		this();
 		update(nodes);
 	}
 	
+	/*
+	 * Find the arc that link the current node to the next node.
+	 */
 	private Arc findCurrentArc() {
 		List<Arc> arcs = currentNode.getOutgoingArcs();
 		Node nextNode = remainingNodes.peek();
@@ -63,10 +68,21 @@ public class Plan {
 		return null; //Should not happen !
 	}
 	
+	/*
+	 * Current arc.
+	 */
 	public Arc getCurrentArc() {
 		return currentArc;
 	}
 	
+	/**
+	 * Re-initialize the plan with the provided nodes.
+	 *
+	 * <p>
+	 * Clear the previous state, even if the plan was not complete, add all
+	 * the provided nodes to the plan, and reach the first node of the plan.
+	 * </p>
+	 */
 	public void update(List<? extends Node> nodes) {
 		this.nodes.clear();
 		this.nodes.addAll(nodes);
@@ -78,10 +94,18 @@ public class Plan {
 		reachANode();
 	}
 	
+	/*
+	 * True when the last node of the plan has been reached.
+	 */
 	public boolean isPathComplete() {
 		return pathComplete;
 	}
 	
+	/**
+	 * Next node of the plan.
+	 *
+	 * Correspond to the node right after the current node.
+	 */
 	@JsonIgnore
 	public Node getNextNode(){
 		return remainingNodes.peek();
@@ -108,25 +132,41 @@ public class Plan {
 //		}
 //		return null;
 //	}
+
+	/**
+	 * Last node of the plan.
+	 *
+	 * Should correspond to the destination of the corresponding agent.
+	 */
 	@JsonIgnore
 	public Node getLastNode() {
 		return nodes.get(nodes.size() - 1);
 	}
 	
-	@JsonIgnore
-	public Node getPreviousNode() {
-		return nodes.get(nodes.size() - 2);
-	}
-	
+	/**
+	 * Current node of the plan.
+	 */
 	public Node getCurrentNode() {
 		return currentNode;
 	}
 	
+	/**
+	 * Nodes of the plan, ordered from origin to destination.
+	 */
 	public List<Node> getNodes() {
 		return nodes;
 	}
 	
+	/**
+	 * Reach the next node of the plan, if it exists.
+	 * 
+	 * @throws IllegalStateException if the plan is already complete
+	 */
 	public void reachANode(){
+		if (remainingNodes.size() == 0) {
+			throw new IllegalStateException("The Plan is already complete.");
+		}
+
 		this.currentNode = remainingNodes.poll();
 		
 		if (remainingNodes.size() == 0) {
@@ -138,19 +178,15 @@ public class Plan {
 		
 	}
 	
-	public void addANode(Node node){
-		this.nodes.add(node);
-		this.remainingNodes.add(node);
-		this.pathComplete = false;
-	}
-	
-	@Override
-	public String toString() {
-		String s = new String();
-		for(int indexOfNode = 0; indexOfNode < nodes.size(); indexOfNode++){
-			s+= indexOfNode + ") " + nodes.get(indexOfNode).getId() + ", ";
-		}
-		return s;
-	}
+	/*
+	 * Interesting feature, but not used for now.
+	 * We should think about how this could interact
+	 * with the MovingBehavior.
+	 */
+//	public void addANode(Node node){
+//		this.nodes.add(node);
+//		this.remainingNodes.add(node);
+//		this.pathComplete = false;
+//	}
 	
 }
