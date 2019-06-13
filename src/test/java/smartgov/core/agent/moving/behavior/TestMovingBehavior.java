@@ -3,7 +3,7 @@ package smartgov.core.agent.moving.behavior;
 import smartgov.core.agent.moving.TestMovingAgentBody;
 import smartgov.core.agent.moving.events.DestinationReachedEvent;
 import smartgov.core.environment.TestContext;
-import smartgov.core.environment.graph.node.Node;
+import smartgov.core.environment.graph.Node;
 import smartgov.core.events.EventHandler;
 
 public class TestMovingBehavior extends MovingBehavior {

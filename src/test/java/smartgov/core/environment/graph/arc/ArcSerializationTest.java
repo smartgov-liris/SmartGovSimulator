@@ -7,7 +7,8 @@ import static org.hamcrest.Matchers.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import smartgov.core.environment.graph.node.Node;
+import smartgov.core.environment.graph.Arc;
+import smartgov.core.environment.graph.Node;
 
 public class ArcSerializationTest {
 

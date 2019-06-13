@@ -1,6 +1,6 @@
 package smartgov.core.agent.moving.events;
 
-import smartgov.core.environment.graph.arc.Arc;
+import smartgov.core.environment.graph.Arc;
 
 /**
  * Triggered each time an agent leave an Arc.

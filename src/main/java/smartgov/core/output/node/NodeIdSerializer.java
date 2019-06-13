@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
-import smartgov.core.environment.graph.node.Node;
+import smartgov.core.environment.graph.Node;
 /**
  * Custom jackson serializer used to represent arcs' target and start nodes.
  * Only the id of the nodes are serialized.

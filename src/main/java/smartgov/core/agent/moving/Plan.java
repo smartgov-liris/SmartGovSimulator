@@ -8,8 +8,8 @@ import java.util.Queue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import smartgov.core.environment.graph.arc.Arc;
-import smartgov.core.environment.graph.node.Node;
+import smartgov.core.environment.graph.Arc;
+import smartgov.core.environment.graph.Node;
 import smartgov.core.output.node.NodeListIdSerializer;
 import smartgov.core.output.node.NodeIdSerializer;
 import smartgov.core.output.arc.ArcIdSerializer;

@@ -7,9 +7,8 @@ import java.util.Map;
 
 import smartgov.SmartGov;
 import smartgov.core.environment.SmartGovContext;
-import smartgov.core.environment.graph.SourceNode;
-import smartgov.core.environment.graph.arc.Arc;
-import smartgov.core.environment.graph.node.Node;
+import smartgov.core.environment.graph.Arc;
+import smartgov.core.environment.graph.Node;
 import smartgov.core.simulation.Scenario;
 import smartgov.urban.geo.environment.graph.GeoGraph;
 import smartgov.urban.osm.environment.OsmContext;
@@ -23,6 +22,7 @@ import smartgov.urban.osm.environment.graph.Road;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkSourceNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSourceNode;
+import smartgov.urban.osm.environment.graph.sinkSourceNodes.SourceNode;
 import smartgov.urban.osm.simulation.parser.OsmJSONReader;
 
 /**

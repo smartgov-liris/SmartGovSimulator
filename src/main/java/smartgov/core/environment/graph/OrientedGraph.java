@@ -9,9 +9,6 @@ import org.graphstream.algorithm.AStar;
 import org.graphstream.graph.Path;
 import org.graphstream.graph.implementations.MultiGraph;
 
-import smartgov.core.environment.graph.arc.Arc;
-import smartgov.core.environment.graph.node.Node;
-
 /**
  * Generic oriented Graph.
  *

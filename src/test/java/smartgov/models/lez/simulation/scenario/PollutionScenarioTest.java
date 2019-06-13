@@ -2,7 +2,7 @@ package smartgov.models.lez.simulation.scenario;
 
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
-import smartgov.core.environment.graph.arc.Arc;
+import smartgov.core.environment.graph.Arc;
 import smartgov.models.lez.agent.DeliveryDriver;
 import smartgov.models.lez.environment.LezContext;
 import smartgov.models.lez.environment.graph.PollutableOsmArc;

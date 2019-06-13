@@ -29,7 +29,7 @@ public class TestStartEvent {
 			
 		});
 		
-		SmartGov.getRuntime().start(1000);
+		SmartGov.getRuntime().start(100);
 		
 		while(SmartGov.getRuntime().isRunning()) {
 			TimeUnit.MICROSECONDS.sleep(10);
@@ -42,7 +42,7 @@ public class TestStartEvent {
 		
 		assertThat(
 				checker.json,
-				equalTo("{\"start\":{\"maxTick\":1000}}")
+				equalTo("{\"start\":{\"maxTick\":100}}")
 				);
 	}
 }

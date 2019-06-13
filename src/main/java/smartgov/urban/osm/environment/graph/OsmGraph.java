@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import smartgov.SmartGov;
-import smartgov.core.environment.graph.node.Node;
+import smartgov.core.environment.graph.Node;
 import smartgov.urban.geo.environment.graph.GeoGraph;
 import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.geo.simulation.GISComputation;

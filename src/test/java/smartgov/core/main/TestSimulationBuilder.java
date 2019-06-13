@@ -13,7 +13,7 @@ import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.Plan;
 import smartgov.core.agent.moving.behavior.TestMovingBehavior;
 import smartgov.core.environment.TestSmartGovContext;
-import smartgov.core.environment.graph.node.Node;
+import smartgov.core.environment.graph.Node;
 import smartgov.core.simulation.TestScenario;
 
 public class TestSimulationBuilder {

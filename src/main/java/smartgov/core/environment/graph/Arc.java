@@ -1,18 +1,23 @@
-package smartgov.core.environment.graph.arc;
+package smartgov.core.environment.graph;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import smartgov.core.environment.graph.GraphItem;
-import smartgov.core.environment.graph.node.Node;
 import smartgov.core.output.node.NodeIdSerializer;
 
 /**
- * Generic Arc class.
+ * An oriented link between two nodes.
+ *
+ * Agents can use them to navigate between nodes.
  * 
- * @see Node
+ * <p>
+ * Notice that agents does not necessarily move on arcs,
+ * they can also spawn or disappear directly from nodes 
+ * to others. For agents that move on arcs, see
+ * {@link smartgov.core.agent.moving.MovingAgent}.
+ * </p>
+ *
  * @author pbreugnot
  *
- * @param <Tnode> associated Node type.
  */
 public class Arc extends GraphItem {
 
@@ -21,7 +26,7 @@ public class Arc extends GraphItem {
 	private final Node startNode;
 	@JsonSerialize(using = NodeIdSerializer.class)
 	private final Node targetNode;
-	protected double length;
+	private double length;
 
 	/**
 	 * Arc constructor.
@@ -39,26 +44,33 @@ public class Arc extends GraphItem {
 		targetNode.addIncomingArc(this);
 		this.length = length;
 	}
-	
+
+	/**
+	 * Arc id.
+	 */	
 	public String getId() {
 		return id;
 	}
 	
+	/**
+	 * Start node.
+	 */
 	public Node getStartNode() {
 		return startNode;
 	}
 	
+	/**
+	 * Target node.
+	 */
 	public Node getTargetNode() {
 		return targetNode;
 	}
 
+	/**
+	 * Length of the arc, arbitrary unit.
+	 */
 	public double getLength() {
 		return length;
-	}
-
-	@Override
-	public String toString() {
-		return new String("| " + startNode.getId() + " | " + targetNode.getId());
 	}
 
 }

@@ -11,12 +11,16 @@ import smartgov.urban.osm.environment.city.WorkOffice;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.Road;
+import smartgov.urban.osm.environment.graph.sinkSourceNodes.SinkNode;
+import smartgov.urban.osm.environment.graph.sinkSourceNodes.SourceNode;
 import smartgov.urban.osm.simulation.scenario.OsmScenario;
 import smartgov.urban.osm.simulation.scenario.lowLayer.ScenarioLowAgents;
 import smartgov.urban.osm.simulation.scenario.lowLayer.ScenarioVisualization;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.locationtech.jts.geom.GeometryFactory;
 
@@ -49,6 +53,9 @@ public class OsmContext extends SmartGovContext {
 	public List<ParkingSpot> parkingSpots;
 
 	public List<OsmArc> edgesWithSpots;
+	
+	private Map<String, SourceNode> sourceNodes;
+	private Map<String, SinkNode> sinkNodes;
 
 	//File names
 	public static String occupationTestFile;
@@ -66,8 +73,18 @@ public class OsmContext extends SmartGovContext {
 		roads = new ArrayList<>();
 		parkingSpots = new ArrayList<>();
 		edgesWithSpots = new ArrayList<>();
+		sourceNodes = new HashMap<>();
+		sinkNodes = new HashMap<>();
 		kdtreeArcsWithSpots = new KDTree(2);
 		kdtreeWithSpots = new KDTree(2);
+	}
+	
+	public Map<String, SourceNode> getSourceNodes() {
+		return sourceNodes;
+	}
+
+	public Map<String, SinkNode> getSinkNodes() {
+		return sinkNodes;
 	}
 	
 	@Override
@@ -79,6 +96,8 @@ public class OsmContext extends SmartGovContext {
 		roads.clear();
 		parkingSpots.clear();
 		edgesWithSpots.clear();
+		sourceNodes.clear();
+		sinkNodes.clear();
 		kdtreeArcsWithSpots = new KDTree(2);
 		kdtreeWithSpots = new KDTree(2);
 	}

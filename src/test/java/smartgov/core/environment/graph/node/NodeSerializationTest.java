@@ -5,7 +5,8 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import smartgov.core.environment.graph.arc.Arc;
+import smartgov.core.environment.graph.Arc;
+import smartgov.core.environment.graph.Node;
 
 import static org.hamcrest.MatcherAssert.assertThat; 
 import static org.hamcrest.Matchers.*;

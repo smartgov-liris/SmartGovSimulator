@@ -7,7 +7,7 @@ import org.locationtech.jts.geom.Coordinate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import smartgov.core.environment.graph.node.Node;
+import smartgov.core.environment.graph.Node;
 
 /**
  * Generic class to represent a Node on a map.

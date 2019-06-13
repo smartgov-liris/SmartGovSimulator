@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import smartgov.core.agent.core.AgentBody;
-import smartgov.core.environment.graph.node.Node;
 
 /**
  * Stores a list of nodes and common attributes of these set of nodes.

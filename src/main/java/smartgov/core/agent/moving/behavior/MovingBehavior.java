@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import smartgov.core.agent.core.behavior.Behavior;
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.environment.SmartGovContext;
-import smartgov.core.environment.graph.node.Node;
+import smartgov.core.environment.graph.Node;
 import smartgov.core.output.node.NodeIdSerializer;
 
 /**

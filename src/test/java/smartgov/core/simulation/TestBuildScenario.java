@@ -13,8 +13,8 @@ import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.TestContext;
 import smartgov.core.environment.TestSmartGovContext;
-import smartgov.core.environment.graph.arc.Arc;
-import smartgov.core.environment.graph.node.Node;
+import smartgov.core.environment.graph.Arc;
+import smartgov.core.environment.graph.Node;
 
 public class TestBuildScenario {
 

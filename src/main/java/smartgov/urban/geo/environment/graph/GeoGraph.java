@@ -9,8 +9,8 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.math.Vector2D;
 
 import net.sf.javaml.core.kdtree.KDTree;
+import smartgov.core.environment.graph.Arc;
 import smartgov.core.environment.graph.Graph;
-import smartgov.core.environment.graph.arc.Arc;
 import smartgov.urban.geo.simulation.GISComputation;
 
 /**

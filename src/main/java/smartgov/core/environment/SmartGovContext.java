@@ -8,11 +8,9 @@ import org.locationtech.jts.geom.GeometryFactory;
 
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
+import smartgov.core.environment.graph.Arc;
+import smartgov.core.environment.graph.Node;
 import smartgov.core.environment.graph.OrientedGraph;
-import smartgov.core.environment.graph.SinkNode;
-import smartgov.core.environment.graph.SourceNode;
-import smartgov.core.environment.graph.arc.Arc;
-import smartgov.core.environment.graph.node.Node;
 import smartgov.core.simulation.Scenario;
 
 /**
@@ -38,8 +36,6 @@ public class SmartGovContext extends AbstractContext {
 	public Map<String, Node> nodes;
 	public Map<String, Arc> arcs;
 	public OrientedGraph graph;
-	private Map<String, SourceNode> sourceNodes;
-	private Map<String, SinkNode> sinkNodes;
 	
 	//Manage human agent creation and allocation
 	public static int AGENT_MAX; //Max agents in the simulation (determine by parameters)
@@ -54,8 +50,6 @@ public class SmartGovContext extends AbstractContext {
 		agents = new HashMap<>();
 		nodes = new HashMap<>();
 		arcs = new HashMap<>();
-		sourceNodes = new HashMap<>();
-		sinkNodes = new HashMap<>();
 		agentsStock = new HashMap<>();	
 	}
 	
@@ -65,14 +59,6 @@ public class SmartGovContext extends AbstractContext {
 	
 	public void setScenario(Scenario scenario) {
 		this.scenario = scenario;
-	}
-	
-	public Map<String, SourceNode> getSourceNodes() {
-		return sourceNodes;
-	}
-
-	public Map<String, SinkNode> getSinkNodes() {
-		return sinkNodes;
 	}
 
 	protected void resetSpecialList(){
@@ -87,8 +73,6 @@ public class SmartGovContext extends AbstractContext {
 		agents.clear(); //Agents are ordered by their id
 		nodes.clear();
 		arcs.clear();
-		sourceNodes.clear();
-		sinkNodes.clear();
 		resetSpecialList();
 	}
 

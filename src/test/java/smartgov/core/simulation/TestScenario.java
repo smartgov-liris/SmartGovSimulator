@@ -10,8 +10,8 @@ import smartgov.core.agent.moving.TestMovingAgentBody;
 import smartgov.core.agent.moving.behavior.TestMovingBehavior;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.TestContext;
-import smartgov.core.environment.graph.arc.Arc;
-import smartgov.core.environment.graph.node.Node;
+import smartgov.core.environment.graph.Arc;
+import smartgov.core.environment.graph.Node;
 
 public class TestScenario extends Scenario {
 	

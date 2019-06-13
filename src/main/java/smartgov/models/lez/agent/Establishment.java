@@ -2,9 +2,9 @@ package smartgov.models.lez.agent;
 
 import org.locationtech.jts.geom.Coordinate;
 
-import smartgov.core.environment.graph.SinkNode;
-import smartgov.core.environment.graph.SourceNode;
 import smartgov.models.lez.environment.city.Shop;
+import smartgov.urban.osm.environment.graph.sinkSourceNodes.SinkNode;
+import smartgov.urban.osm.environment.graph.sinkSourceNodes.SourceNode;
 
 public class Establishment {
 	private int id;

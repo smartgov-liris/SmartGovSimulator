@@ -1,4 +1,4 @@
-package smartgov.core.environment.graph.node;
+package smartgov.core.environment.graph;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,8 +7,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import smartgov.core.environment.graph.GraphItem;
-import smartgov.core.environment.graph.arc.Arc;
 import smartgov.core.environment.graph.events.AgentOrigin;
 import smartgov.core.environment.graph.events.AgentDestination;
 import smartgov.core.events.EventHandler;

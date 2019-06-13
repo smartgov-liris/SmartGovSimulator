@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.locationtech.jts.geom.Coordinate;
 
-import smartgov.core.environment.graph.SinkNode;
-import smartgov.core.environment.graph.arc.Arc;
+import smartgov.core.environment.graph.Arc;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.OsmNode;
 

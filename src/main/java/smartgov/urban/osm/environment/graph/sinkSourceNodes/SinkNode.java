@@ -1,4 +1,4 @@
-package smartgov.core.environment.graph;
+package smartgov.urban.osm.environment.graph.sinkSourceNodes;
 
 /**
  * A special node behavior, where agents disappear.

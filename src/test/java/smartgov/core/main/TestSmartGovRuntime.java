@@ -13,7 +13,7 @@ import smartgov.SmartGov;
 import smartgov.SmartGovTest;
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.Plan;
-import smartgov.core.environment.graph.node.Node;
+import smartgov.core.environment.graph.Node;
 import smartgov.core.events.EventHandler;
 import smartgov.core.main.events.SimulationPaused;
 import smartgov.core.main.events.SimulationStep;

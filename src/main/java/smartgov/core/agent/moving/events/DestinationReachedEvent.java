@@ -1,6 +1,6 @@
 package smartgov.core.agent.moving.events;
 
-import smartgov.core.environment.graph.node.Node;
+import smartgov.core.environment.graph.Node;
 
 /**
  * Event triggered when an Agent reached his destination, defined in

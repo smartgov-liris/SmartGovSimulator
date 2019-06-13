@@ -5,9 +5,9 @@ import java.util.Collection;
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
+import smartgov.core.environment.graph.Arc;
+import smartgov.core.environment.graph.Node;
 import smartgov.core.environment.graph.OrientedGraph;
-import smartgov.core.environment.graph.arc.Arc;
-import smartgov.core.environment.graph.node.Node;
 
 public abstract class Scenario {
 

@@ -2,9 +2,6 @@ package smartgov.core.environment.graph;
 
 import java.util.Map;
 
-import smartgov.core.environment.graph.arc.Arc;
-import smartgov.core.environment.graph.node.Node;
-
 /**
  * Generic Graph structure.
  * 

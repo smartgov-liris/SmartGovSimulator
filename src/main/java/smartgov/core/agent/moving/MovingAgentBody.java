@@ -12,12 +12,12 @@ import smartgov.core.agent.moving.events.DestinationReachedEvent;
 import smartgov.core.agent.moving.events.MoveEvent;
 import smartgov.core.agent.moving.events.NodeReachedEvent;
 import smartgov.core.agent.moving.events.OriginReachedEvent;
-import smartgov.core.environment.graph.arc.Arc;
+import smartgov.core.environment.graph.Arc;
+import smartgov.core.environment.graph.Node;
 import smartgov.core.environment.graph.events.AgentArrival;
 import smartgov.core.environment.graph.events.AgentDeparture;
 import smartgov.core.environment.graph.events.AgentDestination;
 import smartgov.core.environment.graph.events.AgentOrigin;
-import smartgov.core.environment.graph.node.Node;
 import smartgov.core.events.EventHandler;
 
 /**

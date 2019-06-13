@@ -52,8 +52,8 @@ public class ScenarioLowAgents extends ScenarioVisualization {
 			OsmAgentBody body = createAgentBody(context);
 			
 			Random rnd = new Random();
-			AbstractOsmSinkSourceNode randomOrigin = BasicBehavior.selectRandomSourceNode(rnd, context);
-			AbstractOsmSinkSourceNode randomDestination = BasicBehavior.selectRandomSinkNode(rnd, randomOrigin, context);
+			AbstractOsmSinkSourceNode randomOrigin = BasicBehavior.selectRandomSourceNode(rnd, (OsmContext) context);
+			AbstractOsmSinkSourceNode randomDestination = BasicBehavior.selectRandomSinkNode(rnd, randomOrigin, (OsmContext) context);
 			
 			OsmAgent newAgent = new OsmAgent(
 					String.valueOf(i),
@@ -62,7 +62,7 @@ public class ScenarioLowAgents extends ScenarioVisualization {
 							body,
 							randomOrigin,
 							randomDestination,
-							context));
+							(OsmContext) context));
 
 			newAgent.initialize();
 			agents.add(newAgent);
