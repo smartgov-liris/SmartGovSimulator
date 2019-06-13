@@ -44,7 +44,7 @@ public class TestSimulationBuilder {
 			);
 		
 		assertThat(
-			simulationBuilder.getContext().graph,
+			simulationBuilder.getContext().getGraph(),
 			notNullValue()
 				);
 	}

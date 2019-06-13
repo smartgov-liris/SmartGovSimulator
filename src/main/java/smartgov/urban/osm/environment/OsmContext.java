@@ -1,6 +1,7 @@
 package smartgov.urban.osm.environment;
 
 import net.sf.javaml.core.kdtree.KDTree;
+import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.simulation.Scenario;
 import smartgov.urban.osm.agent.OsmAgent;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import org.locationtech.jts.geom.GeometryFactory;
 
@@ -57,6 +59,9 @@ public class OsmContext extends SmartGovContext {
 	private Map<String, SourceNode> sourceNodes;
 	private Map<String, SinkNode> sinkNodes;
 
+	//Manage human agent creation and allocation
+	public Map<String, Queue<Agent>> agentsStock; // Map SourceNodes ids to available agents
+	
 	//File names
 	public static String occupationTestFile;
 	
@@ -75,6 +80,7 @@ public class OsmContext extends SmartGovContext {
 		edgesWithSpots = new ArrayList<>();
 		sourceNodes = new HashMap<>();
 		sinkNodes = new HashMap<>();
+		agentsStock = new HashMap<>();	
 		kdtreeArcsWithSpots = new KDTree(2);
 		kdtreeWithSpots = new KDTree(2);
 	}
@@ -100,6 +106,14 @@ public class OsmContext extends SmartGovContext {
 		sinkNodes.clear();
 		kdtreeArcsWithSpots = new KDTree(2);
 		kdtreeWithSpots = new KDTree(2);
+		resetSpecialList();
+	}
+	
+	protected void resetSpecialList(){
+		for(Queue<?> queue : agentsStock.values()){
+				queue.clear();
+		}
+		agentsStock.clear();
 	}
 	
 	@Override

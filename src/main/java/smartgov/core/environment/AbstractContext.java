@@ -11,22 +11,51 @@ import smartgov.core.simulation.Scenario;
 import smartgov.core.utils.Files;
 
 /**
- * Abstract environment class, implemented at different SmartGov levels.
- * 
+ * Abstract simulation context.
+ *
+ * <p>
+ * Defines functions to load configuration and scenarios.
+ * </p>
+ *
  * @author pbreugnot
  *
  */
 public abstract class AbstractContext {
+
+	private Scenario scenario;
 	
 	private Properties config;
 	private Files files;
 
+	/**
+	 * Clears all the collections of simulation items
+	 * stored in the context.
+	 */
 	public abstract void clear();
 	
+	/**
+	 * Instantiates a context from the specified configFile and loads the
+	 * specified scenario (but don't build it yet).
+	 *
+	 * @param configFile Absolute path of the configuration file to load.
+	 */
 	public AbstractContext(String configFile) {
 		parseConfig(configFile);
+		scenario = loadScenario((String) config.get("scenario"));
 	}
 	
+	/**
+	 * Current scenario.
+	 */
+	public Scenario getScenario() {
+		return scenario;
+	}
+	
+	/**
+	 * Loads a scenario from the given name.
+	 *
+	 * @param scenarioName Name of the scenario to load.
+	 */
 	public abstract Scenario loadScenario(String scenarioName);
 	
 	private void parseConfig(String file) {
@@ -37,49 +66,26 @@ public abstract class AbstractContext {
 			files = new Files(configFile.getParentFile().getAbsolutePath(), config);
 			config.load(new FileInputStream(new File(file)));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Current simulation configuration.
+	 */
 	public Properties getConfig() {
 		return config;
 	}
 	
+	/**
+	 * File loader.
+	 *
+	 * @see smartgov.core.utils.Files
+	 */
 	public Files getFiles() {
 		return files;
 	}
 	
-//	public static Map<String, String> parseConfig(String filestr) {
-//		Map<String, String> config = new HashMap<>();
-//		File file = new File(filestr);
-//		Scanner input;
-//		try {
-//			input = new Scanner(file);
-//			
-//			while(input.hasNext()) {
-//			    String nextLine = input.nextLine();
-//			    if(!nextLine.contains("#")){
-//			    	if(nextLine.contains(",")){
-//			    		//Indicators
-//			    		String lines[] = nextLine.split(":");
-//			    		String indicators[] = lines[1].split(",");
-//			    		for(int indicatorIndex = 0; indicatorIndex < indicators.length; indicatorIndex ++){
-//			    			indicatorsFiles.put(indicators[indicatorIndex], FilePath.humanIndicatorFolder + indicators[indicatorIndex] + ".json");
-//			    		}
-//			    	} else {
-//			    		String lines[] = nextLine.split(":");
-//				    	config.put(lines[0], lines[1]);
-//			    	}
-//			    }
-//			}
-//			input.close();
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//		return config;
-//	}
 }

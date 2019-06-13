@@ -49,7 +49,7 @@ public class ScenarioLowAgents extends ScenarioVisualization {
 		int agentCount = Integer.valueOf((String) context.getConfig().get("AgentNumber"));
 		for(int i = 0; i < agentCount; i++){
 			
-			OsmAgentBody body = createAgentBody(context);
+			OsmAgentBody body = createAgentBody((OsmContext) context);
 			
 			Random rnd = new Random();
 			AbstractOsmSinkSourceNode randomOrigin = BasicBehavior.selectRandomSourceNode(rnd, (OsmContext) context);
@@ -80,7 +80,7 @@ public class ScenarioLowAgents extends ScenarioVisualization {
 	 * @param environment Current OsmEnvironment
 	 * @return Created OsmAgentBody
 	 */
-	public OsmAgentBody createAgentBody(SmartGovContext environment) {
+	public OsmAgentBody createAgentBody(OsmContext environment) {
 		return new OsmAgentBody(
 				new CarMover(),
 				environment);

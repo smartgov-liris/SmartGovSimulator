@@ -48,8 +48,6 @@ public abstract class OsmScenario extends Scenario {
 	public OsmScenario(OsmContext environment) {
 		this.environment = environment;
 		jsonReader = new OsmJSONReader(this);
-		loadOsmFeatures();
-		createGraph();
 	}
 
 	public OsmContext getOsmContext() {
@@ -107,6 +105,7 @@ public abstract class OsmScenario extends Scenario {
 
 	@Override
 	public Collection<Node> buildNodes(SmartGovContext context) {
+		loadOsmFeatures();
 		Collection<Node> nodes = new ArrayList<>();
 		for(Node node : osmNodes.values()) {
 			// This is why I hate Java and its strong typing.
@@ -122,6 +121,8 @@ public abstract class OsmScenario extends Scenario {
 			// This is again why I hate Java and its strong typing.
 			arcs.add(arc);
 		}
+		// TODO : What is the real purpose of this function?
+		createGraph();
 		return arcs;
 	}
 

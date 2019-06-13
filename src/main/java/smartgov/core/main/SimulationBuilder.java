@@ -25,8 +25,6 @@ public class SimulationBuilder {
 
 		context.clear();
 
-		context.setScenario(context.loadScenario((String) context.getConfig().get("scenario")));
-
 		if (context.getScenario() != null) {
 			SmartGov.logger.info("Loading World for " + context.getScenario().getClass().getSimpleName());
 			context.getScenario().loadWorld(context);

@@ -2,7 +2,6 @@ package smartgov.core.environment;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Queue;
 
 import org.locationtech.jts.geom.GeometryFactory;
 
@@ -14,8 +13,7 @@ import smartgov.core.environment.graph.Node;
 import smartgov.core.simulation.Scenario;
 
 /**
- * Generic SmartGov environment.
- * The CoreEnvironment contains common elements that should be common to any SmartGov problems.
+ * Context implementation, that contains common elements to any simulation.
  * 
  * @author pbreugnot
  *
@@ -24,48 +22,51 @@ import smartgov.core.simulation.Scenario;
  */
 
 public class SmartGovContext extends AbstractContext {
-	
-	//Scenario
-	private Scenario scenario;
 
-	//Repast Static Variables
 	public static final GeometryFactory GEOFACTORY = new GeometryFactory();
 	
+	/**
+	 * Agents currently living in the simulation.
+	 */
 	public Map<String, Agent> agents;
 
+	/**
+	 * Nodes currently used in the simulation.
+	 */
 	public Map<String, Node> nodes;
+
+	/**
+	 * Arcs currently used in the simulation.
+	 */
 	public Map<String, Arc> arcs;
-	public Graph graph;
 	
-	//Manage human agent creation and allocation
-	public static int AGENT_MAX; //Max agents in the simulation (determine by parameters)
-	public Map<String, Queue<Agent>> agentsStock; // Map SourceNodes ids to available agents
+	private Graph graph;
 	
-	//File names
-	public static String outputFile;
-	public static String stateFile;
-	
+	/**
+	 * Context constructor.
+	 *
+	 * @param configFile Absolute path of the configuration file to load.
+	 */
 	public SmartGovContext(String configFile) {
 		super(configFile);
 		agents = new HashMap<>();
 		nodes = new HashMap<>();
 		arcs = new HashMap<>();
-		agentsStock = new HashMap<>();	
 	}
 	
-	public Scenario getScenario() {
-		return scenario;
+	/**
+	 * Current simulation graph.
+	 */
+	public Graph getGraph() {
+		return graph;
 	}
 	
-	public void setScenario(Scenario scenario) {
-		this.scenario = scenario;
-	}
-
-	protected void resetSpecialList(){
-		for(Queue<?> queue : agentsStock.values()){
-				queue.clear();
-		}
-		agentsStock.clear();
+	/**
+	 * Builds the context graph from the current context arcs and nodes.
+	 */
+	public void buildGraph() {
+		SmartGov.logger.info("Creating the simulation Graph");
+		graph = new Graph(nodes, arcs);
 	}
 	
 	@Override
@@ -73,7 +74,6 @@ public class SmartGovContext extends AbstractContext {
 		agents.clear(); //Agents are ordered by their id
 		nodes.clear();
 		arcs.clear();
-		resetSpecialList();
 	}
 
 	@Override
