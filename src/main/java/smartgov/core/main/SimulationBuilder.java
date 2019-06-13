@@ -4,22 +4,41 @@ import smartgov.SmartGov;
 import smartgov.core.environment.SmartGovContext;
 
 /**
- * Abstract generic main class of SmartGov. Loads a scenario and the clock singleton and GUI.
- * 
- * @param <T> The environment type used in the simulation. The Environment instantiation should be 
- * handled by the constructors of implementing classes.
- * 
- * @author Simon
+ * Class used to <em>build</em> the context depending on the loaded scenario.
+ *
+ * @author pbreugnot
  *
  */
 public class SimulationBuilder {
 
 	private SmartGovContext context;
 	
+	/**
+	 * SimulationBuilder constructor.
+	 *
+	 * @param context current context.
+	 */
 	public SimulationBuilder(SmartGovContext context) {
 		this.context = context;
 	}
 
+	/**
+	 * Builds the current context.
+	 *
+	 * <p>
+	 * Clears the current context, and then calls the
+	 * {@link smartgov.core.simulation.Scenario#loadWorld loadWorld}
+	 * method of the loaded scenario, if it exists.
+	 * </p>
+	 *
+	 * <p>
+	 * Notice that this function can be called several times in
+	 * the same application instance. Typically, it could be
+	 * called after a simulation has stopped or ended to 
+	 * re-initialize the scenario (and the context) at its original
+	 * state.
+	 * </p>
+	 */
 	public void build() {
 		long beginTime = System.currentTimeMillis();
 
@@ -35,38 +54,11 @@ public class SimulationBuilder {
 		}
 	}
 	
+	/**
+	 * Current context.
+	 */
 	public SmartGovContext getContext() {
 		return context;
 	} 
-
-	/**
-	 * Add custom user panel to track agent informations
-	 */
-//	private JPanel addCustomPanel(){
-//		UserPanel panel = new UserPanel();
-//		return panel.createPanel();
-//	}
-
-	/**
-	 * Reset User Panel if one already exist
-	 */
-//	private void refreshUserPanel(){
-//		JPanel userPanel = addCustomPanel();
-//		if(!RSApplication.getRSApplicationInstance().hasCustomUserPanelDefined()){
-//			RSApplication.getRSApplicationInstance().addCustomUserPanel(userPanel);
-//		} else {
-//			RSApplication.getRSApplicationInstance().removeCustomUserPanel();
-//			RSApplication.getRSApplicationInstance().addCustomUserPanel(userPanel);
-//		}
-//	}
-
-	/**
-	 * Reset clock if one already exist
-	 */
-//	private void refreshClock(){
-//		if(ClockSingleton.getInstance() != null){
-//			ClockSingleton.resetSingleton();
-//		}
-//	}
 
 }

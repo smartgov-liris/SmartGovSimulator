@@ -1,7 +1,7 @@
 package smartgov.core.events;
 
 /**
- * General event handler interface.
+ * Generic event handler interface.
  * 
  * @author pbreugnot
  *

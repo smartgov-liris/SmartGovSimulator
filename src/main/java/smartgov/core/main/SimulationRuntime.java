@@ -17,9 +17,12 @@ import smartgov.core.main.events.SimulationStarted;
 import smartgov.core.main.events.SimulationStep;
 import smartgov.core.main.events.SimulationStopped;
 
-public class SmartGovRuntime {
+/**
+ * Class used to run the simulation and update the context elements.
+ */
+public class SimulationRuntime {
 	
-	private final Logger logger = LogManager.getLogger(SmartGovRuntime.class);
+	private final Logger logger = LogManager.getLogger(SimulationRuntime.class);
 
 	private SmartGovContext context;
 	private int tickCount = 0;
@@ -28,10 +31,10 @@ public class SmartGovRuntime {
 	private boolean pause = true;
 
 	// Time that correspond to a tick, in seconds
-	public double tickDuration = 1.0;
+	private double tickDuration = 1.0;
 	
 	// Delay between each ticks in ms
-	public long tickDelay = 0;
+	private long tickDelay = 0;
 	
 	private SimulationThread simulationThread;
 
@@ -41,7 +44,12 @@ public class SmartGovRuntime {
 	private Collection<EventHandler<SimulationResumed>> simulationResumedEventHandlers;
 	private Collection<EventHandler<SimulationStep>> simulationStepEventHandlers;
 	
-	public SmartGovRuntime(SmartGovContext context) {
+	/**
+	 * SimulationRuntime constructor.
+	 *
+	 * @param context Current context
+	 */
+	public SimulationRuntime(SmartGovContext context) {
 		this.context = context;
 		simulationStartedEventHandlers = new ArrayList<>();
 		simulationStoppedEventHandlers = new ArrayList<>();
@@ -51,7 +59,9 @@ public class SmartGovRuntime {
 	}
 	
 	/**
-	 * Run the simulation until stop is called.
+	 * Runs the simulation until stop is called.
+	 *
+	 * @throws IllegalStateException if a simulation is already running.
 	 */
 	public void start() {
 		if (run) {
@@ -66,11 +76,21 @@ public class SmartGovRuntime {
 		triggerSimulationStartedListeners();
 	}
 	
+	/**
+	 * Runs the simulation for the specified number of ticks.
+	 *
+	 * @throws IllegalStateException if a simulation is already running.
+	 */
 	public void start(int ticks) {
 		maxTicks = ticks;
 		start();
 	}
 	
+	/**
+	 * Pause the simulation, if it is running.
+	 *
+	 * @throws IllegalStateException if no simulation is running.
+	 */
 	public void pause() throws IllegalArgumentException {
 		if(!run) {
 			throw new IllegalStateException("No simulation running.");
@@ -80,6 +100,12 @@ public class SmartGovRuntime {
 		triggerSimulationPausedListeners();
 	}
 	
+	/**
+	 * Resume a paused simulation.
+	 *
+	 * @throws IllegalArgumentException if no simulation is running or if
+	 * it's not paused.
+	 */
 	public void resume() throws IllegalArgumentException {
 		if (!run) {
 			throw new IllegalStateException("No simulation running.");
@@ -92,6 +118,11 @@ public class SmartGovRuntime {
 		triggerSimulationResumedListeners();
 	}
 	
+	/**
+	 * Stop a running simulation.
+	 * 
+	 * @throws IllegalStateException if no simulation is running.
+	 */
 	public void stop() {
 		if(!run) {
 			throw new IllegalStateException("No simulation running.");
@@ -102,21 +133,33 @@ public class SmartGovRuntime {
 		triggerSimulationStoppedListeners();
 	}
 	
+	/**
+	 * Check if the simulation is still running.
+	 *
+	 * Notice that a paused simulation is considered as <em>running</em>.
+	 *
+	 * @return true if and only if the simulation is running.
+	 */
 	public boolean isRunning() {
 		return run;
 	}
 	
 	/**
 	 * Performs a step, if the current simulation is running and paused.
+	 * 
+	 * @throws IllegalArgumentException if no simulation is running or if
+	 * it's not paused.
 	 */
 	public void step() {
-		if(run && pause) {
-			logger.info("Step at " + tickCount + " ticks.");
-			_step();
+		if(!run) {
+			throw new IllegalStateException("No simulation running.");
 		}
-		else {
-			throw new IllegalStateException("Unavailable operation when the simulation is not stopped.");
+		if(!pause) {
+			throw new IllegalStateException("The simulation is not paused.");
 		}
+
+		logger.info("Step at " + tickCount + " ticks.");
+		_step();
 	}
 	
 	private void _step() {
@@ -143,23 +186,66 @@ public class SmartGovRuntime {
 			}
 		}
 	}
-	
+
+	/**
+	 * Gets current tick count.
+	 *
+	 * @return current tick count
+	 */
 	public int getTickCount() {
 		return tickCount;
 	}
 	
+	/**
+	 * Gets tick duration, in seconds.
+	 *
+	 * <p>
+	 * The tick duration represents the real amount
+	 * of time a tick represents, and so can be used to
+	 * compute speeds for example.
+	 * </p>
+	 *
+	 * @return current tick duration
+	 */
 	public double getTickDuration() {
 		return tickDuration;
 	}
 	
+	/**
+	 * Sets tick duration, in seconds.
+	 *
+	 * <p>
+	 * Default value is set to 1.0.
+	 * </p>
+	 */
 	public void setTickDuration(double tickDuration) {
 		this.tickDuration = tickDuration;
 	}
 
+	/**
+	 * Gets tick delay, in microseconds.
+	 *
+	 * <p>
+	 * The tick delay represents the duration between each simulation
+	 * steps, in the meaning of real time simulation visualization.
+	 * </p>
+	 *
+	 * <p>
+	 * When set to 0 (as it is by default) or to a negative value, the
+	 * simulation runs as fast as possible without any delay.
+	 * </p>
+	 *
+	 * @return tick delay, in microseconds
+	 */
 	public double getTickDelay() {
 		return tickDelay;
 	}
 
+	/**
+	 * Sets tick delay.
+	 *
+	 * Default value is set to 0.
+	 */
 	public void setTickDelay(long tickDelay) {
 		this.tickDelay = tickDelay;
 	}
@@ -181,6 +267,10 @@ public class SmartGovRuntime {
 		}
 	}
 	
+	/**
+	 * Adds an <code>EventHandler</code> for <code>SimulationStarted</code>
+	 * events.
+	 */
 	public void addSimulationStartedListener(EventHandler<SimulationStarted> listener) {
 		simulationStartedEventHandlers.add(listener);
 	}
@@ -192,6 +282,10 @@ public class SmartGovRuntime {
 		}
 	}
 	
+	/**
+	 * Adds an <code>EventHandler</code> for <code>SimulationStopped</code>
+	 * events.
+	 */
 	public void addSimulationStoppedListener(EventHandler<SimulationStopped> listener) {
 		simulationStoppedEventHandlers.add(listener);
 	}
@@ -203,6 +297,10 @@ public class SmartGovRuntime {
 		}
 	}
 	
+	/**
+	 * Adds an <code>EventHandler</code> for <code>SimulationPaused</code>
+	 * events.
+	 */
 	public void addSimulationPausedListener(EventHandler<SimulationPaused> listener) {
 		simulationPausedEventHandlers.add(listener);
 	}
@@ -214,6 +312,10 @@ public class SmartGovRuntime {
 		}
 	}
 	
+	/**
+	 * Adds an <code>EventHandler</code> for <code>SimulationResumed</code>
+	 * events.
+	 */
 	public void addSimulationResumedListener(EventHandler<SimulationResumed> listener) {
 		simulationResumedEventHandlers.add(listener);
 	}
@@ -225,6 +327,10 @@ public class SmartGovRuntime {
 		}
 	}
 	
+	/**
+	 * Adds an <code>EventHandler</code> for <code>SimulationStep</code>
+	 * events.
+	 */
 	public void addSimulationStepListener(EventHandler<SimulationStep> listener) {
 		simulationStepEventHandlers.add(listener);
 	}

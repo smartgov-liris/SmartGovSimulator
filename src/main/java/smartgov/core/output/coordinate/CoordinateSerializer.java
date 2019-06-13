@@ -8,6 +8,9 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
+/**
+ * Custom Jackson serializer used to serialize a Coordinate as an xy array.
+ */
 public class CoordinateSerializer extends StdSerializer<Coordinate> {
 
 	private static final long serialVersionUID = 1L;

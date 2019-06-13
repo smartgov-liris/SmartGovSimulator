@@ -8,6 +8,10 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import smartgov.core.environment.graph.Arc;
 
+/**
+ * Custom Jackson serializer that can be used to serialize an Arc
+ * using only its id.
+ */
 public class ArcIdSerializer extends StdSerializer<Arc> {
 
 	private static final long serialVersionUID = 1L;

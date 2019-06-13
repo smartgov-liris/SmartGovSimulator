@@ -20,14 +20,14 @@ import smartgov.core.main.events.SimulationStep;
 
 public class TestSmartGovRuntime {
 	
-	private SmartGovRuntime loadRuntime() {
+	private SimulationRuntime loadRuntime() {
 		SmartGovTest.loadSmartGov();
 		return SmartGov.getRuntime();
 	}
 
 	@Test
 	public void testStartSimulation() throws InterruptedException {
-		SmartGovRuntime runtime = loadRuntime();
+		SimulationRuntime runtime = loadRuntime();
 		
 		assertThat(
 				runtime,

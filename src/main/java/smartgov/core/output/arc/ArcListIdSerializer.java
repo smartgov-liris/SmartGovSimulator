@@ -11,11 +11,10 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import smartgov.core.environment.graph.Arc;
 
 /**
- * Jackson serializer used to write the outgoing and incoming arcs lists of nodes.
- * Even if those attribute are arc lists, we just serialize the lists has arrays of ids..
- * 
- * @author pbreugnot
+ * Custom Jackson serializer that can be used to serialize an Arc list as the
+ * corresponding list of ids.
  *
+ * @author pbreugnot
  */
 public class ArcListIdSerializer extends StdSerializer<List<? extends Arc>>{
 

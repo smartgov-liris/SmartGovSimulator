@@ -17,8 +17,6 @@ import smartgov.core.simulation.Scenario;
  * 
  * @author pbreugnot
  *
- * @param <Tnode> Node type
- * @param <Tarc> Arc type
  */
 
 public class SmartGovContext extends AbstractContext {

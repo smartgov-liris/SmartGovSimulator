@@ -10,6 +10,12 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import smartgov.core.environment.graph.Node;
 
+/**
+ * Custom Jackson serializer that can be used to serialize a Node list as the
+ * corresponding list of ids.
+ *
+ * @author pbreugnot
+ */
 public class NodeListIdSerializer extends StdSerializer<List<? extends Node>>{
 
 	private static final long serialVersionUID = 1L;

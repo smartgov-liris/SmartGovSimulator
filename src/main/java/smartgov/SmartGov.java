@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.events.EventHandler;
 import smartgov.core.main.SimulationBuilder;
-import smartgov.core.main.SmartGovRuntime;
+import smartgov.core.main.SimulationRuntime;
 import smartgov.core.main.events.SimulationStopped;
 import smartgov.models.lez.environment.LezContext;
 import smartgov.models.lez.environment.pollution.Pollution;
@@ -25,7 +25,7 @@ public class SmartGov {
 	
 	private SmartGovContext context;
 	private static SimulationBuilder simulationBuilder;
-	private static SmartGovRuntime smartGovRuntime;
+	private static SimulationRuntime smartGovRuntime;
 	
 	/**
 	 * Config File with parameters for simulations.
@@ -35,7 +35,7 @@ public class SmartGov {
 	public SmartGov(SmartGovContext context) {
 		logger.info("Starting SmartGov");
 		this.context = context;
-		smartGovRuntime = new SmartGovRuntime(context);
+		smartGovRuntime = new SimulationRuntime(context);
 		simulationBuilder = new SimulationBuilder(context);
 		simulationBuilder.build();
 	
@@ -108,7 +108,7 @@ public class SmartGov {
     	return simulationBuilder;
     }
     
-    public static SmartGovRuntime getRuntime() {
+    public static SimulationRuntime getRuntime() {
     	return smartGovRuntime;
     }
 }
