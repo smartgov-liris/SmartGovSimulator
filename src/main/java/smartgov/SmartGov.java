@@ -16,8 +16,7 @@ import smartgov.core.events.EventHandler;
 import smartgov.core.main.SimulationBuilder;
 import smartgov.core.main.SimulationRuntime;
 import smartgov.core.main.events.SimulationStopped;
-import smartgov.models.lez.environment.LezContext;
-import smartgov.models.lez.environment.pollution.Pollution;
+import smartgov.urban.osm.environment.OsmContext;
 
 public class SmartGov {
 	
@@ -42,7 +41,7 @@ public class SmartGov {
 	}
 
     public static void main(String[] args) {
-        SmartGov smartGov = new SmartGov(new LezContext(args[0]));
+        SmartGov smartGov = new SmartGov(new OsmContext(args[0]));
         getRuntime().addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
 
 			@Override
@@ -62,8 +61,6 @@ public class SmartGov {
 					logger.info("Saving arcs state to " + agentOutput.getPath());
 					objectMapper.writeValue(arcsOutput, smartGov.getContext().arcs);
 					
-					logger.info("Saving pollution peeks to " + agentOutput.getPath());
-					objectMapper.writeValue(pollutionPeeks, Pollution.pollutionRatePeeks);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
