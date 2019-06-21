@@ -68,8 +68,10 @@ public class Plan {
 		return null; //Should not happen !
 	}
 	
-	/*
+	/**
 	 * Current arc.
+	 *
+	 * @return current arc of this plan
 	 */
 	public Arc getCurrentArc() {
 		return currentArc;
@@ -82,6 +84,8 @@ public class Plan {
 	 * Clear the previous state, even if the plan was not complete, add all
 	 * the provided nodes to the plan, and reach the first node of the plan.
 	 * </p>
+	 *
+	 * @param nodes new nodes of the plan
 	 */
 	public void update(List<? extends Node> nodes) {
 		this.nodes.clear();
@@ -96,15 +100,19 @@ public class Plan {
 	
 	/*
 	 * True when the last node of the plan has been reached.
+	 *
+	 * @return true if and only if the path is complete
 	 */
 	public boolean isPathComplete() {
 		return pathComplete;
 	}
 	
 	/**
-	 * Next node of the plan.
+	 * Next node of this plan.
 	 *
 	 * Correspond to the node right after the current node.
+	 *
+	 * @return the next node of this plan
 	 */
 	@JsonIgnore
 	public Node getNextNode(){
@@ -134,9 +142,11 @@ public class Plan {
 //	}
 
 	/**
-	 * Last node of the plan.
+	 * Last node of this plan.
 	 *
 	 * Should correspond to the destination of the corresponding agent.
+	 *
+	 * @return last node of this plan
 	 */
 	@JsonIgnore
 	public Node getLastNode() {
@@ -144,14 +154,18 @@ public class Plan {
 	}
 	
 	/**
-	 * Current node of the plan.
+	 * Current node of this plan.
+	 *
+	 * @return current node of this plan
 	 */
 	public Node getCurrentNode() {
 		return currentNode;
 	}
 	
 	/**
-	 * Nodes of the plan, ordered from origin to destination.
+	 * Nodes of this plan, ordered from origin to destination.
+	 *
+	 * @return list of nodes of this plan
 	 */
 	public List<Node> getNodes() {
 		return nodes;

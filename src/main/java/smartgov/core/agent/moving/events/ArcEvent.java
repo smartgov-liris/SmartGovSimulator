@@ -13,6 +13,11 @@ public abstract class ArcEvent extends Event {
 	
 	private Arc arc;
 
+	/**
+	 * ArcEvent constructor.
+	 *
+	 * @param arc arc involved in this event
+	 */
 	public ArcEvent(Arc arc) {
 		super();
 		this.arc = arc;
@@ -20,6 +25,8 @@ public abstract class ArcEvent extends Event {
 	
 	/**
 	 * Arc involved in the Event.
+	 *
+	 * @return arc involved in this event
 	 */
 	public Arc getArc() {
 		return arc;

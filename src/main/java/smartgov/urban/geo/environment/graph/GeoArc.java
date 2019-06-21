@@ -8,12 +8,9 @@ import smartgov.core.environment.graph.Arc;
 import smartgov.urban.geo.simulation.GISComputation;
 
 /**
- * Generic class to represent an Arc on a map.
+ * Represents a geographical arc.
  * 
- * @see Arc
  * @author pbreugnot
- *
- * @param <Tnode> GeoNode type
  */
 public class GeoArc extends Arc {
 
@@ -23,11 +20,9 @@ public class GeoArc extends Arc {
 	/**
 	 * GeoArc constructor.
 	 * 
-	 * @param geography Current Geometry
 	 * @param id Arc id
 	 * @param startNode Start Node
 	 * @param targetNode Target Node
-	 * @param polyLine Shape of the Arc
 	 */
 	public GeoArc(String id, GeoNode startNode, GeoNode targetNode){
 		super(id, startNode, targetNode, GISComputation.GPS2Meter(startNode.getPosition(), targetNode.getPosition()));
@@ -35,6 +30,16 @@ public class GeoArc extends Arc {
 		this.direction.normalize();
 	}
 	
+	/**
+	 * Direction of the arc.
+	 *
+	 * <p>
+	 * Utility parameter that could be used for graphical representations,
+	 * but currently not used in any process.
+	 * </p>
+	 * 
+	 * @return arc direction
+	 */
 	public Vector2D getDirection() {
 		return direction;
 	}

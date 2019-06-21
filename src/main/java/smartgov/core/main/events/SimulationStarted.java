@@ -23,6 +23,8 @@ public class SimulationStarted extends Event {
 	
 	/**
 	 * Number of ticks to run in this simulation.
+	 *
+	 * @return simulation max tick count
 	 */
 	public int getMaxTick() {
 		return maxTick;

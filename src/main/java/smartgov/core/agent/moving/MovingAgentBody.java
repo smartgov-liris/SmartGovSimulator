@@ -58,6 +58,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 
 	/**
 	 * Plan of this agent.
+	 *
+	 * @return plan of this agent
 	 */
 	public Plan getPlan() {
 		return plan;
@@ -75,8 +77,9 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 * events on the first node and arc of the updated plan.
 	 *
 	 * @see Plan#update
+	 * @param nodes new nodes of agent body's plan
 	 */
-	public void updatePlan(List<Node> nodes) {
+	public void updatePlan(List<? extends Node> nodes) {
 		plan.update(nodes);
 		// Node reached events
 		triggerNodeReachedListeners(new NodeReachedEvent(plan.getCurrentNode()));
@@ -98,6 +101,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 * <p>
 	 * Also triggers available events accordingly.
 	 * </p>
+	 *
+	 * @param action action to do
 	 */	
 	public void doAction(MoverAction action){
 		// TODO : other event listeners
@@ -190,12 +195,16 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	/**
 	 * Automatically called to perform a {@link smartgov.core.agent.moving.behavior.MoverAction#ENTER ENTER} action
 	 * in the specified ParkingArea.
+	 *
+	 * @param parkingArea parking area to enter in
 	 */	
 	public abstract void handleEnter(ParkingArea parkingArea);
 
 	/**
 	 * Automatically called to perform a {@link smartgov.core.agent.moving.behavior.MoverAction#LEAVE LEAVE} action
 	 * in the specified ParkingArea.
+	 *
+	 * @param parkingArea parking area to leave from
 	 */	
 	public abstract void handleLeave(ParkingArea parkingArea);
 	
@@ -204,6 +213,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 * Adds a new handler for MoveEvents.
 	 *
 	 * Triggered each time a MOVE action is performed, just after {@link #handleMove} is called.
+	 *
+	 * @param moveListener move event handler to add
 	 */
 	public void addOnMoveListener(EventHandler<MoveEvent> moveListener) {
 		agentMoveListeners.add((EventHandler<MoveEvent>) moveListener);
@@ -217,6 +228,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 
 	/**
 	 * EventHandlers for MoveEvents.
+	 *
+	 * @return current move listeners
 	 */	
 	public Collection<EventHandler<MoveEvent>> getAgentMoveListeners() {
 		return agentMoveListeners;
@@ -240,6 +253,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 * {@link #addOnOriginReachedListener addOnOriginReachedListener} and
 	 * {@link #addOnDestinationReachedListener addOnDestinationReachedListener}.
 	 * </p>
+	 *
+	 * @param nodeReachedListener node reached event handler to add
 	 */
 	public void addOnNodeReachedListener(EventHandler<NodeReachedEvent> nodeReachedListener) {
 		nodeReachedListeners.add((EventHandler<NodeReachedEvent>) nodeReachedListener);
@@ -253,6 +268,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	
 	/**
 	 * EventHandlers for NodeReachedEvents.
+	 *
+	 * @return current node reached listeners
 	 */
 	public Collection<EventHandler<NodeReachedEvent>> getNodeReachedListeners() {
 		return nodeReachedListeners;
@@ -263,6 +280,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 * Adds a new handler for ArcReachedEvent.
 	 *
 	 * Triggered each time an agent reaches a new Arc.
+	 *
+	 * @param arcReachedListener new arc reached event handler
 	 */
 	public void addOnArcReachedListener(EventHandler<ArcReachedEvent> arcReachedListener) {
 		arcReachedListeners.add((EventHandler<ArcReachedEvent>) arcReachedListener);
@@ -276,6 +295,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	
 	/**
 	 * EventHandlers for ArcReachedEvents.
+	 *
+	 * @return current arc reached event listeners
 	 */
 	public Collection<EventHandler<ArcReachedEvent>> getArcReachedListeners() {
 		return arcReachedListeners;
@@ -286,6 +307,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 * Adds a new handler for ArcLeftEvents.
 	 *
 	 * Called each time an agent leave an Arc.
+	 *
+	 * @param arcLeftListener new arc left event handler to add
 	 */
 	public void addOnArcLeftListener(EventHandler<ArcLeftEvent> arcLeftListener) {
 		arcLeftListeners.add((EventHandler<ArcLeftEvent>) arcLeftListener);
@@ -299,6 +322,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 
 	/**
 	 * EventHandlers for ArcLeftEvents.
+	 *
+	 * @return current arc left event listeners
 	 */	
 	public Collection<EventHandler<ArcLeftEvent>> getArcLeftListeners() {
 		return arcLeftListeners;
@@ -310,6 +335,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 *
 	 * Triggered at the very first step of the agent Plan, when {@link #updatePlan updatePlan()} is called,
 	 * on the origin node of its {@link smartgov.core.agent.moving.behavior.MovingBehavior}. 
+	 *
+	 * @param originReachedListener new origin reached event handler to add
 	 */
 	public void addOnOriginReachedListener(EventHandler<OriginReachedEvent> originReachedListener) {
 		originReachedListeners.add((EventHandler<OriginReachedEvent>) originReachedListener);
@@ -317,6 +344,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 
 	/**
 	 * EventHandlers for OriginReachedEvents.
+	 *
+	 * @return current origin reached event listeners
 	 */	
 	private void triggerOriginReachedListeners(OriginReachedEvent event) {
 		for (EventHandler<OriginReachedEvent> eventHandler : originReachedListeners) {
@@ -330,6 +359,9 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 *
 	 * Triggered when the agent has reached the last node of its current {@link Plan}, that corresponds
 	 * to the destination node of its {@link smartgov.core.agent.moving.behavior.MovingBehavior}.
+	 *
+	 * @param destinationReachedListener new destination reached event
+	 * handler to add
 	 */
 	public void addOnDestinationReachedListener(EventHandler<DestinationReachedEvent> destinationReachedListener) {
 		destinationReachedListeners.add((EventHandler<DestinationReachedEvent>) destinationReachedListener);
@@ -343,6 +375,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 
 	/**
 	 * EventHandlers for DestinationReachedEvents.
+	 *
+	 * @return current destination reached event listeners
 	 */
 	public Collection<EventHandler<DestinationReachedEvent>> getDestinationReachedListeners() {
 		return destinationReachedListeners;

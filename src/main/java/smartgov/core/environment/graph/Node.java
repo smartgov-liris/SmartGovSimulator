@@ -56,6 +56,8 @@ public class Node extends GraphItem {
 	
 	/**
 	 * Node id
+	 *
+	 * @return node id
 	 */
 	public String getId() {
 		return id;
@@ -107,6 +109,8 @@ public class Node extends GraphItem {
 	
 	/**
 	 * Incoming arcs list.
+	 *
+	 * @return list of incoming arcs of this node
 	 */
 	public List<Arc> getIncomingArcs() {
 		return incomingArcs;
@@ -114,6 +118,8 @@ public class Node extends GraphItem {
 	
 	/**
 	 * Outgoing arcs list.
+	 *
+	 * @return list of outgoing arcs of this node
 	 */
 	public List<Arc> getOutgoingArcs() {
 		return outgoingArcs;
@@ -123,6 +129,8 @@ public class Node extends GraphItem {
 	 * Adds an EventHandler for AgentOrigin events.
 	 *
 	 * Triggered when an agent reaches the node as the origin of its current plan.
+	 *
+	 * @param agentOriginListener new agent origin event handler to add
 	 */
 	public void addAgentOriginListener(EventHandler<AgentOrigin> agentOriginListener) {
 		agentOriginListeners.add(agentOriginListener);
@@ -143,6 +151,9 @@ public class Node extends GraphItem {
 	 * Adds an EventHandler for AgentDestination events.
 	 *
 	 * Triggered when an agent reaches the node as the destination of its current plan.
+	 *
+	 * @param agentDestinationListener new agent destination listener to
+	 * add
 	 */
 	public void addAgentDestinationListener(EventHandler<AgentDestination> agentDestinationListener) {
 		agentDestinationListeners.add(agentDestinationListener);

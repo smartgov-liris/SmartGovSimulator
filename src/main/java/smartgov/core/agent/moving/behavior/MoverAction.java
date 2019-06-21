@@ -40,6 +40,7 @@ public class MoverAction extends AgentAction{
 	 * Should be used in a <code>switch</code> statement to handle
 	 * different actions.
 	 *
+	 * @return type of this action
 	 */
 	public ActionType getType() {
 		return type;
@@ -49,6 +50,8 @@ public class MoverAction extends AgentAction{
 	 * ParkingArea concerned by <code>ENTER</code> and <code>LEAVE</code> actions.
 	 *
 	 * <code>null</code> for <code>WAIT</code>, <code>MOVE</code> and <code>WANDER</code> actions.
+	 *
+	 * @return parking area associated to this action
 	 */
 	public ParkingArea getParkingArea() {
 		return parkingArea;
@@ -56,6 +59,8 @@ public class MoverAction extends AgentAction{
 	
 	/**
 	 * A <code>MOVE</code> action.
+	 *
+	 * @return a MOVE action
 	 */
 	public static MoverAction MOVE() {
 		return new MoverAction(ActionType.MOVE, null);
@@ -63,6 +68,8 @@ public class MoverAction extends AgentAction{
 
 	/**
 	 * A <code>WAIT</code> action.
+	 *
+	 * @return a WAIT action
 	 */
 	public static MoverAction WAIT() {
 		return new MoverAction(ActionType.WAIT, null);
@@ -70,6 +77,8 @@ public class MoverAction extends AgentAction{
 	
 	/**
 	 * A <code>WANDER</code> action.
+	 *
+	 * @return a WANDER action
 	 */
 	public static MoverAction WANDER() {
 		return new MoverAction(ActionType.WANDER, null);
@@ -79,6 +88,7 @@ public class MoverAction extends AgentAction{
 	 * An <code>ENTER</code> action in the specified ParkingArea.
 	 *
 	 * @param parkingArea the ParkingArea to enter in.
+	 * @return an ENTER action
 	 */
 	public static MoverAction ENTER(ParkingArea parkingArea) {
 		return new MoverAction(ActionType.MOVE, parkingArea);
@@ -88,6 +98,7 @@ public class MoverAction extends AgentAction{
 	 * An <code>LEAVE</code> action from the specified ParkingArea.
 	 *
 	 * @param parkingArea the ParkingArea to leave from.
+	 * @return a LEAVE action
 	 */
 	public static MoverAction LEAVE(ParkingArea parkingArea) {
 		return new MoverAction(ActionType.LEAVE, parkingArea);

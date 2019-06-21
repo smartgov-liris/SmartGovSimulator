@@ -26,10 +26,6 @@ public class SmartGov {
 	private static SimulationBuilder simulationBuilder;
 	private static SimulationRuntime smartGovRuntime;
 	
-	/**
-	 * Config File with parameters for simulations.
-	 */
-	// public static String configFile = FilePath.inputFolder + "config.ini";
 	
 	public SmartGov(SmartGovContext context) {
 		logger.info("Starting SmartGov");

@@ -1,7 +1,6 @@
 package smartgov.urban.geo.simulation;
 
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.math.Vector2D;
 
 /**
@@ -45,12 +44,16 @@ public class GISComputation {
 		return new Vector2D(b.x - a.x, b.y - a.y);
 	}
 	
+	/**
+	 * Computes the distance in meter between two geographical coordinates,
+	 * using the Haversine formula.
+	 *
+	 * @param a first coordinates
+	 * @param b seconf coordinates
+	 * @return distance between coordinates in meter
+	 */
 	public static double GPS2Meter(Coordinate a, Coordinate b){
 		return GPS2Meter(a.x, a.y, b.x, b.y);
-	}
-	
-	public static double GPS2Meter(Point a, Point b){
-		return GPS2Meter(a.getX(), a.getY(), b.getX(), b.getY());
 	}
 	
 }

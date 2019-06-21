@@ -34,7 +34,7 @@ public class Arc extends GraphItem {
 	 * @param id Arc id
 	 * @param startNode Start Node
 	 * @param targetNode Target Node
-	 * @param distance Length of the Arc
+	 * @param length Length of the Arc
 	 */
 	public Arc(String id, Node startNode, Node targetNode, double length) {
 		this.id = id;
@@ -47,6 +47,8 @@ public class Arc extends GraphItem {
 
 	/**
 	 * Arc id.
+	 *
+	 * @return arc id
 	 */	
 	public String getId() {
 		return id;
@@ -54,6 +56,8 @@ public class Arc extends GraphItem {
 	
 	/**
 	 * Start node.
+	 *
+	 * @return start node
 	 */
 	public Node getStartNode() {
 		return startNode;
@@ -61,6 +65,8 @@ public class Arc extends GraphItem {
 	
 	/**
 	 * Target node.
+	 *
+	 * @return target node
 	 */
 	public Node getTargetNode() {
 		return targetNode;
@@ -68,6 +74,8 @@ public class Arc extends GraphItem {
 
 	/**
 	 * Length of the arc, arbitrary unit.
+	 *
+	 * @return arc length
 	 */
 	public double getLength() {
 		return length;

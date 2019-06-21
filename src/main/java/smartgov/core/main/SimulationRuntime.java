@@ -79,6 +79,7 @@ public class SimulationRuntime {
 	/**
 	 * Runs the simulation for the specified number of ticks.
 	 *
+	 * @param ticks number of ticks to run
 	 * @throws IllegalStateException if a simulation is already running.
 	 */
 	public void start(int ticks) {
@@ -217,6 +218,8 @@ public class SimulationRuntime {
 	 * <p>
 	 * Default value is set to 1.0.
 	 * </p>
+	 *
+	 * @param tickDuration new tick duration
 	 */
 	public void setTickDuration(double tickDuration) {
 		this.tickDuration = tickDuration;
@@ -245,6 +248,8 @@ public class SimulationRuntime {
 	 * Sets tick delay.
 	 *
 	 * Default value is set to 0.
+	 *
+	 * @param tickDelay new tick delay
 	 */
 	public void setTickDelay(long tickDelay) {
 		this.tickDelay = tickDelay;
@@ -270,6 +275,8 @@ public class SimulationRuntime {
 	/**
 	 * Adds an <code>EventHandler</code> for <code>SimulationStarted</code>
 	 * events.
+	 *
+	 * @param listener event handler to add
 	 */
 	public void addSimulationStartedListener(EventHandler<SimulationStarted> listener) {
 		simulationStartedEventHandlers.add(listener);
@@ -285,6 +292,8 @@ public class SimulationRuntime {
 	/**
 	 * Adds an <code>EventHandler</code> for <code>SimulationStopped</code>
 	 * events.
+	 * 
+	 * @param listener event handler to add
 	 */
 	public void addSimulationStoppedListener(EventHandler<SimulationStopped> listener) {
 		simulationStoppedEventHandlers.add(listener);
@@ -300,6 +309,8 @@ public class SimulationRuntime {
 	/**
 	 * Adds an <code>EventHandler</code> for <code>SimulationPaused</code>
 	 * events.
+	 * 
+	 * @param listener event handler to add
 	 */
 	public void addSimulationPausedListener(EventHandler<SimulationPaused> listener) {
 		simulationPausedEventHandlers.add(listener);
@@ -315,6 +326,8 @@ public class SimulationRuntime {
 	/**
 	 * Adds an <code>EventHandler</code> for <code>SimulationResumed</code>
 	 * events.
+	 * 
+	 * @param listener event handler to add
 	 */
 	public void addSimulationResumedListener(EventHandler<SimulationResumed> listener) {
 		simulationResumedEventHandlers.add(listener);
@@ -330,6 +343,8 @@ public class SimulationRuntime {
 	/**
 	 * Adds an <code>EventHandler</code> for <code>SimulationStep</code>
 	 * events.
+	 * 
+	 * @param listener event handler to add
 	 */
 	public void addSimulationStepListener(EventHandler<SimulationStep> listener) {
 		simulationStepEventHandlers.add(listener);

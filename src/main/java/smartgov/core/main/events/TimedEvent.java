@@ -21,6 +21,8 @@ public abstract class TimedEvent extends Event {
 
 	/**
 	 * Tick count at which the event occured.
+	 *
+	 * @return event tick count
 	 */
 	public int getTick() {
 		return tick;

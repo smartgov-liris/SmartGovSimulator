@@ -40,6 +40,8 @@ public abstract class Agent<A extends AgentAction> {
 	
 	/**
 	 * Agent id
+	 *
+	 * @return agent id
 	 */
 	public String getId() {
 		return id;
@@ -47,6 +49,8 @@ public abstract class Agent<A extends AgentAction> {
 	
 	/**
 	 * Agent body
+	 *
+	 * @return body of this agent
 	 */
 	public AgentBody<A> getBody(){
 		return body;
@@ -54,6 +58,8 @@ public abstract class Agent<A extends AgentAction> {
 	
 	/**
 	 * Agent behavior
+	 *
+	 * @return behavior of this agent
 	 */
 	public Behavior<A> getBehavior() {
 		return behavior;

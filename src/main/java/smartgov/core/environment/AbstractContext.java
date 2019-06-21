@@ -46,6 +46,8 @@ public abstract class AbstractContext {
 	
 	/**
 	 * Current scenario.
+	 *
+	 * @return currently loaded scenario
 	 */
 	public Scenario getScenario() {
 		return scenario;
@@ -55,6 +57,7 @@ public abstract class AbstractContext {
 	 * Loads a scenario from the given name.
 	 *
 	 * @param scenarioName Name of the scenario to load.
+	 * @return new scenario instance
 	 */
 	public abstract Scenario loadScenario(String scenarioName);
 	
@@ -73,7 +76,10 @@ public abstract class AbstractContext {
 	}
 	
 	/**
-	 * Current simulation configuration.
+	 * Current simulation configuration, loaded from the configuration
+	 * file.
+	 *
+	 * @return current configuration
 	 */
 	public Properties getConfig() {
 		return config;
@@ -83,6 +89,7 @@ public abstract class AbstractContext {
 	 * File loader.
 	 *
 	 * @see smartgov.core.utils.Files
+	 * @return a file loaded associated to the current configuration
 	 */
 	public Files getFiles() {
 		return files;

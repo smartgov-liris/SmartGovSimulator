@@ -65,6 +65,8 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 
 	/**
 	 * Current origin.
+	 *
+	 * @return origin of this behavior
 	 */
 	public Node getOrigin() {
 		return origin;
@@ -72,6 +74,8 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 
 	/**
 	 * Current destination.
+	 *
+	 * @return destination of this behavior
 	 */
 	public Node getDestination() {
 		return destination;
@@ -79,6 +83,8 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 
 	/**
 	 * Current context.
+	 *
+	 * @return associated smartGov context
 	 */	
 	public SmartGovContext getContext() {
 		return context;
@@ -114,6 +120,9 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 	 *
 	 * Also updates the AgentBody's Plan accordingly, with the shortest path from
 	 * origin to destination.
+	 *
+	 * @param origin new origin
+	 * @param destination new destination
 	 */
 	public void refresh(Node origin, Node destination) {
 		this.origin = origin;

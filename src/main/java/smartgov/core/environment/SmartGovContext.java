@@ -18,7 +18,6 @@ import smartgov.core.simulation.Scenario;
  * @author pbreugnot
  *
  */
-
 public class SmartGovContext extends AbstractContext {
 
 	public static final GeometryFactory GEOFACTORY = new GeometryFactory();
@@ -54,6 +53,8 @@ public class SmartGovContext extends AbstractContext {
 	
 	/**
 	 * Current simulation graph.
+	 *
+	 * @return current graph
 	 */
 	public Graph getGraph() {
 		return graph;

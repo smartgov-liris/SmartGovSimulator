@@ -56,6 +56,8 @@ public class SimulationBuilder {
 	
 	/**
 	 * Current context.
+	 *
+	 * @return current smartGov context
 	 */
 	public SmartGovContext getContext() {
 		return context;

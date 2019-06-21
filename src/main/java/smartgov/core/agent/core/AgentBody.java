@@ -28,6 +28,8 @@ public abstract class AgentBody<A extends AgentAction> {
 	
 	/**
 	 * Agent associated to this body.
+	 *
+	 * @return agent this body belongs to
 	 */
 	public Agent<A> getAgent() {
 		return agent;

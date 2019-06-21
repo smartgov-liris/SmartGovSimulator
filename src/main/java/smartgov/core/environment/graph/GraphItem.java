@@ -38,6 +38,8 @@ public abstract class GraphItem {
 	 * Adds an EventHandler for AgentArrival events.
 	 *
 	 * Triggered when an agent reach the item.
+	 *
+	 * @param listener new event handler to add
 	 */
 	public void addAgentArrivalListener(EventHandler<AgentArrival> listener) {
 		agentArrivalListeners.add(listener);
@@ -56,6 +58,8 @@ public abstract class GraphItem {
 
 	/**
 	 * EventHandlers for AgentArrival events.
+	 *
+	 * @return current agent arrival event listeners
 	 */
 	public Collection<EventHandler<AgentArrival>> getAgentArrivalListeners() {
 		return agentArrivalListeners;
@@ -66,6 +70,8 @@ public abstract class GraphItem {
 	 * Adds an EventHandler for AgentDeparture events.
 	 *
 	 * Triggered when an agent leave the item.
+	 *
+	 * @param listener new event handler to add
 	 */
 	public void addAgentDepartureListener(EventHandler<AgentDeparture> listener) {
 		agentDepartureListeners.add(listener);
@@ -84,6 +90,8 @@ public abstract class GraphItem {
 
 	/**
 	 * EventHandlers for AgentDeparture events.
+	 *
+	 * @return current agent departure event listeners
 	 */
 	public Collection<EventHandler<AgentDeparture>> getAgentDepartureListeners() {
 		return agentDepartureListeners;

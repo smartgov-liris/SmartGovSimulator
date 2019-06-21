@@ -51,6 +51,8 @@ public class Graph {
 	
 	/**
 	 * Nodes of the graph.
+	 *
+	 * @return <code>id: node</code> map of the nodes in this graph
 	 */
 	public Map<String, ? extends Node> getNodes() {
 		return nodes;
@@ -58,6 +60,8 @@ public class Graph {
 	
 	/**
 	 * Arcs of the graph.
+	 *
+	 * @return <code>id: arc</code> map of the arcs in this graph
 	 */
 	public Map<String, ? extends Arc> getArcs() {
 		return arcs;

@@ -39,7 +39,7 @@ public abstract class Behavior<A extends AgentAction> {
 	 *
 	 * @author pbreugnot
 	 * 
-	 * @return
+	 * @return an action to perform
 	 */
 	public abstract A provideAction();
 	

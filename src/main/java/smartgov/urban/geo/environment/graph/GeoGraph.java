@@ -14,21 +14,20 @@ import smartgov.core.environment.graph.Graph;
 import smartgov.urban.geo.simulation.GISComputation;
 
 /**
- * A Graph implementation used to represent a geographical graph. Even if it more likely represents a
- * road graph, it can be used to represent other networks.
+ * A Graph implementation used to represent a geographical graph, such as a
+ * road graph.
  * 
  * @author pbreugnot
- *
- * @param <GeoNode> GeoNode type
- * @param <GeoArc> GeoArc type
  */
 public class GeoGraph extends Graph {
 
 	private KDTree kdtree;
 	
 	/**
-	 * 
-	 * @see <a href="http://stackoverflow.com/questions/10803005/how-do-i-cast-a-list-from-a-subclass-generic-to-a-parent-class-generic">Unchecked cast exception </a>
+	 * GeoGraph constructor.
+	 *
+	 * @param nodes a GeoNode map
+	 * @param arcs a GeoArc map
 	 */
 	public GeoGraph(Map<String, ? extends GeoNode> nodes, Map<String, ? extends GeoArc> arcs){
 		super(nodes, Collections.unmodifiableMap(arcs));
@@ -38,10 +37,16 @@ public class GeoGraph extends Graph {
 		}
 	}
 	
-	public GeoNode getNearestNodeFrom(Coordinate coord){
+	/**
+	 * Computes the nearest node from the specified coordinates.
+	 *
+	 * @param coordinate coordinates from which the search starts
+	 * @return nearest node from specified coordinates
+	 */
+	public GeoNode getNearestNodeFrom(Coordinate coordinate){
 		double[] coords = new double[2];
-		coords[0] = coord.x;
-		coords[1] = coord.y;
+		coords[0] = coordinate.x;
+		coords[1] = coordinate.y;
 		return (GeoNode) this.kdtree.nearest(coords);
 	}
 	
