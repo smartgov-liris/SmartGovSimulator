@@ -10,6 +10,7 @@ import smartgov.SmartGov;
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.ParkingArea;
 import smartgov.core.output.coordinate.CoordinateSerializer;
+import smartgov.urban.geo.agent.mover.GeoMover;
 
 /**
  * Body of a GeoAgent.

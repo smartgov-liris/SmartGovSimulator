@@ -23,7 +23,7 @@ public class TestBuildScenario {
 		Scenario testScenario = new TestScenario();
 		TestContext context = TestSmartGovContext.loadTestContext();
 		
-		Collection<Node> nodes = testScenario.buildNodes(context);
+		Collection<? extends Node> nodes = testScenario.buildNodes(context);
 		
 		assertThat(
 				nodes,
@@ -36,12 +36,12 @@ public class TestBuildScenario {
 		Scenario testScenario = new TestScenario();
 		TestContext context = TestSmartGovContext.loadTestContext();
 		
-		Collection<Node> nodes = testScenario.buildNodes(context);
+		Collection<? extends Node> nodes = testScenario.buildNodes(context);
 		for(Node node : nodes) {
 			context.nodes.put(node.getId(), node);
 		}
 		
-		Collection<Arc> arcs = testScenario.buildArcs(context);
+		Collection<? extends Arc> arcs = testScenario.buildArcs(context);
 		
 		assertThat(
 				arcs,

@@ -44,8 +44,8 @@ public class ScenarioLowAgents extends ScenarioVisualization {
 	 * re-add them to the context. 
 	 */
 	@Override
-	public Collection<Agent> buildAgents(SmartGovContext context) {
-		Collection<Agent> agents = new ArrayList<>();
+	public Collection<Agent<?>> buildAgents(SmartGovContext context) {
+		Collection<Agent<?>> agents = new ArrayList<>();
 		int agentCount = Integer.valueOf((String) context.getConfig().get("AgentNumber"));
 		for(int i = 0; i < agentCount; i++){
 			

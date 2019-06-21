@@ -53,7 +53,7 @@ public abstract class Scenario {
 		context.buildGraph();
 		
 		// Build and add agents
-		for (Agent agent : buildAgents(context)) {
+		for (Agent<?> agent : buildAgents(context)) {
 			context.agents.put(agent.getId(), agent);
 		}
 		SmartGov.logger.info(context.agents.size() + " agents added to SmartGovContext");
@@ -67,7 +67,7 @@ public abstract class Scenario {
 	 *
 	 * @return built nodes
 	 */
-	public abstract Collection<Node> buildNodes(SmartGovContext context);
+	public abstract Collection<? extends Node> buildNodes(SmartGovContext context);
 
 	/**
 	 * Automatically called to build arcs for this scenario.
@@ -81,7 +81,7 @@ public abstract class Scenario {
 	 *
 	 * @return built arcs.
 	 */
-	public abstract Collection<Arc> buildArcs(SmartGovContext context);
+	public abstract Collection<? extends Arc> buildArcs(SmartGovContext context);
 
 	/**
 	 * Automatically called to build agents for this scenario.
@@ -95,5 +95,5 @@ public abstract class Scenario {
 	 *
 	 * @return built agents.
 	 */
-	public abstract Collection<Agent> buildAgents(SmartGovContext context);
+	public abstract Collection<? extends Agent<?>> buildAgents(SmartGovContext context);
 }

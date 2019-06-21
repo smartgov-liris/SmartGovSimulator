@@ -1,4 +1,4 @@
-package smartgov.urban.geo.agent;
+package smartgov.urban.geo.agent.mover;
 
 import org.locationtech.jts.geom.Coordinate;
 
@@ -7,8 +7,8 @@ import org.locationtech.jts.geom.Coordinate;
  */
 public interface GeoMover {
 
-	// TODO : huge paramater ambiguity. Need to refactor
+	// TODO : huge parameter ambiguity. Need to refactor
 	// and unit test that.	
-	public Coordinate moveOn(double timeToMove);
+	public Coordinate moveOn(double distance);
 	
 }

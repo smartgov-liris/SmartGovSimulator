@@ -28,7 +28,7 @@ public class ScenarioVisualization extends OsmScenario {
 	}
 
 	@Override
-	public Collection<Agent> buildAgents(SmartGovContext context) {
+	public Collection<Agent<?>> buildAgents(SmartGovContext context) {
 		return new ArrayList<>();
 	}
 

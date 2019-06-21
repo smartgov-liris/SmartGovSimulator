@@ -4,14 +4,20 @@ import smartgov.urban.geo.agent.GeoAgent;
 import smartgov.urban.osm.agent.behavior.BasicBehavior;
 
 /**
- * OSM implementation of a {@link smartgov.urban.geo.agent.GeoAgent GeoAgent}.
- * 
- * @author pbreugnot
+ * An agent that moves in the osm graph using a basic behavior.
  *
+ * @author pbreugnot
  */
 public class OsmAgent extends GeoAgent {
 
 	
+	/**
+	 * OsmAgent constructor.
+	 *
+	 * @param id agent if
+	 * @param body associated body
+	 * @param basicBehavior basic behavior instance
+	 */
 	public OsmAgent(
 			String id,
 			OsmAgentBody body,
@@ -19,6 +25,9 @@ public class OsmAgent extends GeoAgent {
 		super(id, body, basicBehavior);
 	}
 	
+	/**
+	 * Refresh the behavior and initialize the osmAgentBody.
+	 */
 	public void initialize() {
 		((BasicBehavior) getBehavior()).refresh();
 		((OsmAgentBody) getBody()).initialize();

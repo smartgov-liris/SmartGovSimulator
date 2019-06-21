@@ -6,7 +6,7 @@ import smartgov.core.agent.moving.behavior.MovingBehavior;
 /**
  * An agent that moves in a geographical environment.
  */
-public abstract class GeoAgent extends MovingAgent {
+public class GeoAgent extends MovingAgent {
 	
 	/**
 	 * GeoAgent constructor.

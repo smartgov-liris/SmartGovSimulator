@@ -36,22 +36,11 @@ public class Node extends GraphItem {
 	 * @param id Node id
 	 */
 	public Node(String id) {
-		this(id, new ArrayList<>(), new ArrayList<>());
+		this.id = id;
+		this.incomingArcs = new ArrayList<>();
+		this.outgoingArcs = new ArrayList<>();
 		this.agentOriginListeners = new ArrayList<>();
 		this.agentDestinationListeners = new ArrayList<>();
-	}
-
-	/**
-	 * Instanciate a Node with the specified outgoing and incoming arcs.
-	 *
-	 * @param id Node id
-	 * @param outgoingArcs Outgoing Arcs
-	 * @param incomingArcs Incoming Arcs	
-	 */
-	public Node(String id, List<Arc> outgoingArcs, List<Arc> incomingArcs) {
-		this.id = id;
-		this.outgoingArcs = outgoingArcs;
-		this.incomingArcs = incomingArcs;
 	}
 	
 	/**

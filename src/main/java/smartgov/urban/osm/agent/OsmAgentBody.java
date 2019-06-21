@@ -10,10 +10,10 @@ import smartgov.urban.osm.agent.behavior.BasicBehavior;
 import smartgov.urban.osm.environment.OsmContext;
 
 /**
- * An OSM implementation of a {@link smartgov.urban.geo.agent.GeoAgentBody GeoAgentBody}.
+ * An agent body moving in the OSM graph, as in a vehicle.
+ *
  * This agent can move between {@link smartgov.urban.osm.environment.graph.OsmNode OsmNodes} on
  * {@link smartgov.urban.osm.environment.graph.OsmArc OsmArcs} using the {@link smartgov.urban.osm.agent.actuator.CarMover CarMover}.
- * It senses data from the environment using a {@link smartgov.urban.osm.agent.perception.CarDriverSensor}.
  * 
  * @author pbreugnot
  *
@@ -21,40 +21,36 @@ import smartgov.urban.osm.environment.OsmContext;
 public class OsmAgentBody extends GeoAgentBody {
 
 	@JsonIgnore
-	private SmartGovContext environment;
+	private OsmContext context;
 	
 	/**
 	 * OsmAgentBody constructor.
 	 * 
-	 * @param id AgentBody id
-	 * @param geography Current geography
-	 * @param sensor A CarDriverSensor
 	 * @param carMover A CarMover
-	 * @param environment Current OsmEnvironment
+	 * @param context osm context
 	 */
 	public OsmAgentBody(
 			CarMover carMover,
-			OsmContext environment) {
+			OsmContext context) {
 		super(carMover);
 		carMover.setAgentBody(this);
-		this.environment = environment;
+		this.context = context;
 	}
 	
 	/**
-	 * Set up agent plan with begin and start node previously set up in properties.
-	 * 
-	 * @see smartgov.urban.osm.agent.properties.OsmAgentProperties#initialize()
+	 * Updates the agent plan from the origin and destination of the basic
+	 * behavior, and make it spawn on the origin source node.
 	 */
 	public void initialize() {
 		updatePlan(
-			environment.getGraph().shortestPath(
+			context.getGraph().shortestPath(
 					((BasicBehavior) getAgent().getBehavior()).getOrigin(),
 					((BasicBehavior) getAgent().getBehavior()).getDestination()
 					)
 			);
 
 		// Make the current agent available for the source node.
-		((OsmContext) environment).agentsStock.get(
+		context.agentsStock.get(
 				((BasicBehavior) getAgent().getBehavior()).getOrigin().getId()
 				).add(getAgent());
 		

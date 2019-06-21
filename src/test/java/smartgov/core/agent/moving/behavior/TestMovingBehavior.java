@@ -1,6 +1,6 @@
 package smartgov.core.agent.moving.behavior;
 
-import smartgov.core.agent.moving.TestMovingAgentBody;
+import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.events.DestinationReachedEvent;
 import smartgov.core.environment.TestContext;
 import smartgov.core.environment.graph.Node;
@@ -8,12 +8,12 @@ import smartgov.core.events.EventHandler;
 
 public class TestMovingBehavior extends MovingBehavior {
 	
-	public TestMovingBehavior(TestMovingAgentBody agentBody, Node node1, Node node2, TestContext context) {
+	public TestMovingBehavior(MovingAgentBody agentBody, Node node1, Node node2, TestContext context) {
 		super(agentBody, node1, node2, context);
 		registerDestinationReachedListener(agentBody);
 	}
 
-	private void registerDestinationReachedListener(TestMovingAgentBody agentBody) {
+	private void registerDestinationReachedListener(MovingAgentBody agentBody) {
 		agentBody.addOnDestinationReachedListener(new EventHandler<DestinationReachedEvent>() {
 
 			@Override

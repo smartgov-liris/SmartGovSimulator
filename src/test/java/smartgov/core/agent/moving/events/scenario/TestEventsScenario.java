@@ -55,7 +55,7 @@ public class TestEventsScenario extends TestScenario {
 	public List<MoveEvent> moveEvents = new ArrayList<>();
 
 	@Override
-	public Collection<Agent> buildAgents(SmartGovContext context) {
+	public Collection<Agent<?>> buildAgents(SmartGovContext context) {
 		// New body for the first shuttle
 		TestMovingAgentBody shuttleBody = new TestMovingAgentBody();
 		

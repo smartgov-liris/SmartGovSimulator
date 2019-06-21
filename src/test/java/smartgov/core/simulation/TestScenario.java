@@ -48,7 +48,7 @@ public class TestScenario extends Scenario {
 	}
 
 	@Override
-	public Collection<Agent> buildAgents(SmartGovContext context) {
+	public Collection<? extends Agent<?>> buildAgents(SmartGovContext context) {
 		// New body for the first shuttle
 		TestMovingAgentBody shuttleBody = new TestMovingAgentBody();
 		
