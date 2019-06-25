@@ -25,11 +25,10 @@ import smartgov.core.simulation.Scenario;
 import smartgov.urban.geo.SmartGovGeoTest;
 import smartgov.urban.geo.agent.GeoAgent;
 import smartgov.urban.geo.agent.GeoAgentBody;
-import smartgov.urban.geo.agent.mover.TestGeoMover;
+import smartgov.urban.geo.agent.mover.BasicGeoMover;
 import smartgov.urban.geo.environment.GeoTestContext;
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.environment.graph.GeoNode;
-import smartgov.urban.osm.agent.actuator.CarMover;
 
 public class GeoTestScenario extends Scenario {
 	
@@ -108,7 +107,7 @@ public class GeoTestScenario extends Scenario {
 
 	@Override
 	public Collection<Agent<?>> buildAgents(SmartGovContext context) {
-		TestGeoMover mover = new TestGeoMover();
+		BasicGeoMover mover = new BasicGeoMover();
 		GeoAgentBody agentBody = new GeoAgentBody(mover);
 		mover.setAgentBody(agentBody);
 		

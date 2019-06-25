@@ -8,7 +8,7 @@ import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.geo.simulation.GISComputation;
 
-public abstract class BasicGeoMover implements GeoMover {
+public class BasicGeoMover implements GeoMover {
 	
 	protected GeoAgentBody agentBody;
 
@@ -107,8 +107,33 @@ public abstract class BasicGeoMover implements GeoMover {
 		return currentPosition;
 	}
 	
-	protected abstract void handleArcChanged(GeoArc oldArc, GeoArc newArc);
+	/**
+	 * Defines some behavior that should be applied each time an agent reaches the next arc
+	 * of the current plan from the mover.
+	 * 
+	 * <p>
+	 * Example : notify the road containing the new arc that a new agent arrives to handle
+	 * agents interactions. 
+	 * </p>
+	 * 
+	 * @param oldArc Previous arc
+	 * @param newArc Current arc
+	 */
+	protected void handleArcChanged(GeoArc oldArc, GeoArc newArc) {
+		
+	};
 	
-	protected abstract void updateAgentSpeed(GeoAgentBody agentBody);
+	/**
+	 * Called immediately when the {@link #moveOn moveOn()} function is called.
+	 * 
+	 * By default, will keep the agent speed constant.
+	 * 
+	 * Can be use to manage acceleration depending on environment perceptions.
+	 * 
+	 * @param agentBody Moving agent body
+	 */
+	protected void updateAgentSpeed(GeoAgentBody agentBody) {
+		
+	};
 	
 }
