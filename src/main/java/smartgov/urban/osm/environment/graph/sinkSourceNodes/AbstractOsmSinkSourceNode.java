@@ -20,7 +20,7 @@ public abstract class AbstractOsmSinkSourceNode extends OsmNode {
 			OsmContext environment,
 			String id,
 			Coordinate coordinate) {
-		super(id, coordinate);
+		super(id, coordinate, null);
 		this.environment = environment;
 	}
 	

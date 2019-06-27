@@ -40,9 +40,9 @@ public class CarMover extends BasicGeoMover {
 
 	@Override
 	protected void handleArcChanged(GeoArc oldArc, GeoArc newArc) {
-		((OsmArc) oldArc).getRoad().getAgentsOnPath().remove(agentBody);
-		if (!((OsmArc) newArc).getRoad().getAgentsOnPath().contains(agentBody)) {
-			((OsmArc) newArc).getRoad().getAgentsOnPath().add((OsmAgentBody) agentBody);
+		((OsmArc) oldArc).getRoad().getAgentsOnRoad().remove(agentBody);
+		if (!((OsmArc) newArc).getRoad().getAgentsOnRoad().contains(agentBody)) {
+			((OsmArc) newArc).getRoad().getAgentsOnRoad().add((OsmAgentBody) agentBody);
 		}
 		agentBody.setDirection(newArc.getDirection());
 		
@@ -50,7 +50,7 @@ public class CarMover extends BasicGeoMover {
 
 	@Override
 	protected void updateAgentSpeed(GeoAgentBody agentBody) {
-		OsmAgentBody leader = ((OsmArc) agentBody.getPlan().getCurrentArc()).getRoad().getLeaderOfAgent(agentBody);
+		OsmAgentBody leader = ((OsmArc) agentBody.getPlan().getCurrentArc()).getRoad().leaderOfAgent(agentBody);
 		if (leader != null) {
 			agentBody.setSpeed(
 					gippsSteering.getSpeed(

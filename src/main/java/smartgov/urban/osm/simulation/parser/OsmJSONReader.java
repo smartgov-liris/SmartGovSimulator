@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 
+import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.city.Building;
 import smartgov.urban.osm.environment.city.BuildingType;
@@ -133,7 +134,8 @@ public class OsmJSONReader {
 				}
 				OsmNode node = new OsmNode(
 						String.valueOf(index),
-						new Coordinate(currentNode.get("lon").asDouble(), currentNode.get("lat").asDouble()));
+						new Coordinate(currentNode.get("lon").asDouble(), currentNode.get("lat").asDouble()),
+						null);
 				nodes.put(node.getId(), node);
 				index++;
 			}
@@ -435,7 +437,7 @@ public class OsmJSONReader {
 					// Assume that node file has already been parsed.
 					osmNodes.add(nodes.get(nodeId));
 				}
-				Road road = new Road(String.valueOf(index), attributes, osmNodes);
+				Road road = new Road(String.valueOf(index), nodesId);
 				roads.add(road);
 				index++;
 			}

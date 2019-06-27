@@ -3,6 +3,9 @@ package smartgov.urban.osm.environment.graph;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.urban.geo.simulation.GISComputation;
 import smartgov.urban.osm.agent.OsmAgentBody;
@@ -12,28 +15,17 @@ import smartgov.urban.osm.agent.OsmAgentBody;
  * @author Simon
  *
  */
-public class Road {
-
-	private String id;
-	
-	// TODO : Must be unserialized with a custom deserializer.
-	private List<OsmNode> nodes;
+public class Road extends OsmWay {
 	
 	// TODO : Serialize ?
 	private ArrayList<OsmAgentBody> agentsOnRoad;
 	
-	public Road(String id, List<OsmNode> nodes){
-		this.id = id;
-		this.nodes = nodes;
+	@JsonCreator
+	public Road(
+		@JsonProperty("id") String id,
+		@JsonProperty("nodeRefs") List<String> nodeRefs){
+		super(id, nodeRefs);
 		this.agentsOnRoad = new ArrayList<>();
-	}
-
-	public String getId() {
-		return id;
-	}
-	
-	public List<OsmNode> getNodes() {
-		return nodes;
 	}
 	
 	public double distanceBetweenAgentAndLeader(OsmAgentBody agent){
@@ -49,17 +41,17 @@ public class Road {
 	public void addAgentToPath(OsmAgentBody agentBody) {
 		agentsOnRoad.add(agentBody);
 	}
-	public ArrayList<OsmAgentBody> getAgentsOnPath() {
+	public ArrayList<OsmAgentBody> getAgentsOnRoad() {
 		return agentsOnRoad;
 	}
 	
 	public OsmAgentBody leaderOfAgent(MovingAgentBody agent){
-		int agentPosition = this.getAgentsOnPath().indexOf(agent);
+		int agentPosition = this.getAgentsOnRoad().indexOf(agent);
 		if(agentPosition <= 0){
 			//No leader if 0, not on the road if -1
 			return null;
 		}
-		return this.getAgentsOnPath().get(agentPosition - 1);
+		return this.getAgentsOnRoad().get(agentPosition - 1);
 	}
 	
 	public double distanceBetweenTwoAgents(OsmAgentBody leader, OsmAgentBody follower){

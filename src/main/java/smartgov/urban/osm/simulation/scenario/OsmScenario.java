@@ -16,7 +16,6 @@ import smartgov.urban.osm.environment.city.Building;
 import smartgov.urban.osm.environment.city.Home;
 import smartgov.urban.osm.environment.city.WorkOffice;
 import smartgov.urban.osm.environment.graph.OsmArc;
-import smartgov.urban.osm.environment.graph.OsmGraph;
 import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.Road;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkNode;
@@ -54,58 +53,58 @@ public abstract class OsmScenario extends Scenario {
 		return environment;
 	}
 
-	/**
-	 * NodeFile, EdgeFile and RoadFile are required in order to have the minimum
-	 * files to create an environment.
-	 * BuildingFile and BuildingNodeFile are optional.
-	 * @param geography
-	 */
-	private void loadOsmFeatures() {
-		String nodeFile            = 	environment.getFiles().getFile("nodes_for_roads");
-		String edgeFile            = 	environment.getFiles().getFile("edges");
-		String roadFile            = 	environment.getFiles().getFile("roads");
-		String buildingFile        =  	environment.getFiles().getFile("buildings");
-		String buildingNodeFile    = 	environment.getFiles().getFile("nodes_for_buildings");
-		String parkingFile    	   = 	environment.getFiles().getFile("parkings");
-
-		long beginTime = System.currentTimeMillis();
-
-		// TODO : This is temporary dirty solution. Should be refactored.
-
-		// osmNodes ans osmArcs are not added to the environment.
-		// They will be when buildNodes and buildArcs will be called,
-		// and it should be the same for every OSM elements.
-
-		SmartGov.logger.info("Loading nodes from " + nodeFile);
-		osmNodes = jsonReader.parseNodeFile(nodeFile);
-
-		SmartGov.logger.info("Loading buildings from " + buildingFile + ", " + buildingNodeFile);
-		environment.buildings = jsonReader.parseBuildingFile(buildingFile, buildingNodeFile);
-		addHomesAndWorkOfficesToContext();
-
-		SmartGov.logger.info("Loading roads from " + roadFile);
-		environment.roads = jsonReader.parseRoadFile(roadFile, osmNodes);
-
-		SmartGov.logger.info("Loading arcs from " + edgeFile);
-		osmArcs = jsonReader.readArcs(edgeFile, osmNodes, environment.roads);
-
-		SmartGov.logger.info("Loading parking spots from " + parkingFile);
-		environment.parkingSpots.addAll(jsonReader.readParkingWithoutBlockFaces(parkingFile, environment));
-
-		SmartGov.logger.info("Generating Source and Sink Nodes");
-		generateSourceAndSinkNodes();
-		SmartGov.logger.info("Time to process 'parseOSMFiles': " + (System.currentTimeMillis() - beginTime) + "ms.");
-	}
+//	/**
+//	 * NodeFile, EdgeFile and RoadFile are required in order to have the minimum
+//	 * files to create an environment.
+//	 * BuildingFile and BuildingNodeFile are optional.
+//	 * @param geography
+//	 */
+//	private void loadOsmFeatures() {
+//		String nodeFile            = 	environment.getFiles().getFile("nodes_for_roads");
+//		String edgeFile            = 	environment.getFiles().getFile("edges");
+//		String roadFile            = 	environment.getFiles().getFile("roads");
+//		String buildingFile        =  	environment.getFiles().getFile("buildings");
+//		String buildingNodeFile    = 	environment.getFiles().getFile("nodes_for_buildings");
+//		String parkingFile    	   = 	environment.getFiles().getFile("parkings");
+//
+//		long beginTime = System.currentTimeMillis();
+//
+//		// TODO : This is temporary dirty solution. Should be refactored.
+//
+//		// osmNodes ans osmArcs are not added to the environment.
+//		// They will be when buildNodes and buildArcs will be called,
+//		// and it should be the same for every OSM elements.
+//
+//		SmartGov.logger.info("Loading nodes from " + nodeFile);
+//		osmNodes = jsonReader.parseNodeFile(nodeFile);
+//
+//		SmartGov.logger.info("Loading buildings from " + buildingFile + ", " + buildingNodeFile);
+//		environment.buildings = jsonReader.parseBuildingFile(buildingFile, buildingNodeFile);
+//		addHomesAndWorkOfficesToContext();
+//
+//		SmartGov.logger.info("Loading roads from " + roadFile);
+//		environment.roads = jsonReader.parseRoadFile(roadFile, osmNodes);
+//
+//		SmartGov.logger.info("Loading arcs from " + edgeFile);
+//		osmArcs = jsonReader.readArcs(edgeFile, osmNodes, environment.roads);
+//
+//		SmartGov.logger.info("Loading parking spots from " + parkingFile);
+//		environment.parkingSpots.addAll(jsonReader.readParkingWithoutBlockFaces(parkingFile, environment));
+//
+//		SmartGov.logger.info("Generating Source and Sink Nodes");
+//		generateSourceAndSinkNodes();
+//		SmartGov.logger.info("Time to process 'parseOSMFiles': " + (System.currentTimeMillis() - beginTime) + "ms.");
+//	}
 
 	private GeoGraph createGraph() {
-		OsmGraph roadGraph = new OsmGraph(environment, osmNodes, osmArcs);
-		roadGraph.addParkingToRoad(environment.parkingSpots, osmArcs.values());
+		GeoGraph roadGraph = new GeoGraph(osmNodes, osmArcs);
+		// roadGraph.addParkingToRoad(environment.parkingSpots, osmArcs.values());
 		return roadGraph;
 	}
 
 	@Override
 	public Collection<OsmNode> buildNodes(SmartGovContext context) {
-		loadOsmFeatures();
+		// loadOsmFeatures();
 		return osmNodes.values();
 	}
 
