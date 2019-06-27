@@ -2,7 +2,6 @@ package smartgov.urban.osm.agent.actuator;
 
 import org.locationtech.jts.geom.Coordinate;
 
-import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.geo.simulation.GISComputation;
 
 /**
