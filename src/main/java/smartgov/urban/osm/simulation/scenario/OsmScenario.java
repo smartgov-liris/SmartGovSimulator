@@ -1,14 +1,11 @@
 package smartgov.urban.osm.simulation.scenario;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 
 import smartgov.SmartGov;
 import smartgov.core.environment.SmartGovContext;
-import smartgov.core.environment.graph.Arc;
-import smartgov.core.environment.graph.Node;
 import smartgov.core.simulation.Scenario;
 import smartgov.urban.geo.environment.graph.GeoGraph;
 import smartgov.urban.osm.environment.OsmContext;
@@ -17,12 +14,10 @@ import smartgov.urban.osm.environment.city.Home;
 import smartgov.urban.osm.environment.city.WorkOffice;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmNode;
-import smartgov.urban.osm.environment.graph.Road;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkSourceNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSourceNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.SourceNode;
-import smartgov.urban.osm.simulation.parser.OsmJSONReader;
 
 /**
  * Abstract base for OSM scenarios. Define functions to load OSM features parsed by the
@@ -42,11 +37,9 @@ public abstract class OsmScenario extends Scenario {
 	private Map<String, OsmArc> osmArcs;
 
 	private OsmContext environment;
-	protected OsmJSONReader jsonReader;
 
 	public OsmScenario(OsmContext environment) {
 		this.environment = environment;
-		jsonReader = new OsmJSONReader(this);
 	}
 
 	public OsmContext getOsmContext() {
@@ -181,29 +174,29 @@ public abstract class OsmScenario extends Scenario {
 		SmartGov.logger.info("Number of sink nodes : " + environment.getSinkNodes().size());
 	}
 
-	/**
-	 * This function behaves has an arc factory. It is called by the OSMparser to generate
-	 * an arc from the OSM data, that are represented by the arguments of this function.
-	 *
-	 * It can be overridden by sub-scenarios to generate other OsmArcs types, but without
-	 * altering the parsing functions.
-	 *
-	 * @param geography Current Geometry
-	 * @param id Arc id
-	 * @param road Road to which the Arc belongs to.
-	 * @param startNode Start Node
-	 * @param targetNode Target Node
-	 * @param distance Length of the Arc
-	 * @param polyLine Shape of the Arc
-	 * @param lanes Number of OSM lanes
-	 * @param type Arc type. (OSM 'highway' attribute)
-	 * @return Created OsmArc
-	 */
-	public abstract OsmArc createArc(
-			String id,
-			Road road,
-			OsmNode startNode,
-			OsmNode targetNode,
-			int lanes,
-			String type);
+//	/**
+//	 * This function behaves has an arc factory. It is called by the OSMparser to generate
+//	 * an arc from the OSM data, that are represented by the arguments of this function.
+//	 *
+//	 * It can be overridden by sub-scenarios to generate other OsmArcs types, but without
+//	 * altering the parsing functions.
+//	 *
+//	 * @param geography Current Geometry
+//	 * @param id Arc id
+//	 * @param road Road to which the Arc belongs to.
+//	 * @param startNode Start Node
+//	 * @param targetNode Target Node
+//	 * @param distance Length of the Arc
+//	 * @param polyLine Shape of the Arc
+//	 * @param lanes Number of OSM lanes
+//	 * @param type Arc type. (OSM 'highway' attribute)
+//	 * @return Created OsmArc
+//	 */
+//	public abstract OsmArc createArc(
+//			String id,
+//			Road road,
+//			OsmNode startNode,
+//			OsmNode targetNode,
+//			int lanes,
+//			String type);
 }

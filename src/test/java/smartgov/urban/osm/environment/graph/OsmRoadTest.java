@@ -2,9 +2,7 @@ package smartgov.urban.osm.environment.graph;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,9 +48,50 @@ public class OsmRoadTest {
 					);
 			
 			assertThat(
-					road.getAgentsOnRoad(),
+					road.getForwardAgentsOnRoad(),
+					notNullValue()
+					);
+			
+			assertThat(
+					road.getForwardAgentsOnRoad(),
 					notNullValue()
 					);
 		}
+	}
+	
+	@Test
+	public void testOnewayRoadsAreLoadedProperly() throws JsonParseException, JsonMappingException, IOException {
+		OsmLoader<Road> loader = new OsmLoader<>();
+		List<Road> roads = loader.loadOsmElements(
+				new File(this.getClass().getResource("../../ways.json").getFile()),
+				Road.class
+				);
+		
+		int onewayRoadsCount = 0;
+		Road reversedOneWayRoad = null;
+		for(Road road : roads) {
+			if (road.isOneway()) {
+				onewayRoadsCount += 1;
+				if(road.getId().equals("391464268")) {
+					reversedOneWayRoad = road;
+				}
+			}
+		}
+		
+		assertThat(
+				onewayRoadsCount,
+				equalTo(7)
+				);
+		
+		assertThat(
+				reversedOneWayRoad.getId(),
+				equalTo("391464268")
+				);
+		
+		assertThat(
+				reversedOneWayRoad.getNodes(),
+				contains("3946790933", "213922180")
+				);
+		
 	}
 }

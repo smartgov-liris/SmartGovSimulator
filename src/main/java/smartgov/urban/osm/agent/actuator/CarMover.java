@@ -1,10 +1,13 @@
 package smartgov.urban.osm.agent.actuator;
 
+import java.util.List;
+
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.agent.mover.BasicGeoMover;
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.graph.OsmArc;
+import smartgov.urban.osm.environment.graph.Road;
 
 /**
  * Used to move an OsmAgentBody in the osm graph, as if it were
@@ -40,17 +43,60 @@ public class CarMover extends BasicGeoMover {
 
 	@Override
 	protected void handleArcChanged(GeoArc oldArc, GeoArc newArc) {
-		((OsmArc) oldArc).getRoad().getAgentsOnRoad().remove(agentBody);
-		if (!((OsmArc) newArc).getRoad().getAgentsOnRoad().contains(agentBody)) {
-			((OsmArc) newArc).getRoad().getAgentsOnRoad().add((OsmAgentBody) agentBody);
+		if (((OsmArc) oldArc).getRoad() != ((OsmArc) newArc).getRoad()) {
+			/*
+			 * Removes agent from the old road
+			 */
+			List<OsmAgentBody> agentsOnOldRoad = null;
+			switch(((OsmArc) oldArc).getRoadDirection()) {
+			case BACKWARD:
+				agentsOnOldRoad = ((OsmArc) oldArc).getRoad().getBackwardAgentsOnRoad();
+				break;
+			case FORWARD:
+				agentsOnOldRoad = ((OsmArc) oldArc).getRoad().getForwardAgentsOnRoad();
+				break;
+			default:
+				break;
+			
+			}
+			agentsOnOldRoad.remove(agentBody);
+			
+
+			List<OsmAgentBody> agentsOnNewRoad = null;
+			switch(((OsmArc) newArc).getRoadDirection()) {
+			case BACKWARD:
+				agentsOnNewRoad = ((OsmArc) newArc).getRoad().getBackwardAgentsOnRoad();
+				break;
+			case FORWARD:
+				agentsOnNewRoad = ((OsmArc) newArc).getRoad().getForwardAgentsOnRoad();
+				break;
+			default:
+				break;
+			
+			}
+			
+			agentsOnNewRoad.add((OsmAgentBody) agentBody);
+			
+			agentBody.setDirection(newArc.getDirection());
 		}
-		agentBody.setDirection(newArc.getDirection());
-		
 	}
 
 	@Override
 	protected void updateAgentSpeed(GeoAgentBody agentBody) {
-		OsmAgentBody leader = ((OsmArc) agentBody.getPlan().getCurrentArc()).getRoad().leaderOfAgent(agentBody);
+		Road road = ((OsmArc) agentBody.getPlan().getCurrentArc()).getRoad();
+		OsmAgentBody leader = null;
+		switch(((OsmArc) agentBody.getPlan().getCurrentArc()).getRoadDirection()) {
+		case BACKWARD:
+			leader = road.backwardLeaderOfAgent(agentBody);
+			break;
+		case FORWARD:
+			leader = road.forwardLeaderOfAgent(agentBody);
+			break;
+		default:
+			break;
+		
+		}
+		
 		if (leader != null) {
 			agentBody.setSpeed(
 					gippsSteering.getSpeed(

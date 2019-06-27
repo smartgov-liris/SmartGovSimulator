@@ -32,16 +32,4 @@ public class ScenarioVisualization extends OsmScenario {
 		return new ArrayList<>();
 	}
 
-	@Override
-	public OsmArc createArc(String id, Road road, OsmNode startNode, OsmNode targetNode, int lanes, String type) {
-		return new OsmArc(
-				id,
-				road,
-				startNode,
-				targetNode,
-				lanes,
-				type
-				);
-	}
-
 }
