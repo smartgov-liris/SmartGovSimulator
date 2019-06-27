@@ -71,23 +71,4 @@ public class CarMover extends BasicGeoMover {
 					);
 		}
 	}
-	
-//	/**
-//	 * Adds a new CarMovedEvent handler.
-//	 *
-//	 * Triggered each time the car moves : can be triggered several times
-//	 * in the same tick, depending on the tick duration and the agent
-//	 * speed.
-//	 *
-//	 * @param listener new car moved event handler to add
-//	 */
-//	public void addCarMovedEventListener(EventHandler<CarMovedEvent> listener) {
-//		carMovedListeners.add(listener);
-//	}
-//	
-//	private void triggerCarMovedListeners(CarMovedEvent event) {
-//		for (EventHandler<CarMovedEvent> listener : carMovedListeners) {
-//			listener.handle(event);
-//		}
-//	}
 }

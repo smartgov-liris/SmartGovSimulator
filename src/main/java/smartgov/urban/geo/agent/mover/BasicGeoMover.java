@@ -27,7 +27,7 @@ public class BasicGeoMover implements GeoMover {
 	}
 	
 	/**
-	 * Sets the body of this agent.
+	 * Sets the body associated to this mover.
 	 *
 	 * @param agentBody agent body
 	 */
@@ -159,7 +159,7 @@ public class BasicGeoMover implements GeoMover {
 	 * 
 	 * @param listener new car moved event handler to add
 	 */
-	public void addCarMovedEventListener(EventHandler<GeoMoveEvent> listener) {
+	public void addGeoMoveEventListener(EventHandler<GeoMoveEvent> listener) {
 		geoMoveListeners.add(listener);
 	}
 	
