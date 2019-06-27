@@ -4,13 +4,13 @@ import org.locationtech.jts.geom.Coordinate;
 
 import smartgov.core.events.Event;
 
-public class CarMovedEvent extends Event {
+public class GeoMoveEvent extends Event {
 	
 	private Coordinate oldCoordinate;
 	private Coordinate newCoordinate;
 	private double distanceCrossed;
 
-	public CarMovedEvent(
+	public GeoMoveEvent(
 			Coordinate oldCoordinate,
 			Coordinate newCoordinate,
 			double distanceCrossed) {

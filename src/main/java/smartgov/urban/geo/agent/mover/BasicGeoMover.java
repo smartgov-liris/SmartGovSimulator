@@ -1,9 +1,14 @@
 package smartgov.urban.geo.agent.mover;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.locationtech.jts.geom.Coordinate;
 
 import smartgov.core.agent.moving.Plan;
+import smartgov.core.events.EventHandler;
 import smartgov.urban.geo.agent.GeoAgentBody;
+import smartgov.urban.geo.agent.event.GeoMoveEvent;
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.geo.simulation.GISComputation;
@@ -12,11 +17,13 @@ public class BasicGeoMover implements GeoMover {
 	
 	protected GeoAgentBody agentBody;
 
+	private Collection<EventHandler<GeoMoveEvent>> geoMoveListeners;
+	
 	/**
 	 * BasicGeoMover constructor.
 	 */
 	public BasicGeoMover() {
-		
+		this.geoMoveListeners = new ArrayList<>();
 	}
 	
 	/**
@@ -93,13 +100,13 @@ public class BasicGeoMover implements GeoMover {
 				double dx = distance * (destination.x - currentPosition.x) / remainingDistanceToNode;
 				double dy = distance * (destination.y - currentPosition.y) / remainingDistanceToNode;
 				Coordinate newCoordinate = new Coordinate(currentPosition.x + dx, currentPosition.y + dy);
-//				triggerCarMovedListeners(
-//						new CarMovedEvent(
-//								currentPosition,
-//								newCoordinate,
-//								GISComputation.GPS2Meter(currentPosition, newCoordinate)
-//								)
-//						);
+				triggerCarMovedListeners(
+						new GeoMoveEvent(
+								currentPosition,
+								newCoordinate,
+								GISComputation.GPS2Meter(currentPosition, newCoordinate)
+								)
+						);
 				return newCoordinate;
 			}
 		}
@@ -136,4 +143,29 @@ public class BasicGeoMover implements GeoMover {
 		
 	};
 	
+	/**
+	 * Adds a new GeoMoveEvent handler.
+	 *
+	 * <p>
+	 * Triggered each time the car moves : can be triggered several times
+	 * in the same tick, depending on the tick duration and the agent
+	 * speed.
+	 * </p>
+	 * 
+	 * <p>
+	 * Such events can be used to handle crossed distance because sent events
+	 * containes geographical information, whereas classic move event do not.
+	 * </p>
+	 * 
+	 * @param listener new car moved event handler to add
+	 */
+	public void addCarMovedEventListener(EventHandler<GeoMoveEvent> listener) {
+		geoMoveListeners.add(listener);
+	}
+	
+	private void triggerCarMovedListeners(GeoMoveEvent event) {
+		for (EventHandler<GeoMoveEvent> listener : geoMoveListeners) {
+			listener.handle(event);
+		}
+	};
 }
