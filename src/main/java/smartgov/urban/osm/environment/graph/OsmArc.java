@@ -33,12 +33,13 @@ public class OsmArc extends GeoArc {
 	 */
 	public OsmArc(
 			String id,
-			Road road,
-			RoadDirection roadDirection,
 			OsmNode startNode,
-			OsmNode targetNode) {
+			OsmNode targetNode,
+			Road road,
+			RoadDirection roadDirection) {
 		super(id, startNode, targetNode);
 		this.road = road;
+		this.roadDirection = roadDirection;
 	}
 	
 	public Road getRoad() {
