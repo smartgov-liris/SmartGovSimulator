@@ -6,7 +6,7 @@ import smartgov.core.environment.SmartGovContext;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.osm.agent.actuator.CarMover;
-import smartgov.urban.osm.agent.behavior.BasicBehavior;
+import smartgov.urban.osm.agent.behavior.RandomTrafficBehavior;
 import smartgov.urban.osm.environment.OsmContext;
 
 /**
@@ -44,18 +44,18 @@ public class OsmAgentBody extends GeoAgentBody {
 	public void initialize() {
 		updatePlan(
 			context.getGraph().shortestPath(
-					((BasicBehavior) getAgent().getBehavior()).getOrigin(),
-					((BasicBehavior) getAgent().getBehavior()).getDestination()
+					((RandomTrafficBehavior) getAgent().getBehavior()).getOrigin(),
+					((RandomTrafficBehavior) getAgent().getBehavior()).getDestination()
 					)
 			);
 
 		// Make the current agent available for the source node.
 		context.agentsStock.get(
-				((BasicBehavior) getAgent().getBehavior()).getOrigin().getId()
+				((RandomTrafficBehavior) getAgent().getBehavior()).getOrigin().getId()
 				).add(getAgent());
 		
 		// Set up body position
-		setPosition(((GeoNode) ((BasicBehavior) getAgent().getBehavior()).getOrigin()).getPosition());
+		setPosition(((GeoNode) ((RandomTrafficBehavior) getAgent().getBehavior()).getOrigin()).getPosition());
 	}
 	
 }

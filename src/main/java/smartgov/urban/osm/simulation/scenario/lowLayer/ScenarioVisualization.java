@@ -5,11 +5,7 @@ import java.util.Collection;
 
 import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
-import smartgov.urban.osm.environment.OsmContext;
-import smartgov.urban.osm.environment.graph.OsmArc;
-import smartgov.urban.osm.environment.graph.OsmNode;
-import smartgov.urban.osm.environment.graph.Road;
-import smartgov.urban.osm.simulation.scenario.OsmScenario;
+import smartgov.urban.osm.simulation.scenario.BasicOsmScenario;
 
 /**
  * Specific Scenario with the minimum functions to start visualization of
@@ -19,12 +15,12 @@ import smartgov.urban.osm.simulation.scenario.OsmScenario;
  * @author Simon
  *
  */
-public class ScenarioVisualization extends OsmScenario {
+public class ScenarioVisualization extends BasicOsmScenario {
 	
 	public static final String name = "Visualization";
 	
-	public ScenarioVisualization(OsmContext environment) {
-		super(environment);
+	public ScenarioVisualization() {
+		super();
 	}
 
 	@Override

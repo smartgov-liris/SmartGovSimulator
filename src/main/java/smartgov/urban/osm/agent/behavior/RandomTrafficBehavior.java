@@ -7,13 +7,12 @@ import smartgov.core.agent.moving.behavior.MovingBehavior;
 import smartgov.core.environment.graph.Node;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.OsmContext;
-import smartgov.urban.osm.environment.graph.sinkSourceNodes.AbstractOsmSinkSourceNode;
 
 /**
  * A basic behavior that describes agent moving from a random source node to a
  * random sink node by the shortest path, performing only MOVE actions.
  */
-public class BasicBehavior extends MovingBehavior {
+public class RandomTrafficBehavior extends MovingBehavior {
 	
 	/**
 	 * BasicBehavior constructor.
@@ -23,7 +22,7 @@ public class BasicBehavior extends MovingBehavior {
 	 * @param destination initial destination
 	 * @param context osm context
 	 */
-	public BasicBehavior(OsmAgentBody agentBody, AbstractOsmSinkSourceNode origin, AbstractOsmSinkSourceNode destination, OsmContext context) {
+	public RandomTrafficBehavior(OsmAgentBody agentBody, Node origin, Node destination, OsmContext context) {
 		super(agentBody, origin, destination, context);
 	}
 	
@@ -43,9 +42,9 @@ public class BasicBehavior extends MovingBehavior {
 	 * @param rnd Random instance
 	 * @param context osm context
 	 */
-	public static AbstractOsmSinkSourceNode selectRandomSourceNode(Random rnd, OsmContext context) {
+	public static Node selectRandomSourceNode(Random rnd, OsmContext context) {
 		String randomSourceNodeId = (String) context.getSourceNodes().keySet().toArray()[rnd.nextInt(context.getSourceNodes().size())];
-		return (AbstractOsmSinkSourceNode) context.getSourceNodes().get(randomSourceNodeId);
+		return context.getSourceNodes().get(randomSourceNodeId);
 	}
 	
 
@@ -57,12 +56,12 @@ public class BasicBehavior extends MovingBehavior {
 	 * @param sourceNode previously selected source node
 	 * @param context osm context
 	 */
-	public static AbstractOsmSinkSourceNode selectRandomSinkNode(Random rnd, Node sourceNode, OsmContext context) {
+	public static Node selectRandomSinkNode(Random rnd, Node sourceNode, OsmContext context) {
 		String randomSinkNodeId = (String) context.getSinkNodes().keySet().toArray()[rnd.nextInt(context.getSinkNodes().size())];
 		while(randomSinkNodeId == sourceNode.getId()) {
 			randomSinkNodeId = (String) context.getSinkNodes().keySet().toArray()[rnd.nextInt(context.getSinkNodes().size())];
 		}
-		return (AbstractOsmSinkSourceNode) context.getSinkNodes().get(randomSinkNodeId);
+		return context.getSinkNodes().get(randomSinkNodeId);
 	}
 	
 	/**

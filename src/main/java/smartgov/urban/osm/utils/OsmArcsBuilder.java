@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import smartgov.core.environment.graph.Node;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
 import smartgov.urban.osm.environment.graph.OsmNode;
@@ -12,7 +13,7 @@ import smartgov.urban.osm.environment.graph.Road;
 
 public class OsmArcsBuilder {
 	
-	public static List<OsmArc> buildArcs(Map<String, OsmNode> nodes, Collection<Road> roads) {
+	public static List<OsmArc> buildArcs(Map<String, ? extends Node> nodes, Collection<Road> roads) {
 		List<OsmArc> arcs = new ArrayList<>();
 		int id = 1;
 		
@@ -21,8 +22,8 @@ public class OsmArcsBuilder {
 				arcs.add(
 						new OsmArc(
 								String.valueOf(id),
-								nodes.get(road.getNodes().get(i)),
-								nodes.get(road.getNodes().get(i+1)),
+								(OsmNode) nodes.get(road.getNodes().get(i)),
+								(OsmNode) nodes.get(road.getNodes().get(i+1)),
 								road,
 								RoadDirection.FORWARD
 								)
@@ -34,8 +35,8 @@ public class OsmArcsBuilder {
 					arcs.add(
 							new OsmArc(
 									String.valueOf(id),
-									nodes.get(road.getNodes().get(i)),
-									nodes.get(road.getNodes().get(i-1)),
+									(OsmNode) nodes.get(road.getNodes().get(i)),
+									(OsmNode) nodes.get(road.getNodes().get(i-1)),
 									road,
 									RoadDirection.BACKWARD
 									)

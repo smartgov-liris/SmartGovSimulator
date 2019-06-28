@@ -18,7 +18,7 @@ public class TestFiles {
 		 * Loaded output folder should be relative to the config file.
 		 */
 		assertThat(
-				(String) context.getFiles().getFile("outputFolder"),
+				(String) context.getFileLoader().load("outputFolder").getAbsolutePath(),
 				equalTo(TestSmartGovContext.class.getResource("output").getFile())
 				);
 	}

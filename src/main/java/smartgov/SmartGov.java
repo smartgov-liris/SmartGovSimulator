@@ -42,10 +42,10 @@ public class SmartGov {
 
 			@Override
 			public void handle(SimulationStopped event) {
-				String outputFolder = smartGov.getContext().getFiles().getFile("outputFolder");
+				String outputFolder = smartGov.getContext().getFileLoader().load("outputFolder").getAbsolutePath();
 				File agentOutput = new File(outputFolder + File.separator + "agents_" + getRuntime().getTickCount() +".json");
 				File arcsOutput = new File(outputFolder + File.separator + "arcs_" + getRuntime().getTickCount() +".json");
-				File pollutionPeeks = new File(outputFolder + File.separator + "pollution_peeks_" + getRuntime().getTickCount() +".json");
+				// File pollutionPeeks = new File(outputFolder + File.separator + "pollution_peeks_" + getRuntime().getTickCount() +".json");
 				
 				
 				ObjectMapper objectMapper = new ObjectMapper();
@@ -69,7 +69,7 @@ public class SmartGov {
 		String outputFolder = null;
 		
 		try {
-			outputFolder = smartGov.getContext().getFiles().getFile("outputFolder");
+			outputFolder = smartGov.getContext().getFileLoader().load("outputFolder").getAbsolutePath();
 		} catch (IllegalArgumentException e) {
 			logger.warn("No outputFolder specified in the input configuration.");
 		}

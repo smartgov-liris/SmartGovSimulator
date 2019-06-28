@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import smartgov.SmartGov;
 import smartgov.core.simulation.Scenario;
-import smartgov.core.utils.Files;
+import smartgov.core.utils.FileLoader;
 
 /**
  * Abstract simulation context.
@@ -25,7 +25,7 @@ public abstract class AbstractContext {
 	private Scenario scenario;
 	
 	private Properties config;
-	private Files files;
+	private FileLoader fileLoader;
 
 	/**
 	 * Clears all the collections of simulation items
@@ -66,7 +66,7 @@ public abstract class AbstractContext {
 		config = new Properties();
 		try {
 			File configFile = new File(file);
-			files = new Files(configFile.getParentFile().getAbsolutePath(), config);
+			fileLoader = new FileLoader(configFile.getParentFile().getAbsolutePath(), config);
 			config.load(new FileInputStream(new File(file)));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -88,11 +88,11 @@ public abstract class AbstractContext {
 	/**
 	 * File loader.
 	 *
-	 * @see smartgov.core.utils.Files
+	 * @see smartgov.core.utils.FileLoader
 	 * @return a file loaded associated to the current configuration
 	 */
-	public Files getFiles() {
-		return files;
+	public FileLoader getFileLoader() {
+		return fileLoader;
 	}
 	
 }

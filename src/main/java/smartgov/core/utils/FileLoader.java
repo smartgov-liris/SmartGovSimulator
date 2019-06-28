@@ -9,7 +9,7 @@ import java.util.Properties;
  * Paths are loaded relatively to the directory of the configuration file
  * itself.
  */
-public class Files {
+public class FileLoader {
 	
 	private String root;
 	private Properties config;
@@ -21,7 +21,7 @@ public class Files {
 	 * @param root root directory
 	 * @param config loaded configuration file
 	 */
-	public Files(String root, Properties config) {
+	public FileLoader(String root, Properties config) {
 		this.root = root;
 		this.config = config;
 	}
@@ -34,11 +34,11 @@ public class Files {
 	 * directory name
 	 * @return file or directory path
 	 */
-	public String getFile(String file) {
+	public File load(String file) {
 		String relativeFilePath = config.getProperty(file);
 		if (relativeFilePath == null) {
 			throw new IllegalArgumentException("No entry found in config file for " + file);
 		}
-		return root + File.separator + relativeFilePath;
+		return new File(root + File.separator + relativeFilePath);
 	}
 }
