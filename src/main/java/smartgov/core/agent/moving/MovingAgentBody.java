@@ -12,6 +12,9 @@ import smartgov.core.agent.moving.events.DestinationReachedEvent;
 import smartgov.core.agent.moving.events.MoveEvent;
 import smartgov.core.agent.moving.events.NodeReachedEvent;
 import smartgov.core.agent.moving.events.OriginReachedEvent;
+import smartgov.core.agent.moving.plan.FirstNodeEvent;
+import smartgov.core.agent.moving.plan.NextNodeEvent;
+import smartgov.core.agent.moving.plan.Plan;
 import smartgov.core.environment.graph.Arc;
 import smartgov.core.environment.graph.Node;
 import smartgov.core.environment.graph.events.AgentArrival;
@@ -54,6 +57,39 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 		this.originReachedListeners = new ArrayList<>();
 		this.destinationReachedListeners = new ArrayList<>();
 		this.plan = new Plan();
+		
+		this.plan.addNextNodeListener(new EventHandler<NextNodeEvent>() {
+
+			@Override
+			public void handle(NextNodeEvent event) {
+				buildAndTriggerEventsAtMove(
+					event.getOldArc(),
+					event.getOldNode(),
+					event.getNewArc(),
+					event.getNewNode());
+			}
+			
+		});
+		
+		this.plan.addFirstNodeListener(new EventHandler<FirstNodeEvent>() {
+
+			@Override
+			public void handle(FirstNodeEvent event) {
+				// Node reached events
+				triggerNodeReachedListeners(new NodeReachedEvent(event.getFirstNode()));
+				event.getFirstNode().triggerAgentArrivalListeners(new AgentArrival((MovingAgent) getAgent()));
+				
+				// Origin event
+				event.getFirstNode().triggerAgentOriginListeners(new AgentOrigin((MovingAgent) getAgent()));
+				triggerOriginReachedListeners(new OriginReachedEvent(event.getFirstNode()));
+				
+				// Arc reached events
+				triggerArcReachedListeners(new ArcReachedEvent(event.getFirstArc()));
+				event.getFirstArc().triggerAgentArrivalListeners(new AgentArrival((MovingAgent) getAgent()));
+
+			}
+			
+		});
 	}
 
 	/**
@@ -72,26 +108,11 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 * All the nodes of the plan will be replaced, from origin to destination.
 	 * </p>
 	 *
-	 * <p>
-	 * Also triggers <em>origin</em>, <em>node reached</em> and <em>arc reached</em>
-	 * events on the first node and arc of the updated plan.
-	 *
 	 * @see Plan#update
 	 * @param nodes new nodes of agent body's plan
 	 */
 	public void updatePlan(List<? extends Node> nodes) {
 		plan.update(nodes);
-		// Node reached events
-		triggerNodeReachedListeners(new NodeReachedEvent(plan.getCurrentNode()));
-		plan.getCurrentNode().triggerAgentArrivalListeners(new AgentArrival((MovingAgent) getAgent()));
-		
-		// Origin event
-		plan.getCurrentNode().triggerAgentOriginListeners(new AgentOrigin((MovingAgent) getAgent()));
-		triggerOriginReachedListeners(new OriginReachedEvent(plan.getCurrentNode()));
-		
-		// Arc reached events
-		triggerArcReachedListeners(new ArcReachedEvent(plan.getCurrentArc()));
-		plan.getCurrentArc().triggerAgentArrivalListeners(new AgentArrival((MovingAgent) getAgent()));
 	}
 
 	/**
@@ -108,13 +129,10 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 		// TODO : other event listeners
 		switch(action.getType()){
 		case MOVE:
-			Arc oldArc = plan.getCurrentArc();
-			Node oldNode = plan.getCurrentNode();
+			/*
+			 * Events are handled through the plan next node events. See this constructor.
+			 */
 			handleMove();
-			Arc newArc = plan.getCurrentArc();
-			Node newNode = plan.getCurrentNode();
-			buildAndTriggerEventsAtMove(oldArc, oldNode, newArc, newNode);
-			
 			break;
 		case WAIT:
 			handleWait();
@@ -145,23 +163,23 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 		if(oldArc != newArc) {
 			oldArc.triggerAgentDepartureListeners(new AgentDeparture((MovingAgent) getAgent()));
 			triggerArcLeftListeners(new ArcLeftEvent(oldArc));
-			if(newArc != null) {
-				newArc.triggerAgentArrivalListeners(new AgentArrival((MovingAgent) getAgent()));
-				triggerArcReachedListeners(new ArcReachedEvent(newArc));
-			}
+
+			newArc.triggerAgentArrivalListeners(new AgentArrival((MovingAgent) getAgent()));
+			triggerArcReachedListeners(new ArcReachedEvent(newArc));
+
 		}
 		
 		// Node relative events
 		if(oldNode != newNode) {
 			oldNode.triggerAgentDepartureListeners(new AgentDeparture((MovingAgent) getAgent()));
-			if(newNode != null) {
-				newNode.triggerAgentArrivalListeners(new AgentArrival((MovingAgent) getAgent()));
-				triggerNodeReachedListeners(new NodeReachedEvent(newNode));
-			}
+
+			newNode.triggerAgentArrivalListeners(new AgentArrival((MovingAgent) getAgent()));
+			triggerNodeReachedListeners(new NodeReachedEvent(newNode));
+
 		}
 		
 		// Has the agent reached its destination?
-		if(plan.isPathComplete()) {
+		if(plan.isPlanComplete()) {
 			/*
 			 * When the agent has reached its destination, there is no next arc, so oldArc = newArc,
 			 * but we still need to notify that the last arc has been left.

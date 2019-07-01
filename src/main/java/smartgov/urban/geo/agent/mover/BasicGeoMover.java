@@ -2,10 +2,11 @@ package smartgov.urban.geo.agent.mover;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.locationtech.jts.geom.Coordinate;
 
-import smartgov.core.agent.moving.Plan;
+import smartgov.core.agent.moving.plan.Plan;
 import smartgov.core.events.EventHandler;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.agent.event.GeoMoveEvent;
@@ -43,12 +44,10 @@ public class BasicGeoMover implements GeoMover {
 	// TODO: refactor parameter...
 	@Override
 	public Coordinate moveOn(double distance){
-		// TODO : make destination a parameter, and perform updates using listeners.
 		updateAgentSpeed(agentBody);
-		// double distance = agentBody.getSpeed() * SmartGov.getRuntime().getTickDuration();
 		Plan plan = agentBody.getPlan();
 		Coordinate currentPosition = agentBody.getPosition();
-		if(!plan.isPathComplete()){
+		if(!plan.isPlanComplete()){
 			GeoArc arc = (GeoArc) plan.getCurrentArc();
 			Coordinate destination = ((GeoNode) plan.getNextNode()).getPosition();
 			
@@ -65,7 +64,6 @@ public class BasicGeoMover implements GeoMover {
 					// If this is not the last node, cross the remaining distance on the next arc
 					handleArcChanged(arc, newArc);
 					
-					// New remaining time, assuming that 
 					return moveOn(distance - remainingDistanceToNode);
 				}
 			} else {

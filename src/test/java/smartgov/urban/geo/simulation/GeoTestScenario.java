@@ -18,6 +18,7 @@ import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.behavior.TestMovingBehavior;
 import smartgov.core.agent.moving.events.NodeReachedEvent;
 import smartgov.core.environment.SmartGovContext;
+import smartgov.core.environment.TestContext;
 import smartgov.core.environment.graph.Arc;
 import smartgov.core.environment.graph.Node;
 import smartgov.core.events.EventHandler;
@@ -26,7 +27,6 @@ import smartgov.urban.geo.SmartGovGeoTest;
 import smartgov.urban.geo.agent.GeoAgent;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.agent.mover.BasicGeoMover;
-import smartgov.urban.geo.environment.GeoTestContext;
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.environment.graph.GeoNode;
 
@@ -120,7 +120,7 @@ public class GeoTestScenario extends Scenario {
 						agentBody,
 						context.nodes.get("1"),
 						context.nodes.get("3"),
-						(GeoTestContext) context));
+						(TestContext) context));
 		agentBody.setPosition(((GeoNode) context.nodes.get("1")).getPosition());
 		
 		return Arrays.asList(geoAgent);

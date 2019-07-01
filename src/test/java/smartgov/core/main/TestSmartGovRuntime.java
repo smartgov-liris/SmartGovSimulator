@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import smartgov.SmartGov;
 import smartgov.SmartGovTest;
 import smartgov.core.agent.moving.MovingAgentBody;
-import smartgov.core.agent.moving.Plan;
+import smartgov.core.agent.moving.plan.Plan;
 import smartgov.core.environment.graph.Node;
 import smartgov.core.events.EventHandler;
 import smartgov.core.main.events.SimulationPaused;

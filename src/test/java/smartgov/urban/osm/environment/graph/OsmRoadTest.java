@@ -41,7 +41,7 @@ public class OsmRoadTest {
 		
 		assertThat(
 				roads.values(),
-				hasSize(326)
+				hasSize(110)
 				);
 		
 		for (Road road : roads.values()) {
@@ -85,7 +85,7 @@ public class OsmRoadTest {
 		
 		assertThat(
 				onewayRoadsCount,
-				equalTo(7)
+				equalTo(6)
 				);
 		
 		Road reversedOneWayRoad = roads.get("391464268");

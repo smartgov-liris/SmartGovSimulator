@@ -1,5 +1,7 @@
 package smartgov.urban.osm.environment.graph;
 
+import java.util.Arrays;
+
 import org.locationtech.jts.geom.Coordinate;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -33,9 +35,21 @@ public class OsmNode extends GeoNode {
 		@JsonProperty("lon") double lon) {
 		super(id, new Coordinate(lon, lat));
 	}
+	
+	public void setRoad(Road road) {
+		this.road = road;
+	}
 
 	public Road getRoad() {
 		return road;
 	}
+
+	@Override
+	public String toString() {
+		return "OsmNode [road=" + road + ", id=" + id + ", position="
+				+ Arrays.toString(getPositionAsArray()) + "]";
+	}
+	
+	
 
 }

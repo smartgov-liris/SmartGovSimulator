@@ -39,7 +39,7 @@ public class OsmNodeTest {
 		
 		assertThat(
 				osmNodes,
-				hasSize(6421)
+				hasSize(1179)
 				);
 		
 		for (OsmNode osmNode : osmNodes) {

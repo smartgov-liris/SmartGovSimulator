@@ -5,8 +5,8 @@ import java.util.Random;
 import smartgov.core.agent.moving.behavior.MovingBehavior;
 import smartgov.core.environment.graph.Node;
 import smartgov.urban.geo.agent.GeoAgent;
-import smartgov.urban.osm.agent.actuator.CarMover;
 import smartgov.urban.osm.agent.behavior.RandomTrafficBehavior;
+import smartgov.urban.osm.agent.mover.CarMover;
 import smartgov.urban.osm.environment.OsmContext;
 
 /**
@@ -36,7 +36,10 @@ public class OsmAgent extends GeoAgent {
 		
 		Random rnd = new Random();
 		Node randomOrigin = RandomTrafficBehavior.selectRandomSourceNode(rnd, (OsmContext) context);
-		Node randomDestination = RandomTrafficBehavior.selectRandomSinkNode(rnd, randomOrigin, (OsmContext) context);
+		Node randomDestination = RandomTrafficBehavior.selectRandomSinkNode(
+				rnd,
+				context.getSourceNodes().get(randomOrigin.getId()),
+				(OsmContext) context);
 		
 		OsmAgent newAgent = new OsmAgent(
 				id,
@@ -47,15 +50,15 @@ public class OsmAgent extends GeoAgent {
 						randomDestination,
 						(OsmContext) context));
 
-		newAgent.initialize();
+		body.initialize();
 		return newAgent;
 	}
 	
-	/**
-	 * Refresh the behavior and initialize the osmAgentBody.
-	 */
-	public void initialize() {
-		((RandomTrafficBehavior) getBehavior()).refresh();
-		((OsmAgentBody) getBody()).initialize();
-	}
+//	/**
+//	 * Refresh the behavior and initialize the osmAgentBody.
+//	 */
+//	public void initialize() {
+//		// ((RandomTrafficBehavior) getBehavior()).refresh();
+//		((OsmAgentBody) getBody()).initialize();
+//	}
 }

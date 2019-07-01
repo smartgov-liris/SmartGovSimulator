@@ -64,6 +64,9 @@ public class TestMoveEvent {
 			newNodeIds.add(event.getNewNode().getId());
 		}
 		
+		/*
+		 * A move event with a null old arc is sent at plan initialization 
+		 */
 		assertThat(
 			oldArcIds,
 			contains("1", "2", "4")

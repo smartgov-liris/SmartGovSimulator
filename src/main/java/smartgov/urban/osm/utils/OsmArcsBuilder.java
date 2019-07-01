@@ -28,8 +28,11 @@ public class OsmArcsBuilder {
 								RoadDirection.FORWARD
 								)
 							);
+				((OsmNode) nodes.get(road.getNodes().get(i))).setRoad(road);
 				id++;
 			}
+			((OsmNode) nodes.get(road.getNodes().get(road.getNodes().size() - 1))).setRoad(road);
+
 			if (!road.isOneway()) {
 				for(int i = road.getNodes().size() - 1; i > 0; i--) {
 					arcs.add(

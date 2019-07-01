@@ -28,7 +28,7 @@ public class OsmWayTest {
 		
 		assertThat(
 				osmWays,
-				hasSize(326)
+				hasSize(110)
 				);
 		
 		for (OsmWay osmWay : osmWays) {

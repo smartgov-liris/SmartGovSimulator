@@ -1,4 +1,4 @@
-package smartgov.core.agent.moving;
+package smartgov.core.agent.moving.plan;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.core.environment.graph.Arc;
 import smartgov.core.environment.graph.Node;
+import smartgov.core.events.EventHandler;
 import smartgov.core.output.node.NodeListIdSerializer;
 import smartgov.core.output.node.NodeIdSerializer;
 import smartgov.core.output.arc.ArcIdSerializer;
@@ -30,12 +31,20 @@ public class Plan {
 	@JsonSerialize(using=ArcIdSerializer.class)
 	private Arc currentArc;
 	@JsonIgnore
-	private boolean pathComplete;
+	private boolean planComplete;
+	
+	@JsonIgnore
+	private List<EventHandler<NextNodeEvent>> nextNodeEventHandlers;
+	@JsonIgnore
+	private List<EventHandler<FirstNodeEvent>> firstNodeEventHandlers;
+	
 	/**
 	 * Plan constructor.
 	 */
 	public Plan() {
 		this.nodes = new ArrayList<>();
+		this.nextNodeEventHandlers = new ArrayList<>();
+		this.firstNodeEventHandlers = new ArrayList<>();
 	}
 	
 	/**
@@ -64,8 +73,9 @@ public class Plan {
 					}
 				}
 			}
+			throw new IllegalStateException("No arc found from node " + currentNode.getId() + " to " + nextNode.getId());
 		}
-		return null; //Should not happen !
+		throw new IllegalStateException("No next node available, the plan may be complete.");
 	}
 	
 	/**
@@ -88,23 +98,26 @@ public class Plan {
 	 * @param nodes new nodes of the plan
 	 */
 	public void update(List<? extends Node> nodes) {
+		if(nodes.size() < 2) {
+			throw new IllegalArgumentException("The plan should be updated with at least two nodes.");
+		}
 		this.nodes.clear();
 		this.nodes.addAll(nodes);
 		this.remainingNodes = new LinkedList<>();
 		remainingNodes.addAll(nodes);
-		this.pathComplete = false;
-		this.currentNode = null;
-		this.currentArc = null;
-		reachNextNode();
+		this.planComplete = false;
+//		this.currentNode = null;
+//		this.currentArc = null;
+		reachFirstNode();
 	}
 	
 	/*
 	 * True when the last node of the plan has been reached.
 	 *
-	 * @return true if and only if the path is complete
+	 * @return true if and only if the plan is complete
 	 */
-	public boolean isPathComplete() {
-		return pathComplete;
+	public boolean isPlanComplete() {
+		return planComplete;
 	}
 	
 	/**
@@ -170,7 +183,7 @@ public class Plan {
 	public List<Node> getNodes() {
 		return nodes;
 	}
-	
+
 	/**
 	 * Reach the next node of the plan, if it exists.
 	 * 
@@ -180,16 +193,59 @@ public class Plan {
 		if (remainingNodes.size() == 0) {
 			throw new IllegalStateException("The Plan is already complete.");
 		}
+		Node oldNode = this.currentNode;
+		Arc oldArc = this.currentArc;
 
 		this.currentNode = remainingNodes.poll();
 		
 		if (remainingNodes.size() == 0) {
-			pathComplete = true;
+			planComplete = true;
 		}
 		else {
 			this.currentArc = findCurrentArc();
 		}
 		
+		triggerNextNodeListeners(
+				new NextNodeEvent(
+						oldArc,
+						this.currentArc,
+						oldNode,
+						this.currentNode
+						)
+				);
+		
+	}
+	
+	private void reachFirstNode() {
+		this.currentNode = remainingNodes.poll();
+		this.currentArc = findCurrentArc();
+		
+		triggerFirstNodeListeners(
+				new FirstNodeEvent(
+						this.currentNode,
+						this.currentArc
+						)
+				);
+	}
+	
+	public void addNextNodeListener(EventHandler<NextNodeEvent> listener) {
+		this.nextNodeEventHandlers.add(listener);
+	}
+	
+	private void triggerNextNodeListeners(NextNodeEvent event) {
+		for (EventHandler<NextNodeEvent> listener : nextNodeEventHandlers) {
+			listener.handle(event);
+		}
+	}
+	
+	public void addFirstNodeListener(EventHandler<FirstNodeEvent> listener) {
+		this.firstNodeEventHandlers.add(listener);
+	}
+	
+	private void triggerFirstNodeListeners(FirstNodeEvent event) {
+		for (EventHandler<FirstNodeEvent> listener : firstNodeEventHandlers) {
+			listener.handle(event);
+		}
 	}
 	
 	/*

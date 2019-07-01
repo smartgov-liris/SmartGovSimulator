@@ -10,8 +10,8 @@ import java.util.Arrays;
 
 import smartgov.core.agent.core.Agent;
 import smartgov.core.agent.moving.MovingAgentBody;
-import smartgov.core.agent.moving.Plan;
 import smartgov.core.agent.moving.behavior.TestMovingBehavior;
+import smartgov.core.agent.moving.plan.Plan;
 import smartgov.core.environment.TestSmartGovContext;
 import smartgov.core.environment.graph.Node;
 import smartgov.core.simulation.TestScenario;

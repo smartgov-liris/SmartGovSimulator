@@ -119,4 +119,11 @@ public class Road extends OsmWay {
 			return -1.0;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "Road [id=" + getId() + "]";
+	}
+	
+	
 }

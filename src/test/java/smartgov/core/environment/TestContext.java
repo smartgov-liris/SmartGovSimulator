@@ -2,6 +2,7 @@ package smartgov.core.environment;
 
 import smartgov.core.simulation.Scenario;
 import smartgov.core.simulation.TestScenario;
+import smartgov.urban.geo.simulation.GeoTestScenario;
 
 public class TestContext extends SmartGovContext {
 
@@ -14,6 +15,8 @@ public class TestContext extends SmartGovContext {
 		switch(name) {
 		case TestScenario.name:
 			return new TestScenario();
+		case GeoTestScenario.name:
+			return new GeoTestScenario();
 		default:
 			return null;
 		}

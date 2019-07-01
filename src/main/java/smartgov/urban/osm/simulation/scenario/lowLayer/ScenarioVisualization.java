@@ -9,10 +9,7 @@ import smartgov.urban.osm.simulation.scenario.BasicOsmScenario;
 
 /**
  * Specific Scenario with the minimum functions to start visualization of
- * SmartGov environment without human agents.
- * <strike>Create an environment representation based on files in VisualizationTest
- * folder.</strike>
- * @author Simon
+ * osm features without agents.
  *
  */
 public class ScenarioVisualization extends BasicOsmScenario {

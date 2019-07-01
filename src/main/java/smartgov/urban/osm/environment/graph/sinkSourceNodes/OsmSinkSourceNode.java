@@ -1,24 +1,35 @@
 package smartgov.urban.osm.environment.graph.sinkSourceNodes;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import org.locationtech.jts.geom.Coordinate;
 
-import smartgov.core.environment.graph.Arc;
-import smartgov.urban.osm.environment.OsmContext;
-
-public class OsmSinkSourceNode extends AbstractOsmSinkSourceNode implements SinkNode, SourceNode {
+public class OsmSinkSourceNode implements SinkNode, SourceNode {
 	
-	public OsmSinkSourceNode(
-			OsmContext environment,
-			String id,
-			Coordinate coordinate,
-			List<? extends Arc> incomingArcs,
-			List<? extends Arc> outgoingArcs) {
-		super(environment, id, coordinate);
-		this.incomingArcs.addAll(incomingArcs);
-		this.outgoingArcs.addAll(outgoingArcs);
-		
-		registerSinkBehavior();
+	private String nodeId;
+	private Collection<SourceNode> sources;
+	private Collection<SinkNode> destinations;
+	
+	public OsmSinkSourceNode(String nodeId) {
+		sources = new ArrayList<>();
+		destinations = new ArrayList<>();
+		this.nodeId = nodeId;
 	}
+	
+	@Override
+	public Collection<SinkNode> destinations() {
+		return destinations;
+	}
+
+	@Override
+	public Collection<SourceNode> sources() {
+		return sources;
+	}
+
+	@Override
+	public String getNodeId() {
+		return nodeId;
+	}
+
+	
 }

@@ -1,12 +1,18 @@
 package smartgov.urban.osm.agent.behavior;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import smartgov.core.agent.moving.behavior.MoverAction;
 import smartgov.core.agent.moving.behavior.MovingBehavior;
+import smartgov.core.agent.moving.events.DestinationReachedEvent;
 import smartgov.core.environment.graph.Node;
+import smartgov.core.events.EventHandler;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.OsmContext;
+import smartgov.urban.osm.environment.graph.sinkSourceNodes.SinkNode;
+import smartgov.urban.osm.environment.graph.sinkSourceNodes.SourceNode;
 
 /**
  * A basic behavior that describes agent moving from a random source node to a
@@ -24,6 +30,15 @@ public class RandomTrafficBehavior extends MovingBehavior {
 	 */
 	public RandomTrafficBehavior(OsmAgentBody agentBody, Node origin, Node destination, OsmContext context) {
 		super(agentBody, origin, destination, context);
+		agentBody.addOnDestinationReachedListener(new EventHandler<DestinationReachedEvent>() {
+
+			@Override
+			public void handle(DestinationReachedEvent event) {
+				refresh();
+				agentBody.initialize();
+			}
+			
+		});
 	}
 	
 	/**
@@ -32,7 +47,10 @@ public class RandomTrafficBehavior extends MovingBehavior {
 	public void refresh() {
 		Random rnd = new Random();
 		Node origin = selectRandomSourceNode(rnd,(OsmContext) getContext());
-		Node destination = selectRandomSinkNode(rnd, origin,(OsmContext) getContext());
+		Node destination = selectRandomSinkNode(
+				rnd,
+				((OsmContext) getContext()).getSourceNodes().get(origin.getId()),
+				(OsmContext) getContext());
 		refresh(origin, destination);
 	}
 	
@@ -44,7 +62,7 @@ public class RandomTrafficBehavior extends MovingBehavior {
 	 */
 	public static Node selectRandomSourceNode(Random rnd, OsmContext context) {
 		String randomSourceNodeId = (String) context.getSourceNodes().keySet().toArray()[rnd.nextInt(context.getSourceNodes().size())];
-		return context.getSourceNodes().get(randomSourceNodeId);
+		return context.nodes.get(context.getSourceNodes().get(randomSourceNodeId).getNodeId());
 	}
 	
 
@@ -56,12 +74,9 @@ public class RandomTrafficBehavior extends MovingBehavior {
 	 * @param sourceNode previously selected source node
 	 * @param context osm context
 	 */
-	public static Node selectRandomSinkNode(Random rnd, Node sourceNode, OsmContext context) {
-		String randomSinkNodeId = (String) context.getSinkNodes().keySet().toArray()[rnd.nextInt(context.getSinkNodes().size())];
-		while(randomSinkNodeId == sourceNode.getId()) {
-			randomSinkNodeId = (String) context.getSinkNodes().keySet().toArray()[rnd.nextInt(context.getSinkNodes().size())];
-		}
-		return context.getSinkNodes().get(randomSinkNodeId);
+	public static Node selectRandomSinkNode(Random rnd, SourceNode sourceNode, OsmContext context) {
+		SinkNode randomSinkNode = (SinkNode) sourceNode.destinations().toArray()[rnd.nextInt(sourceNode.destinations().size())];
+		return context.nodes.get(randomSinkNode.getNodeId());
 	}
 	
 	/**

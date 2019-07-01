@@ -1,4 +1,4 @@
-package smartgov.urban.osm.agent.actuator;
+package smartgov.urban.osm.agent.mover;
 
 import org.locationtech.jts.geom.Coordinate;
 

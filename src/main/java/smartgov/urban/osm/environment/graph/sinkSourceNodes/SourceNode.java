@@ -1,13 +1,10 @@
 package smartgov.urban.osm.environment.graph.sinkSourceNodes;
 
-/**
- * A special node behavior, where agents appears.
- * 
- * @author pbreugnot
- *
- */
+import java.util.Collection;
+
 public interface SourceNode {
 	
-	public String getId();
-	
+	public String getNodeId();
+	public Collection<SinkNode> destinations();
+
 }

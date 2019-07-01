@@ -77,8 +77,9 @@ public class Graph {
 			 for(org.graphstream.graph.Node n: path.getNodePath())
 				 nodesId.add(n.getId());
 		 }
-		 else //Non joinable node
-			 nodesId.add(from.getId());
+		 else {
+			 throw new IllegalArgumentException("No path could be built from " + from + " to " + to);
+		 }
 		 return nodesId;
 	}
 
