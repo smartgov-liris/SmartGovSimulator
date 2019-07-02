@@ -1,13 +1,10 @@
 package smartgov.urban.osm.agent;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import smartgov.core.environment.SmartGovContext;
+import smartgov.core.agent.moving.behavior.MovingBehavior;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.environment.graph.GeoNode;
-import smartgov.urban.osm.agent.behavior.RandomTrafficBehavior;
 import smartgov.urban.osm.agent.mover.CarMover;
-import smartgov.urban.osm.environment.OsmContext;
 
 /**
  * An agent body moving in the OSM graph, as in a vehicle.
@@ -19,22 +16,15 @@ import smartgov.urban.osm.environment.OsmContext;
  *
  */
 public class OsmAgentBody extends GeoAgentBody {
-
-	@JsonIgnore
-	private OsmContext context;
 	
 	/**
 	 * OsmAgentBody constructor.
 	 * 
 	 * @param carMover A CarMover
-	 * @param context osm context
 	 */
-	public OsmAgentBody(
-			CarMover carMover,
-			OsmContext context) {
+	public OsmAgentBody(CarMover carMover) {
 		super(carMover);
 		carMover.setAgentBody(this);
-		this.context = context;
 	}
 	
 	/**
@@ -55,7 +45,7 @@ public class OsmAgentBody extends GeoAgentBody {
 //				).add(getAgent());
 		
 		// Set up body position
-		setPosition(((GeoNode) ((RandomTrafficBehavior) getAgent().getBehavior()).getOrigin()).getPosition());
+		setPosition(((GeoNode) ((MovingBehavior) getAgent().getBehavior()).getOrigin()).getPosition());
 	}
 	
 }

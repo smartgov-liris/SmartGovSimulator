@@ -98,7 +98,7 @@ public class BasicGeoMover implements GeoMover {
 				double dx = distance * (destination.x - currentPosition.x) / remainingDistanceToNode;
 				double dy = distance * (destination.y - currentPosition.y) / remainingDistanceToNode;
 				Coordinate newCoordinate = new Coordinate(currentPosition.x + dx, currentPosition.y + dy);
-				triggerCarMovedListeners(
+				triggerGeoMoveListeners(
 						new GeoMoveEvent(
 								currentPosition,
 								newCoordinate,
@@ -161,7 +161,7 @@ public class BasicGeoMover implements GeoMover {
 		geoMoveListeners.add(listener);
 	}
 	
-	private void triggerCarMovedListeners(GeoMoveEvent event) {
+	private void triggerGeoMoveListeners(GeoMoveEvent event) {
 		for (EventHandler<GeoMoveEvent> listener : geoMoveListeners) {
 			listener.handle(event);
 		}

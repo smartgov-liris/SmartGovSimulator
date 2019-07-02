@@ -1,16 +1,11 @@
 package smartgov.core.simulation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat; 
 import static org.hamcrest.Matchers.*;
 
-import smartgov.SmartGov;
-import smartgov.core.agent.core.Agent;
-import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.TestContext;
 import smartgov.core.environment.TestSmartGovContext;
 import smartgov.core.environment.graph.Arc;

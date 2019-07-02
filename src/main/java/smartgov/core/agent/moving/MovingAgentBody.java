@@ -132,7 +132,20 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 			/*
 			 * Events are handled through the plan next node events. See this constructor.
 			 */
+			Arc oldArc = plan.getCurrentArc();
+			Node oldNode = plan.getCurrentNode();
 			handleMove();
+			Arc newArc = plan.getCurrentArc();
+			Node newNode = plan.getCurrentNode();
+			// Move event, always triggered
+			triggerOnMoveListeners(
+				new MoveEvent(
+					oldArc,
+					newArc,
+					oldNode,
+					newNode
+					)
+				);
 			break;
 		case WAIT:
 			handleWait();
@@ -149,15 +162,6 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	}
 	
 	private void buildAndTriggerEventsAtMove(Arc oldArc, Node oldNode, Arc newArc, Node newNode) {
-		// Move event, always triggered
-		triggerOnMoveListeners(
-			new MoveEvent(
-				oldArc,
-				newArc,
-				oldNode,
-				newNode
-				)
-			);
 		
 		// Arc relative events
 		if(oldArc != newArc) {

@@ -22,14 +22,20 @@ import smartgov.urban.osm.environment.graph.Road;
  *
  */
 public class CarMover extends BasicGeoMover {
+	
+	private static final double reactionTime = 1.0;
 
 	private GippsSteering gippsSteering;
+	private double maximumSpeed;
+	private double vehicleSize;
 
 	/**
 	 * CarMover constructor.
 	 */
-	public CarMover() {
-		gippsSteering = new GippsSteering(1.0,1.5,-3.0);
+	public CarMover(double maximumAcceleration, double maximumBraking, double maximumSpeed, double vehicleSize) {
+		gippsSteering = new GippsSteering(reactionTime, maximumAcceleration, maximumBraking);
+		this.maximumSpeed = maximumSpeed;
+		this.vehicleSize = vehicleSize;
 	}
 	
 	/**
@@ -37,8 +43,18 @@ public class CarMover extends BasicGeoMover {
 	 *
 	 * @return Gipps' model
 	 */
-	public GippsSteering getSteering() {
+	public GippsSteering getGippsSteering() {
 		return gippsSteering;
+	}
+	
+	
+
+	public double getMaximumSpeed() {
+		return maximumSpeed;
+	}
+
+	public double getVehicleSize() {
+		return vehicleSize;
 	}
 
 	@Override
@@ -101,11 +117,11 @@ public class CarMover extends BasicGeoMover {
 			agentBody.setSpeed(
 					gippsSteering.getSpeed(
 						agentBody.getSpeed(), // current speed
-						40, // Max speed
+						maximumSpeed, // Max speed
 						leader.getPosition(), // Position of the leader
 						leader.getSpeed(),
-						7.5,
-						-3,
+						((CarMover) leader.getMover()).getVehicleSize(),
+						((CarMover) leader.getMover()).getGippsSteering().getMaximumBraking(),
 						agentBody.getPosition())
 					);
 		}

@@ -12,16 +12,12 @@ public class GippsSteering {
 	
 	private double a_n; //maximum acceleration which the driver of vehicle n wishes to undertake
 	private double b_n; //most severe braking that the driver of vehicle n wishes to undertake (b_n < 0)
-	//private double s_n; //effective size of vehicle n, that is, the physical length plus a margin into which the following vehicle is not willing to intrude, even when at rest
-	//private double V_n; //speed at which the driver of vehicle n wishes to travel
-	//private double x_n_t; //location of the front of vehicle n at time t
-	//private double v_n_t; //speed of vehicle n at time t
 	private double teta; //apparent reaction time, a constant for all vehicles
 	
 	public GippsSteering(double teta, double a_n, double b_n){
 		this.a_n = a_n;
-		this.teta = teta;
 		this.b_n = b_n;
+		this.teta = teta;
 	}
 	
 	
@@ -53,24 +49,6 @@ public class GippsSteering {
 	public double getSpeedWithoutLeader(double v_n_t, double V_n) {
 		return getAcceleration(v_n_t, V_n);
 	}
-	//*/
-//	public double getSpeed(double v_n_t, double V_n, GeoNode targetType, double v_n_1_t, double s_n_1, double b_n_1, Coordinate x_n_t){
-//		Coordinate positionOfTarget = targetType.getPosition();
-//		// TODO: clear thar function
-//		// targetType used to be a WorldObject, but this is no more the case.
-//		if(targetType instanceof GeoNode){ // ???????
-//			// targetType = Node => no leader
-//			double speed = getAcceleration(v_n_t, V_n);
-//			return speed < 0 ? 0 : speed;
-//		} else{
-//			//System.out.println("Acceleration: " +getAcceleration(v_n_t, V_n) + ", braking: " + getBraking(x_n_1_t, v_n_1_t, s_n_1, v_n_t, b_n_1, x_n_t));
-//			double speed = Math.min(getAcceleration(v_n_t, V_n), getBraking(positionOfTarget, v_n_1_t, s_n_1, v_n_t, b_n_1, x_n_t));
-//			return speed < 0 ? 0 : speed;
-//			//return Math.min(getAcceleration(v_n_t, V_n), getBraking(x_n_1_t, v_n_1_t, s_n_1, v_n_t, b_n_1, x_n_t));
-//		}
-//	}
-	
-	//*/
 	
 	/**
 	 * Compute acceleration for vehicle n
@@ -110,5 +88,17 @@ public class GippsSteering {
 		//return GISComputation.GPS2Meter(new Coordinate(x_n_1_t.x - s_n_1, x_n_1_t.y - s_n_1), x_n_t );
 		return GISComputation.GPS2Meter(x_n_1_t, x_n_t) - s_n_1;
 	}
+
+
+	public double getMaximumAcceleration() {
+		return a_n;
+	}
+
+
+	public double getMaximumBraking() {
+		return b_n;
+	}
+	
+	
 
 }

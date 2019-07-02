@@ -32,7 +32,8 @@ public class OsmAgent extends GeoAgent {
 	}
 	
 	public static OsmAgent randomTrafficOsmAgent(String id, OsmContext context) {
-		OsmAgentBody body = new OsmAgentBody(new CarMover(), context);
+		CarMover mover = new CarMover(5.0, -3.0, 10, 7.5);
+		OsmAgentBody body = new OsmAgentBody(mover);
 		
 		Random rnd = new Random();
 		Node randomOrigin = RandomTrafficBehavior.selectRandomSourceNode(rnd, (OsmContext) context);

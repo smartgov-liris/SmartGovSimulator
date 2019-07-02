@@ -9,7 +9,6 @@ import smartgov.core.agent.moving.TestMovingAgent;
 import smartgov.core.agent.moving.TestMovingAgentBody;
 import smartgov.core.agent.moving.behavior.TestMovingBehavior;
 import smartgov.core.environment.SmartGovContext;
-import smartgov.core.environment.TestContext;
 import smartgov.core.environment.graph.Arc;
 import smartgov.core.environment.graph.Node;
 
@@ -60,7 +59,7 @@ public class TestScenario extends Scenario {
 						shuttleBody,
 						context.nodes.get("1"),
 						context.nodes.get("5"),
-						(TestContext) context)
+						context)
 				);
 		
 		// New body for the second shuttle
@@ -74,7 +73,7 @@ public class TestScenario extends Scenario {
 						shuttleBody,
 						context.nodes.get("2"),
 						context.nodes.get("4"),
-						(TestContext) context)
+						context)
 				);
 		
 		return Arrays.asList(shuttle1, shuttle2);

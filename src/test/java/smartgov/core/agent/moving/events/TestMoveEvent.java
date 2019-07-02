@@ -71,18 +71,10 @@ public class TestMoveEvent {
 			oldArcIds,
 			contains("1", "2", "4")
 			);
-		
-		/*
-		 * Notice that the second "newArc" is still 2, and not 4 as it would be
-		 * expected in our case.
-		 * Its because when the agent reached its destination in the plan, it can't know
-		 * how the plan will be updated then, and so the event record that the current arc is still
-		 * the same, at the end of the path, at node 5.
-		 * Then it directly moves to 3, and the newArc is 8 (and the oldArc is 4).
-		 */
+
 		assertThat(
 				newArcIds,
-				contains("2", "2", "8")
+				contains("2", "4", "8")
 				);
 		
 		assertThat(
