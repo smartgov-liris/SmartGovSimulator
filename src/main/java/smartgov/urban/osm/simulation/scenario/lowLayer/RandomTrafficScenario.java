@@ -2,21 +2,14 @@ package smartgov.urban.osm.simulation.scenario.lowLayer;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
-import smartgov.core.agent.moving.MovingAgentBody;
-import smartgov.core.agent.moving.plan.Plan;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.graph.Arc;
 import smartgov.core.environment.graph.Node;
-import smartgov.core.environment.graph.events.AgentArrival;
-import smartgov.core.environment.graph.events.AgentDestination;
-import smartgov.core.events.EventHandler;
 import smartgov.urban.osm.agent.OsmAgent;
 import smartgov.urban.osm.environment.OsmContext;
-import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkSourceNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSourceNode;

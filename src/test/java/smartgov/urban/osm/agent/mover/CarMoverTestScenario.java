@@ -20,9 +20,10 @@ public class CarMoverTestScenario extends BasicOsmScenario {
 	public static final String name = "carMoverTest";
 	public static final Double maximumAcceleration = 4.0;
 	public static final Double maximumBraking = -6.0;
-	public static final Double vehicleSize = 4.0;
-	public static final Double leaderMaxSpeed = 5.;
-	public static final Double followerMaxSpeed = 10.;
+	public static final Double vehicleSize = 6.0;
+	public static final Double leaderMaxSpeed = 8.3; // 30km/h 
+	// public static final Double followerMaxSpeed = 12.5; // 45 km/h 
+	public static final Double followerMaxSpeed = 15.; // 45 km/h 
 
 	
 
@@ -36,7 +37,7 @@ public class CarMoverTestScenario extends BasicOsmScenario {
 		OsmAgentBody agentBody = new OsmAgentBody(mover);
 		mover.setAgentBody(agentBody);
 		
-		agentBody.setSpeed(1);
+		agentBody.setSpeed(0);
 
 		OsmAgent osmAgent = new OsmAgent(
 				"1",
@@ -53,7 +54,7 @@ public class CarMoverTestScenario extends BasicOsmScenario {
 		agentBody = new OsmAgentBody(mover);
 		mover.setAgentBody(agentBody);
 		
-		agentBody.setSpeed(1);
+		agentBody.setSpeed(0);
 		
 		agents.add(osmAgent);
 

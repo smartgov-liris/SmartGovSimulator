@@ -4,6 +4,7 @@ smartgov.core.agent.core.behavior
 smartgov.core.agent.moving
 smartgov.core.agent.moving.behavior
 smartgov.core.agent.moving.events
+smartgov.core.agent.moving.plan
 smartgov.core.environment
 smartgov.core.environment.graph
 smartgov.core.environment.graph.events
@@ -21,10 +22,9 @@ smartgov.urban.geo.agent.mover
 smartgov.urban.geo.environment.graph
 smartgov.urban.geo.simulation
 smartgov.urban.osm.agent
-smartgov.urban.osm.agent.actuator
 smartgov.urban.osm.agent.behavior
+smartgov.urban.osm.agent.mover
 smartgov.urban.osm.environment
-smartgov.urban.osm.environment.city
 smartgov.urban.osm.environment.graph
 smartgov.urban.osm.environment.graph.sinkSourceNodes
 smartgov.urban.osm.simulation.scenario

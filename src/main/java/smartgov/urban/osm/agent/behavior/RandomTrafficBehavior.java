@@ -1,7 +1,5 @@
 package smartgov.urban.osm.agent.behavior;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import smartgov.core.agent.moving.behavior.MoverAction;
@@ -59,6 +57,7 @@ public class RandomTrafficBehavior extends MovingBehavior {
 	 *
 	 * @param rnd Random instance
 	 * @param context osm context
+	 * @return a random source node, extracted from the specified context
 	 */
 	public static Node selectRandomSourceNode(Random rnd, OsmContext context) {
 		String randomSourceNodeId = (String) context.getSourceNodes().keySet().toArray()[rnd.nextInt(context.getSourceNodes().size())];
@@ -68,11 +67,12 @@ public class RandomTrafficBehavior extends MovingBehavior {
 
 	/**
 	 * Select a random sink node from those available in the osm context,
-	 * different from the specified source node.
+	 * extracted from the possible destinations of the specified source node.
 	 *
 	 * @param rnd Random instance
 	 * @param sourceNode previously selected source node
 	 * @param context osm context
+	 * @return a random sink node, extracted from the possible destinations of the specified source node
 	 */
 	public static Node selectRandomSinkNode(Random rnd, SourceNode sourceNode, OsmContext context) {
 		SinkNode randomSinkNode = (SinkNode) sourceNode.destinations().toArray()[rnd.nextInt(sourceNode.destinations().size())];

@@ -1,9 +1,8 @@
 package smartgov.urban.osm.environment.graph;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.urban.geo.simulation.GISComputation;
 import smartgov.urban.osm.agent.OsmAgentBody;
+import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
 import smartgov.urban.osm.utils.OneWayDeserializer;
 
 /**
@@ -70,45 +70,86 @@ public class Road extends OsmWay {
 		return oneway;
 	}
 	
-	public double forwardDistanceBetweenAgentAndLeader(OsmAgentBody agent){
-		return distanceBetweenTwoAgents(forwardLeaderOfAgent(agent), agent);
+	public double distanceBetweenAgentAndLeader(OsmAgentBody agent){
+		return distanceBetweenTwoAgents(leaderOfAgent(agent), agent);
 	}
 	
-	public double backwardDistanceBetweenAgentAndLeader(OsmAgentBody agent){
-		return distanceBetweenTwoAgents(backwardLeaderOfAgent(agent), agent);
+	public void addAgent(OsmAgentBody agentBody) {
+		int agentIndex;
+		
+		switch(((OsmArc) agentBody.getPlan().getCurrentArc()).getRoadDirection()) {
+		case FORWARD:
+			agentIndex = forwardAgentsOnRoad.size();
+			while(
+					agentIndex >= 1 &&
+					getNodes().indexOf(forwardAgentsOnRoad.get(agentIndex - 1).getPlan().getCurrentNode().getId()) <
+					getNodes().indexOf(agentBody.getPlan().getCurrentNode().getId())) {
+						agentIndex--;
+					}
+			forwardAgentsOnRoad.add(agentIndex, agentBody);
+			break;
+			
+		case BACKWARD:
+			agentIndex = backwardAgentsOnRoad.size();
+			while(
+					agentIndex >= 1 &&
+					getNodes().indexOf(backwardAgentsOnRoad.get(agentIndex - 1).getPlan().getCurrentNode().getId()) >
+					getNodes().indexOf(agentBody.getPlan().getCurrentNode().getId())) {
+						agentIndex--;
+					}
+			backwardAgentsOnRoad.add(agentIndex, agentBody);
+		}
+	}
+	
+	public void removeAgent(OsmAgentBody agentBody, RoadDirection direction) {
+		switch(direction) {
+		case FORWARD:
+			forwardAgentsOnRoad.remove(agentBody);
+			break;
+		case BACKWARD:
+			backwardAgentsOnRoad.remove(agentBody);
+		}
 	}
 
-	public void addForwardAgentToRoad(OsmAgentBody agentBody) {
-		forwardAgentsOnRoad.add(agentBody);
-	}
+//	public void addForwardAgentToRoad(OsmAgentBody agentBody) {
+//		forwardAgentsOnRoad.add(agentBody);
+//	}
+//	
+//	public void addBackwardAgentToRoad(OsmAgentBody agentBody) {
+//		backwardAgentsOnRoad.add(agentBody);
+//	}
 	
-	public void addBackwardAgentToRoad(OsmAgentBody agentBody) {
-		backwardAgentsOnRoad.add(agentBody);
-	}
-	
-	public ArrayList<OsmAgentBody> getForwardAgentsOnRoad() {
-		return forwardAgentsOnRoad;
-	}
-	
-	public ArrayList<OsmAgentBody> getBackwardAgentsOnRoad() {
-		return backwardAgentsOnRoad;
+	public List<OsmAgentBody> getAgentsOnRoad(RoadDirection direction) {
+		switch(direction) {
+		case FORWARD:
+			return Collections.unmodifiableList(forwardAgentsOnRoad);
+		case BACKWARD:
+			return Collections.unmodifiableList(backwardAgentsOnRoad);
+		default:
+			return null;
+		}
+		
 	}
 	
 	private static OsmAgentBody leaderOfAgent(MovingAgentBody agent, ArrayList<OsmAgentBody> agentsOnRoad) {
 		int agentPosition = agentsOnRoad.indexOf(agent);
-		if(agentPosition <= 0){
+		if(agentPosition == 0){
 			//No leader if 0, not on the road if -1
 			return null;
 		}
 		return agentsOnRoad.get(agentPosition - 1);
 	}
 	
-	public OsmAgentBody forwardLeaderOfAgent(MovingAgentBody agent){
-		return leaderOfAgent(agent, this.forwardAgentsOnRoad);
-	}
-	
-	public OsmAgentBody backwardLeaderOfAgent(MovingAgentBody agent){
-		return leaderOfAgent(agent, this.backwardAgentsOnRoad);
+	public OsmAgentBody leaderOfAgent(MovingAgentBody agentBody){
+		switch(((OsmArc) agentBody.getPlan().getCurrentArc()).getRoadDirection()) {
+		case FORWARD:
+			return leaderOfAgent(agentBody, this.forwardAgentsOnRoad);
+		case BACKWARD:
+			return leaderOfAgent(agentBody, this.backwardAgentsOnRoad);
+		default:
+			return null;
+		}
+		
 	}
 	
 	public double distanceBetweenTwoAgents(OsmAgentBody leader, OsmAgentBody follower){

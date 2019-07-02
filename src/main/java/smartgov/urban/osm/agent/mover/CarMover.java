@@ -1,10 +1,9 @@
 package smartgov.urban.osm.agent.mover;
 
-import java.util.List;
-
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.agent.mover.BasicGeoMover;
 import smartgov.urban.geo.environment.graph.GeoArc;
+import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.Road;
@@ -23,14 +22,19 @@ import smartgov.urban.osm.environment.graph.Road;
  */
 public class CarMover extends BasicGeoMover {
 	
-	private static final double reactionTime = 1.0;
+	public static final double reactionTime = 1.0;
 
 	private GippsSteering gippsSteering;
 	private double maximumSpeed;
 	private double vehicleSize;
 
 	/**
-	 * CarMover constructor.
+	 * CarMover constructor. Parameters are those used in the Gipps' model.
+	 * 
+	 * @param maximumAcceleration maximum car acceleration (m/s-2)
+	 * @param maximumBraking <b>negative</b>, maximum car braking (m/s-2)
+	 * @param maximumSpeed maximum speed at which the agent should travel (m/s-1)
+	 * @param vehicleSize vehicle size, that includes any security margin
 	 */
 	public CarMover(double maximumAcceleration, double maximumBraking, double maximumSpeed, double vehicleSize) {
 		gippsSteering = new GippsSteering(reactionTime, maximumAcceleration, maximumBraking);
@@ -60,58 +64,21 @@ public class CarMover extends BasicGeoMover {
 	@Override
 	protected void handleArcChanged(GeoArc oldArc, GeoArc newArc) {
 		if (((OsmArc) oldArc).getRoad() != ((OsmArc) newArc).getRoad()) {
-			/*
-			 * Removes agent from the old road
-			 */
-			List<OsmAgentBody> agentsOnOldRoad = null;
-			switch(((OsmArc) oldArc).getRoadDirection()) {
-			case BACKWARD:
-				agentsOnOldRoad = ((OsmArc) oldArc).getRoad().getBackwardAgentsOnRoad();
-				break;
-			case FORWARD:
-				agentsOnOldRoad = ((OsmArc) oldArc).getRoad().getForwardAgentsOnRoad();
-				break;
-			default:
-				break;
-			
-			}
-			agentsOnOldRoad.remove(agentBody);
-			
 
-			List<OsmAgentBody> agentsOnNewRoad = null;
-			switch(((OsmArc) newArc).getRoadDirection()) {
-			case BACKWARD:
-				agentsOnNewRoad = ((OsmArc) newArc).getRoad().getBackwardAgentsOnRoad();
-				break;
-			case FORWARD:
-				agentsOnNewRoad = ((OsmArc) newArc).getRoad().getForwardAgentsOnRoad();
-				break;
-			default:
-				break;
+			((OsmArc) oldArc).getRoad().removeAgent((OsmAgentBody) agentBody, ((OsmArc) oldArc).getRoadDirection());
 			
-			}
+			((OsmArc) newArc).getRoad().addAgent((OsmAgentBody) agentBody);
 			
-			agentsOnNewRoad.add((OsmAgentBody) agentBody);
-			
-			agentBody.setDirection(newArc.getDirection());
 		}
+		agentBody.setDirection(newArc.getDirection());
 	}
 
 	@Override
 	protected void updateAgentSpeed(GeoAgentBody agentBody) {
 		Road road = ((OsmArc) agentBody.getPlan().getCurrentArc()).getRoad();
 		OsmAgentBody leader = null;
-		switch(((OsmArc) agentBody.getPlan().getCurrentArc()).getRoadDirection()) {
-		case BACKWARD:
-			leader = road.backwardLeaderOfAgent(agentBody);
-			break;
-		case FORWARD:
-			leader = road.forwardLeaderOfAgent(agentBody);
-			break;
-		default:
-			break;
-		
-		}
+
+		leader = road.leaderOfAgent(agentBody);
 		
 		if (leader != null) {
 			agentBody.setSpeed(
@@ -129,8 +96,19 @@ public class CarMover extends BasicGeoMover {
 			agentBody.setSpeed(
 					gippsSteering.getSpeedWithoutLeader(
 						agentBody.getSpeed(),
-						40)
+						maximumSpeed)
 					);
 		}
+	}
+	
+	@Override
+	protected void handleDestinationReached(GeoAgentBody agentBody, GeoArc lastArc, GeoNode lastNode) {
+		/*
+		 * Removes agent from the final road.
+		 * At this point, we don't know if the origin of the next plan will be the same road...
+		 * So we remove it in any case, and the agent will be added to the road again
+		 * at behavior initialization.
+		 */
+		((OsmArc) lastArc).getRoad().removeAgent((OsmAgentBody) agentBody, ((OsmArc) lastArc).getRoadDirection());
 	}
 }

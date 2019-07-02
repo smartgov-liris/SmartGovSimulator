@@ -25,7 +25,7 @@ import smartgov.urban.osm.environment.graph.Road;
 public class ArcsBuilderTest {
 	
 	public static Map<String, OsmArc> buildArcs() throws JsonParseException, JsonMappingException, IOException {
-		Collection<Road> roads = OsmRoadTest.loadRoads().values();
+		Collection<Road> roads = OsmRoadTest.loadRoads(OsmRoadTest.complete_ways).values();
 		Map<String, OsmNode> nodes = OsmNodeTest.loadNodes();
 		
 		List<OsmArc> arcs = OsmArcsBuilder.buildArcs(nodes, roads);
@@ -41,7 +41,7 @@ public class ArcsBuilderTest {
 	@Test
 	public void arcsAreCreatedPropertly () throws JsonParseException, JsonMappingException, IOException {
 		Collection<OsmArc> arcs = buildArcs().values();
-		Collection<Road> roads = OsmRoadTest.loadRoads().values();
+		Collection<Road> roads = OsmRoadTest.loadRoads(OsmRoadTest.complete_ways).values();
 		
 		// There whould be at least one arc for each road
 		assertThat(

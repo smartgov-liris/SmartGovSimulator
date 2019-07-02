@@ -165,7 +165,7 @@ public class SimulationRuntime {
 	
 	private void _step() {
 		long begin = System.currentTimeMillis();
-		for (Agent agent : context.agents.values()) {
+		for (Agent<?> agent : context.agents.values()) {
 			agent.live();
 		}
 		tickCount ++;

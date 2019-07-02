@@ -25,7 +25,7 @@ public class SmartGovContext extends AbstractContext {
 	/**
 	 * Agents currently living in the simulation.
 	 */
-	public Map<String, Agent> agents;
+	public Map<String, Agent<?>> agents;
 
 	/**
 	 * Nodes currently used in the simulation.

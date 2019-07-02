@@ -2,7 +2,6 @@ package smartgov.urban.geo.agent.mover;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.locationtech.jts.geom.Coordinate;
 
@@ -37,11 +36,11 @@ public class BasicGeoMover implements GeoMover {
 	}
 	
 	/**
-	 * Move agent on the current arc.
+	 * Move agent on the current arc. Reaches nodes of the plan as required
+	 * while crossing the specified distance.
 	 *
-	 * @param timeToMove unknown.
+	 * @param distance distance to move
 	 */
-	// TODO: refactor parameter...
 	@Override
 	public Coordinate moveOn(double distance){
 		updateAgentSpeed(agentBody);
@@ -49,23 +48,25 @@ public class BasicGeoMover implements GeoMover {
 		Coordinate currentPosition = agentBody.getPosition();
 		if(!plan.isPlanComplete()){
 			GeoArc arc = (GeoArc) plan.getCurrentArc();
-			Coordinate destination = ((GeoNode) plan.getNextNode()).getPosition();
+			GeoNode destination = ((GeoNode) plan.getNextNode());
 			
 			// updateAgent(arc, agentBody);
-			double remainingDistanceToNode = GISComputation.GPS2Meter(currentPosition, destination);
+			double remainingDistanceToNode = GISComputation.GPS2Meter(currentPosition, destination.getPosition());
 			if(remainingDistanceToNode < distance){
 				// Reach a node on the distance to cross
-				currentPosition = destination;
+				currentPosition = destination.getPosition();
 				plan.reachNextNode();
 				
-				GeoArc newArc = (GeoArc) plan.getCurrentArc();
+				handleArcChanged(arc, (GeoArc) plan.getCurrentArc());
 				
-				if(newArc != null){
+				if(!plan.isPlanComplete()) {
 					// If this is not the last node, cross the remaining distance on the next arc
-					handleArcChanged(arc, newArc);
-					
 					return moveOn(distance - remainingDistanceToNode);
 				}
+				else {
+					handleDestinationReached(agentBody, arc, destination);
+				}
+				
 			} else {
 				/*
 				 * We are working in latitude / longitude there.
@@ -95,8 +96,8 @@ public class BasicGeoMover implements GeoMover {
 				 *   dx[°] = (x_node[°] - x_origin[°]) * d_to_travel[m] / d_to_node[m]
 				 * 
 				 */
-				double dx = distance * (destination.x - currentPosition.x) / remainingDistanceToNode;
-				double dy = distance * (destination.y - currentPosition.y) / remainingDistanceToNode;
+				double dx = distance * (destination.getPosition().x - currentPosition.x) / remainingDistanceToNode;
+				double dy = distance * (destination.getPosition().y - currentPosition.y) / remainingDistanceToNode;
 				Coordinate newCoordinate = new Coordinate(currentPosition.x + dx, currentPosition.y + dy);
 				triggerGeoMoveListeners(
 						new GeoMoveEvent(
@@ -140,6 +141,30 @@ public class BasicGeoMover implements GeoMover {
 	protected void updateAgentSpeed(GeoAgentBody agentBody) {
 		
 	};
+	
+	/**
+	 * Called immediately after the agent as reach it's destination from the 
+	 * <code>moveOn()</code> function, before any other initialization occured.
+	 * 
+	 * <p>
+	 * Useful for it's reference to the last arc and node crossed.
+	 * </p>
+	 * <p>
+	 * Example : To remove an agent from the last road once it has reached the 
+	 * end of it.
+	 * </p>
+	 * 
+	 * <p>
+	 * By default, does nothing.
+	 * </p>
+	 * 
+	 * @param agentBody Agents that reached its destination
+	 * @param lastArc last arc crossed
+	 * @param lastNode last node crossed
+	 */
+	protected void handleDestinationReached(GeoAgentBody agentBody, GeoArc lastArc, GeoNode lastNode) {
+		
+	}
 	
 	/**
 	 * Adds a new GeoMoveEvent handler.

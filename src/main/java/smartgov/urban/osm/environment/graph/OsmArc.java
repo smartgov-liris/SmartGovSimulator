@@ -26,10 +26,10 @@ public class OsmArc extends GeoArc {
 	 * OsmArc constructor.
 	 * 
 	 * @param id Arc id
-	 * @param road Road to which the Arc belongs to.
 	 * @param startNode Start Node
 	 * @param targetNode Target Node
-	 * @param type Arc type. (OSM 'highway' attribute)
+	 * @param road Road to which the Arc belongs to.
+	 * @param roadDirection corresponding direction of the road
 	 */
 	public OsmArc(
 			String id,

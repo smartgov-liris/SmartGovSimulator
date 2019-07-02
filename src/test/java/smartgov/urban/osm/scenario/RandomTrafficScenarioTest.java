@@ -13,12 +13,10 @@ import org.junit.Test;
 
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
-import smartgov.core.agent.moving.MovingAgent;
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.behavior.MovingBehavior;
 import smartgov.core.agent.moving.events.DestinationReachedEvent;
 import smartgov.core.agent.moving.events.NodeReachedEvent;
-import smartgov.core.agent.moving.events.OriginReachedEvent;
 import smartgov.core.environment.graph.Node;
 import smartgov.core.events.EventHandler;
 import smartgov.core.main.events.SimulationStep;

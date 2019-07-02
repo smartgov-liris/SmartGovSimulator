@@ -8,10 +8,14 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 import smartgov.SmartGov;
+import smartgov.core.agent.core.Agent;
 import smartgov.core.agent.moving.events.MoveEvent;
 import smartgov.core.events.EventHandler;
 import smartgov.urban.geo.agent.GeoAgentBody;
-import smartgov.urban.osm.environment.graph.TestOsmContext;
+import smartgov.urban.geo.simulation.GISComputation;
+import smartgov.urban.osm.environment.TestOsmContext;
+import smartgov.urban.osm.environment.graph.OsmArc;
+import smartgov.urban.osm.environment.graph.Road;
 
 public class CarMoverTest {
 	
@@ -32,13 +36,21 @@ public class CarMoverTest {
 				smartGov.getContext().arcs.values(),
 				hasSize(4)
 				);
+		
+		for (Agent<?> agent : smartGov.getContext().agents.values()) {
+			assertThat(
+					((GeoAgentBody) agent.getBody()).getMover() instanceof CarMover,
+					equalTo(true)
+					);
+			
+		}
 	}
 	
 	@Test
 	public void testMaxSpeedReach() throws InterruptedException {
 		SmartGov smartGov = loadCarMoverTestScenario();
 		
-		MaxSpeed maxSpeed = new MaxSpeed();
+		MaxBean maxSpeed = new MaxBean();
 		
 		GeoAgentBody leaderAgent = (GeoAgentBody) smartGov.getContext().agents.get("2").getBody();
 		
@@ -46,11 +58,60 @@ public class CarMoverTest {
 
 				@Override
 				public void handle(MoveEvent event) {
-					System.out.println(leaderAgent.getSpeed());
-					if (leaderAgent.getSpeed() > maxSpeed.getValue()) {
-						maxSpeed.setValue(leaderAgent.getSpeed());
-					}
+					maxSpeed.update(leaderAgent.getSpeed());
+				}
+				
+			});
+		
+		SmartGov.getRuntime().start(100);
+		
+		while(SmartGov.getRuntime().isRunning()) {
+			TimeUnit.MICROSECONDS.sleep(10);
+		}
+		
+		assertThat(
+				maxSpeed.getValue(),
+				greaterThan(0.0)
+				);
+		
+		assertThat(
+				Math.abs(maxSpeed.getValue() - CarMoverTestScenario.leaderMaxSpeed),
+				lessThanOrEqualTo(0.1)
+				);
+	}
+	
+	@Test
+	public void testFollowerStayAfterLeader() throws InterruptedException {
+		SmartGov smartGov = loadCarMoverTestScenario();
+		
+		MaxBean followerMaxSpeed = new MaxBean();
+		MinBean minDistanceBetweenAgents = new MinBean();
+		
+		GeoAgentBody followerAgent = (GeoAgentBody) smartGov.getContext().agents.get("1").getBody();
+		GeoAgentBody leaderAgent = (GeoAgentBody) smartGov.getContext().agents.get("2").getBody();
+		
+		followerAgent.addOnMoveListener(new EventHandler<MoveEvent>(){
+
+				@Override
+				public void handle(MoveEvent event) {
+					followerMaxSpeed.update(followerAgent.getSpeed());
+
+					minDistanceBetweenAgents.update(
+							GISComputation.GPS2Meter(followerAgent.getPosition(), leaderAgent.getPosition())
+							);
 					
+					Road followerRoad = ((OsmArc) followerAgent.getPlan().getCurrentArc()).getRoad();
+					Road leaderRoad = ((OsmArc) leaderAgent.getPlan().getCurrentArc()).getRoad();
+					
+					assertThat(
+							followerRoad,
+							equalTo(leaderRoad)
+							);
+					
+					assertThat(
+							followerRoad.leaderOfAgent(followerAgent),
+							equalTo(leaderAgent)
+							);
 				}
 				
 			});
@@ -62,31 +123,146 @@ public class CarMoverTest {
 		}
 		
 		assertThat(
-				maxSpeed.getValue(),
-				greaterThan(0.0)
+				CarMoverTestScenario.followerMaxSpeed,
+				greaterThan(CarMoverTestScenario.leaderMaxSpeed)
 				);
 		
-//		assertThat(
-//				maxSpeed.getValue(),
-//				lessThanOrEqualTo(CarMoverTestScenario.leaderMaxSpeed)
-//				);
-//		
-//		assertThat(
-//				maxSpeed.getValue(),
-//				equalTo(CarMoverTestScenario.leaderMaxSpeed)
-//				);
+		assertThat(
+				minDistanceBetweenAgents.getValue(),
+				greaterThanOrEqualTo(CarMoverTestScenario.vehicleSize)
+				);
 	}
 	
-	private class MaxSpeed {
+	@Test
+	public void maxAccelerationsAreRespected() throws InterruptedException {
+		SmartGov smartGov = loadCarMoverTestScenario();
 		
-		private Double value = -Double.MAX_VALUE;
+		GeoAgentBody leaderAgent = (GeoAgentBody) smartGov.getContext().agents.get("2").getBody();
+		MaxBean leaderMaxAcceleration = new MaxBean();
+		MinBean leaderMinBraking = new MinBean();
+		ValueBean leaderLastSpeed = new ValueBean(leaderAgent.getSpeed());
+		
+		GeoAgentBody followerAgent = (GeoAgentBody) smartGov.getContext().agents.get("1").getBody();
+		MaxBean followerMaxAcceleration = new MaxBean();
+		MinBean followerMinBraking = new MinBean();
+		ValueBean followerLastSpeed = new ValueBean(followerAgent.getSpeed());
+		
+		leaderAgent.addOnMoveListener(new EventHandler<MoveEvent>(){
+
+				@Override
+				public void handle(MoveEvent event) {
+					Double acceleration = (leaderAgent.getSpeed() - leaderLastSpeed.getValue()) / SmartGov.getRuntime().getTickDuration();
+					System.out.println(acceleration);
+					if (acceleration >= 0) {
+						leaderMaxAcceleration.update(acceleration);
+					}
+					else {
+						leaderMinBraking.update(acceleration);
+					}
+					leaderLastSpeed.setValue(leaderAgent.getSpeed());
+				}
+				
+			});
+		
+		followerAgent.addOnMoveListener(new EventHandler<MoveEvent>(){
+
+			@Override
+			public void handle(MoveEvent event) {
+				Double acceleration = (followerAgent.getSpeed() - followerLastSpeed.getValue()) / SmartGov.getRuntime().getTickDuration();
+				
+				if (acceleration >= 0) {
+					followerMaxAcceleration.update(acceleration);
+				}
+				else {
+					followerMinBraking.update(acceleration);
+				}
+				followerLastSpeed.setValue(followerAgent.getSpeed());
+			}
+			
+		});
+		
+		SmartGov.getRuntime().start(100);
+		
+		while(SmartGov.getRuntime().isRunning()) {
+			TimeUnit.MICROSECONDS.sleep(10);
+		}
+		
+		/*
+		 * Acceleration
+		 */
+		assertThat(
+				leaderMaxAcceleration.getValue(),
+				lessThan(CarMoverTestScenario.maximumAcceleration)
+				);
+		
+		// Leader should reach its maximum acceleration (computing from the Gipps' model, with a 0.1 threshold)
+		assertThat(
+				leaderMaxAcceleration.getValue(),
+				greaterThan(
+						2.5*CarMoverTestScenario.maximumAcceleration*CarMover.reactionTime*Math.sqrt(0.025) - 0.1
+						)
+				);
+		
+		assertThat(
+				followerMaxAcceleration.getValue(),
+				lessThan(CarMoverTestScenario.maximumAcceleration)
+				);
+		
+		/*
+		 * Braking
+		 */
+		assertThat(
+				leaderMinBraking.getValue(),
+				greaterThan(CarMoverTestScenario.maximumBraking)
+				);
+		
+		assertThat(
+				followerMinBraking.getValue(),
+				greaterThan(CarMoverTestScenario.maximumBraking)
+				);
+	}
+	
+	private class ValueBean {
+		
+		private Double value;
+		
+		public ValueBean(Double defaultValue) {
+			this.value = defaultValue;
+		}
+		
+		public void setValue(double value) {
+			this.value = value;
+		}
 
 		public Double getValue() {
 			return value;
 		}
-
-		public void setValue(Double value) {
-			this.value = value;
+		
+	}
+	
+	private class MaxBean extends ValueBean {
+		
+		public MaxBean() {
+			super(-Double.MAX_VALUE);
+		}
+		
+		public void update(Double value) {
+			if(value > getValue()) {
+				setValue(value);
+			}
+		}
+	}
+	
+	private class MinBean extends ValueBean {
+		
+		public MinBean() {
+			super(Double.MAX_VALUE);
+		}
+		
+		public void update(Double value) {
+			if(value < getValue()) {
+				setValue(value);
+			}
 		}
 	}
 

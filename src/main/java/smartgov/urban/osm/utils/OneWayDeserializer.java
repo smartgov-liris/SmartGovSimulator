@@ -2,7 +2,6 @@ package smartgov.urban.osm.utils;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

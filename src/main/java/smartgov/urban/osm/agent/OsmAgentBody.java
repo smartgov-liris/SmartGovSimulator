@@ -1,10 +1,11 @@
 package smartgov.urban.osm.agent;
 
 
-import smartgov.core.agent.moving.behavior.MovingBehavior;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.osm.agent.mover.CarMover;
+import smartgov.urban.osm.environment.graph.OsmArc;
+import smartgov.urban.osm.environment.graph.Road;
 
 /**
  * An agent body moving in the OSM graph, as in a vehicle.
@@ -17,6 +18,8 @@ import smartgov.urban.osm.agent.mover.CarMover;
  */
 public class OsmAgentBody extends GeoAgentBody {
 	
+	private Road currentRoad;
+	
 	/**
 	 * OsmAgentBody constructor.
 	 * 
@@ -27,25 +30,28 @@ public class OsmAgentBody extends GeoAgentBody {
 		carMover.setAgentBody(this);
 	}
 	
+	public Road getCurrentRoad() {
+		return currentRoad;
+	}
+
+	public void setCurrentRoad(Road currentRoad) {
+		this.currentRoad = currentRoad;
+	}
+
 	/**
 	 * Updates the agent plan from the origin and destination of the basic
 	 * behavior, and make it spawn on the origin source node.
+	 * <p>
+	 * Also adds it to the new road, according to the behavior origin.
+	 * </p>
 	 */
 	public void initialize() {
-//		updatePlan(
-//			context.getGraph().shortestPath(
-//					((RandomTrafficBehavior) getAgent().getBehavior()).getOrigin(),
-//					((RandomTrafficBehavior) getAgent().getBehavior()).getDestination()
-//					)
-//			);
-
-		// Make the current agent available for the source node.
-//		context.agentsStock.get(
-//				((RandomTrafficBehavior) getAgent().getBehavior()).getOrigin().getId()
-//				).add(getAgent());
-		
 		// Set up body position
-		setPosition(((GeoNode) ((MovingBehavior) getAgent().getBehavior()).getOrigin()).getPosition());
+		setPosition(((GeoNode) getPlan().getCurrentNode()).getPosition());
+		
+		// Adds the agent to the new road
+		((OsmArc) getPlan().getCurrentArc()).getRoad().addAgent(this);
+		
 	}
 	
 }
