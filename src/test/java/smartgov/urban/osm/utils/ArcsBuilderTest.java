@@ -21,6 +21,7 @@ import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.OsmNodeTest;
 import smartgov.urban.osm.environment.graph.OsmRoadTest;
 import smartgov.urban.osm.environment.graph.Road;
+import smartgov.urban.osm.environment.graph.factory.DefaultOsmArcFactory;
 
 public class ArcsBuilderTest {
 	
@@ -28,7 +29,7 @@ public class ArcsBuilderTest {
 		Collection<Road> roads = OsmRoadTest.loadRoads(OsmRoadTest.complete_ways).values();
 		Map<String, OsmNode> nodes = OsmNodeTest.loadNodes();
 		
-		List<OsmArc> arcs = OsmArcsBuilder.buildArcs(nodes, roads);
+		List<OsmArc> arcs = OsmArcsBuilder.buildArcs(nodes, roads, new DefaultOsmArcFactory());
 		
 		Map<String, OsmArc> arcMap = new HashMap<>();
 		

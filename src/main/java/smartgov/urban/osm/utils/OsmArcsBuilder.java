@@ -10,17 +10,21 @@ import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
 import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.Road;
+import smartgov.urban.osm.environment.graph.factory.OsmArcFactory;
 
 public class OsmArcsBuilder {
 	
-	public static List<OsmArc> buildArcs(Map<String, ? extends Node> nodes, Collection<Road> roads) {
+	public static List<OsmArc> buildArcs(
+			Map<String, ? extends Node> nodes,
+			Collection<Road> roads,
+			OsmArcFactory<? extends OsmArc> arcFactory) {
 		List<OsmArc> arcs = new ArrayList<>();
 		int id = 1;
 		
 		for (Road road : roads) {
 			for(int i = 0; i < road.getNodes().size() - 1; i++) {
 				arcs.add(
-						new OsmArc(
+						arcFactory.create(
 								String.valueOf(id),
 								(OsmNode) nodes.get(road.getNodes().get(i)),
 								(OsmNode) nodes.get(road.getNodes().get(i+1)),
@@ -36,7 +40,7 @@ public class OsmArcsBuilder {
 			if (!road.isOneway()) {
 				for(int i = road.getNodes().size() - 1; i > 0; i--) {
 					arcs.add(
-							new OsmArc(
+							arcFactory.create(
 									String.valueOf(id),
 									(OsmNode) nodes.get(road.getNodes().get(i)),
 									(OsmNode) nodes.get(road.getNodes().get(i-1)),

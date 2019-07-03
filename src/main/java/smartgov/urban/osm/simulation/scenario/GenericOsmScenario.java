@@ -12,6 +12,7 @@ import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.Road;
+import smartgov.urban.osm.environment.graph.factory.OsmArcFactory;
 import smartgov.urban.osm.utils.OsmArcsBuilder;
 import smartgov.urban.osm.utils.OsmLoader;
 
@@ -34,10 +35,12 @@ public abstract class GenericOsmScenario<Tnode extends OsmNode, Troad extends Ro
 	
 	private Class<Tnode> nodeClass;
 	private Class<Troad> roadClass;
+	private OsmArcFactory<?> osmArcFactory;
 	
-	public GenericOsmScenario(Class<Tnode> nodeClass, Class<Troad> roadClass) {
+	public GenericOsmScenario(Class<Tnode> nodeClass, Class<Troad> roadClass, OsmArcFactory<?> osmArcFactory) {
 		this.nodeClass = nodeClass;
 		this.roadClass = roadClass;
+		this.osmArcFactory = osmArcFactory;
 	}
 	/**
 	 * Loads osm nodes from the <code>nodes</code> json file of the
@@ -87,7 +90,7 @@ public abstract class GenericOsmScenario<Tnode extends OsmNode, Troad extends Ro
 					roadClass
 					)
 				);
-			arcs = OsmArcsBuilder.buildArcs(context.nodes, ((OsmContext) context).roads);
+			arcs = OsmArcsBuilder.buildArcs(context.nodes, ((OsmContext) context).roads, osmArcFactory);
 			
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -13,6 +13,7 @@ import smartgov.urban.osm.agent.mover.CarMover;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.Road;
+import smartgov.urban.osm.environment.graph.factory.OsmArcFactory;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkSourceNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSourceNode;
@@ -28,8 +29,8 @@ import smartgov.urban.osm.simulation.scenario.GenericOsmScenario;
  */
 public class RandomTrafficScenario<Tnode extends OsmNode, Troad extends Road> extends GenericOsmScenario<Tnode, Troad> {
 	
-	public RandomTrafficScenario(Class<Tnode> nodeClass, Class<Troad> roadClass) {
-		super(nodeClass, roadClass);
+	public RandomTrafficScenario(Class<Tnode> nodeClass, Class<Troad> roadClass, OsmArcFactory<?> osmArcFactory) {
+		super(nodeClass, roadClass, osmArcFactory);
 		// TODO Auto-generated constructor stub
 	}
 

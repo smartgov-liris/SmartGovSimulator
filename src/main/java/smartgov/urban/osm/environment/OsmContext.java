@@ -4,6 +4,7 @@ import smartgov.core.environment.SmartGovContext;
 import smartgov.core.simulation.Scenario;
 import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.Road;
+import smartgov.urban.osm.environment.graph.factory.DefaultOsmArcFactory;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.SinkNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.SourceNode;
 import smartgov.urban.osm.simulation.scenario.lowLayer.RandomTrafficScenario;
@@ -73,9 +74,9 @@ public class OsmContext extends SmartGovContext {
 		super.loadScenario(scenarioName);
 		switch (scenarioName) {
 			case ScenarioVisualization.name:
-				return new ScenarioVisualization<OsmNode, Road>(OsmNode.class, Road.class);
+				return new ScenarioVisualization<OsmNode, Road>(OsmNode.class, Road.class, new DefaultOsmArcFactory());
 			case RandomTrafficScenario.name:
-				return new RandomTrafficScenario<OsmNode, Road>(OsmNode.class, Road.class);
+				return new RandomTrafficScenario<OsmNode, Road>(OsmNode.class, Road.class, new DefaultOsmArcFactory());
 			default:
 				return null;
 		}

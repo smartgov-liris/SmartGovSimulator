@@ -7,6 +7,7 @@ import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.Road;
+import smartgov.urban.osm.environment.graph.factory.OsmArcFactory;
 import smartgov.urban.osm.simulation.scenario.GenericOsmScenario;
 
 /**
@@ -16,8 +17,8 @@ import smartgov.urban.osm.simulation.scenario.GenericOsmScenario;
  */
 public class ScenarioVisualization<Tnode extends OsmNode, Troad extends Road> extends GenericOsmScenario<Tnode, Troad> {
 	
-	public ScenarioVisualization(Class<Tnode> nodeClass, Class<Troad> roadClass) {
-		super(nodeClass, roadClass);
+	public ScenarioVisualization(Class<Tnode> nodeClass, Class<Troad> roadClass, OsmArcFactory<?> osmArcFactory) {
+		super(nodeClass, roadClass, osmArcFactory);
 	}
 
 	public static final String name = "Visualization";
