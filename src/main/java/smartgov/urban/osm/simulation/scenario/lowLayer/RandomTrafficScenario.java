@@ -11,12 +11,14 @@ import smartgov.urban.osm.agent.OsmAgent;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.agent.mover.CarMover;
 import smartgov.urban.osm.environment.OsmContext;
+import smartgov.urban.osm.environment.graph.OsmNode;
+import smartgov.urban.osm.environment.graph.Road;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkSourceNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSourceNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.SinkNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.SourceNode;
-import smartgov.urban.osm.simulation.scenario.BasicOsmScenario;
+import smartgov.urban.osm.simulation.scenario.GenericOsmScenario;
 
 /**
  * A scenario that demonstrates the usage of random traffic agents in an osm
@@ -24,8 +26,13 @@ import smartgov.urban.osm.simulation.scenario.BasicOsmScenario;
  *
  * @see smartgov.urban.osm.agent.behavior.RandomTrafficBehavior
  */
-public class RandomTrafficScenario extends BasicOsmScenario {
+public class RandomTrafficScenario<Tnode extends OsmNode, Troad extends Road> extends GenericOsmScenario<Tnode, Troad> {
 	
+	public RandomTrafficScenario(Class<Tnode> nodeClass, Class<Troad> roadClass) {
+		super(nodeClass, roadClass);
+		// TODO Auto-generated constructor stub
+	}
+
 	public static final String name = "randomTraffic";
 	
 

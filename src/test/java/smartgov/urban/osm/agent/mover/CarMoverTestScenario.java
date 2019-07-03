@@ -16,7 +16,8 @@ import smartgov.urban.osm.simulation.scenario.BasicOsmScenario;
  * speeds to check the CarMover and the Gipps' model.
  */
 public class CarMoverTestScenario extends BasicOsmScenario {
-	
+
+
 	public static final String name = "carMoverTest";
 	public static final Double maximumAcceleration = 4.0;
 	public static final Double maximumBraking = -6.0;
