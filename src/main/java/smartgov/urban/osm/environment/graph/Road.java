@@ -10,10 +10,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.core.agent.moving.MovingAgentBody;
-import smartgov.core.output.agent.AgentListIdSerializer;
+import smartgov.core.output.agent.AgentBodyListIdSerializer;
 import smartgov.urban.geo.simulation.GISComputation;
 import smartgov.urban.osm.agent.OsmAgentBody;
-import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
 import smartgov.urban.osm.utils.OneWayDeserializer;
 
 /**
@@ -49,10 +48,8 @@ public class Road extends OsmWay {
 	
 	private boolean oneway;
 	
-	@JsonSerialize(using = AgentListIdSerializer.class)
-	private ArrayList<OsmAgentBody> forwardAgentsOnRoad;
-	@JsonSerialize(using = AgentListIdSerializer.class)
-	private ArrayList<OsmAgentBody> backwardAgentsOnRoad;
+	private ArrayList<OsmAgentBody> forwardAgents;
+	private ArrayList<OsmAgentBody> backwardAgents;
 	
 	/**
 	 * JsonCreator used to load Roads from a Json file.
@@ -69,8 +66,8 @@ public class Road extends OsmWay {
 		@JsonProperty("id") String id,
 		@JsonProperty("nodeRefs") List<String> nodeRefs){
 		super(id, nodeRefs);
-		this.forwardAgentsOnRoad = new ArrayList<>();
-		this.backwardAgentsOnRoad = new ArrayList<>();
+		this.forwardAgents = new ArrayList<>();
+		this.backwardAgents = new ArrayList<>();
 	}
 	
 	/*
@@ -159,25 +156,25 @@ public class Road extends OsmWay {
 		
 		switch(((OsmArc) agentBody.getPlan().getCurrentArc()).getRoadDirection()) {
 		case FORWARD:
-			agentIndex = forwardAgentsOnRoad.size();
+			agentIndex = forwardAgents.size();
 			while(
 					agentIndex >= 1 &&
-					getNodes().indexOf(forwardAgentsOnRoad.get(agentIndex - 1).getPlan().getCurrentNode().getId()) <
+					getNodes().indexOf(forwardAgents.get(agentIndex - 1).getPlan().getCurrentNode().getId()) <
 					getNodes().indexOf(agentBody.getPlan().getCurrentNode().getId())) {
 						agentIndex--;
 					}
-			forwardAgentsOnRoad.add(agentIndex, agentBody);
+			forwardAgents.add(agentIndex, agentBody);
 			break;
 			
 		case BACKWARD:
-			agentIndex = backwardAgentsOnRoad.size();
+			agentIndex = backwardAgents.size();
 			while(
 					agentIndex >= 1 &&
-					getNodes().indexOf(backwardAgentsOnRoad.get(agentIndex - 1).getPlan().getCurrentNode().getId()) >
+					getNodes().indexOf(backwardAgents.get(agentIndex - 1).getPlan().getCurrentNode().getId()) >
 					getNodes().indexOf(agentBody.getPlan().getCurrentNode().getId())) {
 						agentIndex--;
 					}
-			backwardAgentsOnRoad.add(agentIndex, agentBody);
+			backwardAgents.add(agentIndex, agentBody);
 		}
 	}
 	
@@ -188,32 +185,39 @@ public class Road extends OsmWay {
 	 */
 	public void removeAgent(OsmAgentBody agentBody) {
 		// Try to remove from the forward direction
-		if(!forwardAgentsOnRoad.remove(agentBody)) {
+		if(!forwardAgents.remove(agentBody)) {
 			// if not in the forward direction, removes from the backward direction
-			backwardAgentsOnRoad.remove(agentBody);
+			backwardAgents.remove(agentBody);
 		}
 	}
 
 	/**
-	 * An ordered list of agents on this road in the specified direction.
+	 * An ordered list of agents on this road in the forward direction.
 	 * The first agent of the list is the leader of all the others, so that
 	 * the first item of the list corresponds to the first agent of
 	 * the road in terms of circulation.
 	 *
-	 * @param direction road direction
 	 * @return an umodifiable representation of the agents on the road in
-	 * the specified direction
+	 * the forward direction
 	 */
-	public List<OsmAgentBody> getAgentsOnRoad(RoadDirection direction) {
-		switch(direction) {
-		case FORWARD:
-			return Collections.unmodifiableList(forwardAgentsOnRoad);
-		case BACKWARD:
-			return Collections.unmodifiableList(backwardAgentsOnRoad);
-		default:
-			return null;
-		}
+	@JsonSerialize(using = AgentBodyListIdSerializer.class)
+	public List<OsmAgentBody> getForwardAgents() {
+		return Collections.unmodifiableList(forwardAgents);
 		
+	}
+
+	/**
+	 * An ordered list of agents on this road in the backward direction.
+	 * The first agent of the list is the leader of all the others, so that
+	 * the first item of the list corresponds to the first agent of
+	 * the road in terms of circulation.
+	 *
+	 * @return an umodifiable representation of the agents on the road in
+	 * the backward direction
+	 */
+	@JsonSerialize(using = AgentBodyListIdSerializer.class)
+	public List<OsmAgentBody> getBackwardAgents() {
+		return Collections.unmodifiableList(backwardAgents);
 	}
 	
 	private static OsmAgentBody leaderOfAgent(MovingAgentBody agent, ArrayList<OsmAgentBody> agentsOnRoad) {
@@ -239,9 +243,9 @@ public class Road extends OsmWay {
 	public OsmAgentBody leaderOfAgent(MovingAgentBody agentBody){
 		switch(((OsmArc) agentBody.getPlan().getCurrentArc()).getRoadDirection()) {
 		case FORWARD:
-			return leaderOfAgent(agentBody, this.forwardAgentsOnRoad);
+			return leaderOfAgent(agentBody, this.forwardAgents);
 		case BACKWARD:
-			return leaderOfAgent(agentBody, this.backwardAgentsOnRoad);
+			return leaderOfAgent(agentBody, this.backwardAgents);
 		default:
 			return null;
 		}

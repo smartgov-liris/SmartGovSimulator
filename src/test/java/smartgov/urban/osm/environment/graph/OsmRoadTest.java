@@ -4,21 +4,29 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+
+
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.powermock.api.mockito.PowerMockito;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import smartgov.core.agent.moving.plan.Plan;
+import smartgov.urban.osm.agent.OsmAgent;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
 import smartgov.urban.osm.utils.OsmLoader;
@@ -147,8 +155,17 @@ public class OsmRoadTest {
 		// Step 1 : Add the second agent (spawn on node 2)
 		simpleRoad.addAgent(fakeAgents.get(1));
 		
+		List<OsmAgentBody> agentsOnRoad = new ArrayList<>();
+		switch(direction){
+		case FORWARD:
+			agentsOnRoad = simpleRoad.getForwardAgents();
+			break;
+		case BACKWARD:
+			agentsOnRoad = simpleRoad.getBackwardAgents();
+		}
+		
 		assertThat(
-				simpleRoad.getAgentsOnRoad(direction),
+				agentsOnRoad,
 				contains(fakeAgents.get(1))
 				);
 		
@@ -156,7 +173,7 @@ public class OsmRoadTest {
 		simpleRoad.addAgent(fakeAgents.get(0));
 		
 		assertThat(
-				simpleRoad.getAgentsOnRoad(direction),
+				agentsOnRoad,
 				contains(fakeAgents.get(1), fakeAgents.get(0))
 				);
 		
@@ -169,7 +186,7 @@ public class OsmRoadTest {
 		simpleRoad.addAgent(fakeAgents.get(2));
 		
 		assertThat(
-				simpleRoad.getAgentsOnRoad(direction),
+				agentsOnRoad,
 				contains(fakeAgents.get(2), fakeAgents.get(1), fakeAgents.get(0))
 				);
 		
@@ -202,7 +219,7 @@ public class OsmRoadTest {
 		simpleRoad.addAgent(fakeAgent);
 		
 		assertThat(
-				simpleRoad.getAgentsOnRoad(direction),
+				agentsOnRoad,
 				contains(fakeAgents.get(2), fakeAgents.get(1), fakeAgent, fakeAgents.get(0))
 				);
 		
@@ -215,5 +232,50 @@ public class OsmRoadTest {
 				simpleRoad.leaderOfAgent(fakeAgents.get(0)),
 				equalTo(fakeAgent)
 				);
+	}
+	
+	/*
+	 * Does not work because Jackson don't fall into the trap of serializing the spied road. =P
+	 * And I don't want to instantiate a real road.
+	 */
+	@Test
+	public void serializerTest() throws Exception {
+		Road testRoad = new Road("testRoad", Arrays.asList("4", "8", "2"));
+		
+		List<OsmAgentBody> fakeAgentBodies = new ArrayList<>();
+		for (int i = 0; i < 3; i++) {
+			OsmAgentBody fakeAgentBody = mock(OsmAgentBody.class);
+			OsmAgent fakeAgent = mock(OsmAgent.class);
+			when(fakeAgentBody.getAgent()).thenReturn(fakeAgent);
+			when(fakeAgent.getId()).thenReturn(String.valueOf(i));
+			fakeAgentBodies.add(fakeAgentBody);
+			
+			OsmNode origin = mock(OsmNode.class);
+			when(origin.getId()).thenReturn(String.valueOf(i));
+			
+			OsmArc fakeArc = mock(OsmArc.class);
+			if (i==2)
+				when(fakeArc.getRoadDirection()).thenReturn(RoadDirection.FORWARD);
+			else
+				when(fakeArc.getRoadDirection()).thenReturn(RoadDirection.BACKWARD);
+			Plan fakePlan = mock(Plan.class);
+			when(fakePlan.getCurrentArc()).thenReturn(fakeArc);
+			when(fakePlan.getCurrentNode()).thenReturn(origin);
+			
+			when(fakeAgentBody.getPlan()).thenReturn(fakePlan);
+			
+			fakeAgentBodies.add(fakeAgentBody);
+			
+			testRoad.addAgent(fakeAgentBody);
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String result = mapper.writeValueAsString(testRoad);
+		
+		assertThat(
+				result,
+				equalTo("{\"id\":\"testRoad\",\"oneway\":false,\"forwardAgents\":[\"2\"],\"backwardAgents\":[\"0\",\"1\"],\"nodes\":[\"4\",\"8\",\"2\"]}")
+				);
+
 	}
 }
