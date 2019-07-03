@@ -7,8 +7,10 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.core.agent.moving.MovingAgentBody;
+import smartgov.core.output.agent.AgentListIdSerializer;
 import smartgov.urban.geo.simulation.GISComputation;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
@@ -47,8 +49,9 @@ public class Road extends OsmWay {
 	
 	private boolean oneway;
 	
-	// TODO : Serialize ?
+	@JsonSerialize(using = AgentListIdSerializer.class)
 	private ArrayList<OsmAgentBody> forwardAgentsOnRoad;
+	@JsonSerialize(using = AgentListIdSerializer.class)
 	private ArrayList<OsmAgentBody> backwardAgentsOnRoad;
 	
 	/**

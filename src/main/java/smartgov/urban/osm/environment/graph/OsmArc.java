@@ -2,8 +2,10 @@ package smartgov.urban.osm.environment.graph;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.urban.geo.environment.graph.GeoArc;
+import smartgov.urban.osm.output.RoadIdSerializer;
 
 /**
  * Class used to represent arcs between OsmNodes.
@@ -35,6 +37,7 @@ public class OsmArc extends GeoArc {
 	/**
 	 * Road to which this arc belongs to.
 	 */
+	@JsonSerialize(using = RoadIdSerializer.class)
 	protected Road road;
 	/**
 	 * Direction represented by the arc in the associated road.
