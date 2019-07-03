@@ -6,7 +6,6 @@ import smartgov.core.agent.moving.behavior.MovingBehavior;
 import smartgov.core.environment.graph.Node;
 import smartgov.urban.geo.agent.GeoAgent;
 import smartgov.urban.osm.agent.behavior.RandomTrafficBehavior;
-import smartgov.urban.osm.agent.mover.CarMover;
 import smartgov.urban.osm.environment.OsmContext;
 
 /**
@@ -31,10 +30,7 @@ public class OsmAgent extends GeoAgent {
 		super(id, body, basicBehavior);
 	}
 	
-	public static OsmAgent randomTrafficOsmAgent(String id, OsmContext context) {
-		CarMover mover = new CarMover(5.0, -3.0, 10, 7.5);
-		OsmAgentBody body = new OsmAgentBody(mover);
-		
+	public static OsmAgent randomTrafficOsmAgent(String id, OsmContext context, OsmAgentBody body) {
 		Random rnd = new Random();
 		Node randomOrigin = RandomTrafficBehavior.selectRandomSourceNode(rnd, (OsmContext) context);
 		Node randomDestination = RandomTrafficBehavior.selectRandomSinkNode(

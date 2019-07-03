@@ -6,9 +6,10 @@ import java.util.Collection;
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.SmartGovContext;
-import smartgov.core.environment.graph.Arc;
 import smartgov.core.environment.graph.Node;
 import smartgov.urban.osm.agent.OsmAgent;
+import smartgov.urban.osm.agent.OsmAgentBody;
+import smartgov.urban.osm.agent.mover.CarMover;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.OsmSinkSourceNode;
@@ -56,7 +57,9 @@ public class RandomTrafficScenario extends BasicOsmScenario {
 		Collection<Agent<?>> agents = new ArrayList<>();
 		int agentCount = Integer.valueOf((String) context.getConfig().get("TrafficAgentNumber"));
 		for(int i = 0; i < agentCount; i++){
-			agents.add(OsmAgent.randomTrafficOsmAgent(String.valueOf(i), (OsmContext) context));
+			CarMover mover = new CarMover(5.0, -3.0, 10, 7.5);
+			OsmAgentBody body = new OsmAgentBody(mover);
+			agents.add(OsmAgent.randomTrafficOsmAgent(String.valueOf(i), (OsmContext) context, body));
 		}
 		return agents;
 	}
