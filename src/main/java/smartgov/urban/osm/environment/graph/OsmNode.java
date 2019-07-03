@@ -13,7 +13,6 @@ import smartgov.urban.geo.environment.graph.GeoNode;
 /**
  * Class used to represents OSM nodes, i.e. crossroads and line breaks.
  * 
- * 
  * @author pbreugnot
  *
  */
@@ -23,11 +22,31 @@ public class OsmNode extends GeoNode {
 	// TODO : serialize as id?
 	private Road road;
 	
-	public OsmNode(String id, Coordinate coordinate, Road road) {
+	/**
+	 * OsmNode constructor. Can be used to instantiate manually an osm node
+	 * with the given id at the specified coordinates.
+	 *
+	 * <p>
+	 * If the node as nothing to do with OSM data, you should better use
+	 * directly a
+	 * {@link smartgov.urban.geo.environment.graph.GeoNode GeoNode}.
+	 * </p>
+	 *
+	 * @param id node id
+	 * @param coordinate node coordinates in longitude / latitude
+	 */
+	public OsmNode(String id, Coordinate coordinate) {
 		super(id, coordinate);
-		this.road = road;
 	}
 	
+	/**
+	 * A JsonCreator to loas osm nodes from json files. Can also be used as
+	 * a normal constructor.
+	 *
+	 * @param id node id
+	 * @param lat node latitude
+	 * @param lon node longitude
+	 */
 	@JsonCreator
 	public OsmNode(
 		@JsonProperty("id") String id,
@@ -36,10 +55,20 @@ public class OsmNode extends GeoNode {
 		super(id, new Coordinate(lon, lat));
 	}
 	
+	/**
+	 * Sets the road to which this node belongs to.
+	 *
+	 * @param road osm road
+	 */
 	public void setRoad(Road road) {
 		this.road = road;
 	}
 
+	/**
+	 * Road to which this node belongs to. Might be null.
+	 *
+	 * @return osm road
+	 */
 	public Road getRoad() {
 		return road;
 	}

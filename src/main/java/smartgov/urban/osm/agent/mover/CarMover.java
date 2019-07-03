@@ -65,7 +65,7 @@ public class CarMover extends BasicGeoMover {
 	protected void handleArcChanged(GeoArc oldArc, GeoArc newArc) {
 		if (((OsmArc) oldArc).getRoad() != ((OsmArc) newArc).getRoad()) {
 
-			((OsmArc) oldArc).getRoad().removeAgent((OsmAgentBody) agentBody, ((OsmArc) oldArc).getRoadDirection());
+			((OsmArc) oldArc).getRoad().removeAgent((OsmAgentBody) agentBody);
 			
 			((OsmArc) newArc).getRoad().addAgent((OsmAgentBody) agentBody);
 			
@@ -109,6 +109,6 @@ public class CarMover extends BasicGeoMover {
 		 * So we remove it in any case, and the agent will be added to the road again
 		 * at behavior initialization.
 		 */
-		((OsmArc) lastArc).getRoad().removeAgent((OsmAgentBody) agentBody, ((OsmArc) lastArc).getRoadDirection());
+		((OsmArc) lastArc).getRoad().removeAgent((OsmAgentBody) agentBody);
 	}
 }

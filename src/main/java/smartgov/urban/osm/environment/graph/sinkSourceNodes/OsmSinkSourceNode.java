@@ -4,12 +4,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 
+/**
+ * A node that can be used both as origin and destination for agents.
+ */
 public class OsmSinkSourceNode implements SinkNode, SourceNode {
 	
 	private String nodeId;
 	private Collection<SourceNode> sources;
 	private Collection<SinkNode> destinations;
 	
+	/**
+	 * OsmSinkSourceNode constructor.
+	 *
+	 * @param nodeId is of the associated osm node
+	 */
 	public OsmSinkSourceNode(String nodeId) {
 		sources = new ArrayList<>();
 		destinations = new ArrayList<>();

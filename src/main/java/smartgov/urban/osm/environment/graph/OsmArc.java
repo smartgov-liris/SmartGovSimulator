@@ -6,20 +6,39 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import smartgov.urban.geo.environment.graph.GeoArc;
 
 /**
- * Class used to represents OSM arcs, i.e. roads.
- * 
- * @see GeoArc
- * @see OsmNode
+ * Class used to represent arcs between OsmNodes.
+ *
+ * <p>
+ * Can be seen as a part of an OSM way.
+ * </p>
  * 
  * @author pbreugnot
  *
  */
-@JsonIgnoreProperties({"road", "lanes", "spots", "closeSpot", "spotCloseToNode", "aspotAvailable"})
+@JsonIgnoreProperties({"road"})
 public class OsmArc extends GeoArc {
 	
-	public enum RoadDirection {FORWARD, BACKWARD}
+	/**
+	 * Used to represent the direction represented by an arc in the osm
+	 * road.
+	 */
+	public enum RoadDirection {
+		/**
+		 * When the arc links nodes in the order of way nodes.
+		 */
+		FORWARD,
+		/**
+		 * When the arc links nodes in the opposite order of way nodes.
+		 */
+		BACKWARD}
 	
+	/**
+	 * Road to which this arc belongs to.
+	 */
 	protected Road road;
+	/**
+	 * Direction represented by the arc in the associated road.
+	 */
 	protected RoadDirection roadDirection;
 	
 	/**
@@ -42,10 +61,20 @@ public class OsmArc extends GeoArc {
 		this.roadDirection = roadDirection;
 	}
 	
+	/**
+	 * Road that this arc represents, as a part of it.
+	 *
+	 * @return osm road
+	 */
 	public Road getRoad() {
 		return road;
 	}
 	
+	/**
+	 * Direction that the arc represents in the associated road.
+	 *
+	 * @return road direction
+	 */
 	public RoadDirection getRoadDirection() {
 		return roadDirection;
 	}

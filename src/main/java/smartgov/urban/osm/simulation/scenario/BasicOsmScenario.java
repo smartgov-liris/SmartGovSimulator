@@ -16,11 +16,11 @@ import smartgov.urban.osm.utils.OsmArcsBuilder;
 import smartgov.urban.osm.utils.OsmLoader;
 
 /**
- * Abstract base for OSM scenarios. Define functions to load OSM features parsed by the
+ * Abstract base for OSM scenarios. Define functions to load OSM features parsed
  * from input files.
  *
  * <p>
- * Nodes and arcs will be loaded respectively from <i>nodes</i> and <i>arcs</i> file entries
+ * Nodes and arcs will be loaded respectively from <i>nodes</i> and <i>roads</i> file entries
  * of the configuration file.
  * </p>
  * 
@@ -32,6 +32,13 @@ import smartgov.urban.osm.utils.OsmLoader;
  */
 public abstract class BasicOsmScenario extends Scenario {
 	
+	/**
+	 * Loads osm nodes from the <code>nodes</code> json file of the
+	 * configuration.
+	 *
+	 * @param context current context
+	 * @return collection of loaded <code>OsmNode</code>s
+	 */
 	@Override
 	public Collection<? extends Node> buildNodes(SmartGovContext context) {
 		OsmLoader<OsmNode> loader = new OsmLoader<>();
@@ -46,6 +53,20 @@ public abstract class BasicOsmScenario extends Scenario {
 		}
 		return new ArrayList<>();
 	}
+	
+	/**
+	 * Loads osm roads from the <code>roads</code> json file specified in the
+	 * configuration, and generates arcs accordingly thanks to the {@link
+	 * smartgov.urban.osm.utils.OsmArcsBuilder OsmArcBuilder}.
+	 *
+	 * <p>
+	 * Loaded roads are added to the input {@link
+	 * smartgov.urban.osm.environment.OsmContext OsmContext}.
+	 * </p>
+	 *
+	 * @param context current context
+	 * @return collection of generated <code>OsmArcs</code>s
+	 */
 
 	@Override
 	public Collection<? extends Arc> buildArcs(SmartGovContext context) {

@@ -20,6 +20,13 @@ public class ScenarioVisualization extends BasicOsmScenario {
 		super();
 	}
 
+	/**
+	 * Does not build any agents, so that just the OSM graph will be
+	 * loaded.
+	 *
+	 * @param context current context
+	 * @return empty collection
+	 */
 	@Override
 	public Collection<Agent<?>> buildAgents(SmartGovContext context) {
 		return new ArrayList<>();

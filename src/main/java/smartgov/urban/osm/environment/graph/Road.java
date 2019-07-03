@@ -15,13 +15,35 @@ import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
 import smartgov.urban.osm.utils.OneWayDeserializer;
 
 /**
- * Stores a list of edges and common attributes of these edges
- * @author Simon
+ * A Road is a particular OsmWay where agents can move.
  *
  */
 public class Road extends OsmWay {
 	
-	public enum OneWay {NO, YES, REVERSED}
+	/**
+	 * Describe the <i>oneway</i> status of a road, according
+	 * to the official <a
+	 * href="https://wiki.openstreetmap.org/wiki/Key:oneway">OSM tag documentation</a>.
+	 */
+	public enum OneWay {
+		/**
+		 * Corresponds to <i>highway="no"</i>, or any other situation
+		 * that does not correspond to <code>YES</code> or
+		 * <code>REVERSED</code>. Default value when no <i>highway</i>
+		 * tag is specified.
+		 */
+		NO,
+		
+		/**
+		 * Corresponds to <i>highway="no"</i>
+		 */
+		YES,
+		
+		/**
+		 * Corresponds to <i>highway="-1"</i>
+		 */
+		REVERSED
+	}
 	
 	private boolean oneway;
 	
@@ -29,6 +51,16 @@ public class Road extends OsmWay {
 	private ArrayList<OsmAgentBody> forwardAgentsOnRoad;
 	private ArrayList<OsmAgentBody> backwardAgentsOnRoad;
 	
+	/**
+	 * JsonCreator used to load Roads from a Json file.
+	 *
+	 * <p>
+	 * Can also be used to create roads manually.
+	 * </p>
+	 *
+	 * @param id road id
+	 * @param nodeRefs an ordered list of node ids
+	 */
 	@JsonCreator
 	public Road(
 		@JsonProperty("id") String id,
@@ -38,6 +70,13 @@ public class Road extends OsmWay {
 		this.backwardAgentsOnRoad = new ArrayList<>();
 	}
 	
+	/*
+	 * Used to reverse the node list, in the case that the oneway is
+	 * reversed. This correspond to the situation when "oneway=-1" in
+	 * OSM, when the road is oneway but in the opposite order of its node
+	 * list. It's a rare situation, but we handle it reversing the node
+	 * list to represent the reversed oneway road as a normal oneway road.
+	 */
 	private void reverseNodeList() {
 		List<String> nodesCopy = new ArrayList<>(this.getNodes());
 		this.getNodes().clear();
@@ -46,6 +85,15 @@ public class Road extends OsmWay {
 		}
 	}
 	
+	/*
+	 * Smart (or hacky?) solution to load the oneway BOOLEAN from
+	 * the Json file.
+	 * In the json file, tags are represented as an Object, and
+	 * "oneway: "yes"" might be one of them. But we want to represent this
+	 * attribute as a boolean. So what we do is that we give the "tags"
+	 * Object to a custom deserializer that will return a OneWay value from
+	 * the "tags" object, that we handle in this function.
+	 */
 	@JsonDeserialize(using = OneWayDeserializer.class)
 	@JsonProperty("tags")
 	private void processTags(OneWay oneway) {
@@ -66,14 +114,43 @@ public class Road extends OsmWay {
 		}
 	}
 	
+	/**
+	 * If the road is oneway, the graph will only include arcs that connect
+	 * road nodes in order. Else, arcs for the reverse nodes order will
+	 * also be created.
+	 *
+	 * @return true if the road is oneway
+	 */
 	public boolean isOneway() {
 		return oneway;
 	}
 	
+	/**
+	 * Computes the distance between the specified agent and its leader on
+	 * the road.
+	 *
+	 * @param agent follower agent
+	 * @return distance between leader and follower, in meter
+	 */
 	public double distanceBetweenAgentAndLeader(OsmAgentBody agent){
 		return distanceBetweenTwoAgents(leaderOfAgent(agent), agent);
 	}
 	
+	/**
+	 * Adds an agent to the road. 
+	 * <p>
+	 * The direction to which the agent should be added is determined by
+	 * the direction of its current arc, retrieved from its plan.
+	 * </p>
+	 * <p>
+	 * Notice that the agent does not necessarily need to be at the origin
+	 * of the road to use this function. If it's added from a node in the
+	 * middle of the road, its position will be computed accordingly so
+	 * that the follower / leader system keeps consistent.
+	 * </p>
+	 *
+	 * @param agentBody body of the agent entering the road
+	 */
 	public void addAgent(OsmAgentBody agentBody) {
 		int agentIndex;
 		
@@ -101,24 +178,29 @@ public class Road extends OsmWay {
 		}
 	}
 	
-	public void removeAgent(OsmAgentBody agentBody, RoadDirection direction) {
-		switch(direction) {
-		case FORWARD:
-			forwardAgentsOnRoad.remove(agentBody);
-			break;
-		case BACKWARD:
+	/**
+	 * Removes an agent from this road.
+	 *
+	 * @param agentBody body of the agent to remove
+	 */
+	public void removeAgent(OsmAgentBody agentBody) {
+		// Try to remove from the forward direction
+		if(!forwardAgentsOnRoad.remove(agentBody)) {
+			// if not in the forward direction, removes from the backward direction
 			backwardAgentsOnRoad.remove(agentBody);
 		}
 	}
 
-//	public void addForwardAgentToRoad(OsmAgentBody agentBody) {
-//		forwardAgentsOnRoad.add(agentBody);
-//	}
-//	
-//	public void addBackwardAgentToRoad(OsmAgentBody agentBody) {
-//		backwardAgentsOnRoad.add(agentBody);
-//	}
-	
+	/**
+	 * An ordered list of agents on this road in the specified direction.
+	 * The first agent of the list is the leader of all the others, so that
+	 * the first item of the list corresponds to the first agent of
+	 * the road in terms of circulation.
+	 *
+	 * @param direction road direction
+	 * @return an umodifiable representation of the agents on the road in
+	 * the specified direction
+	 */
 	public List<OsmAgentBody> getAgentsOnRoad(RoadDirection direction) {
 		switch(direction) {
 		case FORWARD:
@@ -133,6 +215,9 @@ public class Road extends OsmWay {
 	
 	private static OsmAgentBody leaderOfAgent(MovingAgentBody agent, ArrayList<OsmAgentBody> agentsOnRoad) {
 		int agentPosition = agentsOnRoad.indexOf(agent);
+		if (agentPosition < 0) {
+			throw new IllegalArgumentException("The agent is not on this road.");
+		}
 		if(agentPosition == 0){
 			//No leader if 0, not on the road if -1
 			return null;
@@ -140,6 +225,14 @@ public class Road extends OsmWay {
 		return agentsOnRoad.get(agentPosition - 1);
 	}
 	
+	/**
+	 * Returns the leader of the specified agent, in the direction
+	 * determined by the direction of its current arc, according to the
+	 * agent plan.
+	 *
+	 * @param agentBody follower agent
+	 * @return leader agent of the specified agent on this road
+	 */
 	public OsmAgentBody leaderOfAgent(MovingAgentBody agentBody){
 		switch(((OsmArc) agentBody.getPlan().getCurrentArc()).getRoadDirection()) {
 		case FORWARD:
@@ -152,13 +245,19 @@ public class Road extends OsmWay {
 		
 	}
 	
-	public double distanceBetweenTwoAgents(OsmAgentBody leader, OsmAgentBody follower){
-		if (leader != null) {
-			return GISComputation.GPS2Meter(leader.getPosition(), follower.getPosition());
-		}
-		else {
-			return -1.0;
-		}
+	/**
+	 * Utility function to compute the distance between two agents.
+	 *
+	 * <p>
+	 * Equivalent to <code>GISComputation.GPS2Meter(leader.getPosition(), follower.getPosition());</code>
+	 * </p>
+	 *
+	 * @param leader first agent
+	 * @param follower second agent
+	 * @return distance between the two agents, in meter
+	 */
+	public static double distanceBetweenTwoAgents(OsmAgentBody leader, OsmAgentBody follower){
+		return GISComputation.GPS2Meter(leader.getPosition(), follower.getPosition());
 	}
 
 	@Override

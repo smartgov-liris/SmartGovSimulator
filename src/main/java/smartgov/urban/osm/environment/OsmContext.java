@@ -33,10 +33,20 @@ public class OsmContext extends SmartGovContext {
 		sinkNodes = new HashMap<>();
 	}
 	
+	/**
+	 * Source node available for random traffic agents.
+	 *
+	 * @return Source nodes map
+	 */
 	public Map<String, SourceNode> getSourceNodes() {
 		return sourceNodes;
 	}
 
+	/**
+	 * Sink nodes available for random traffic agents.
+	 *
+	 * @return Sink nodes map
+	 */
 	public Map<String, SinkNode> getSinkNodes() {
 		return sinkNodes;
 	}
@@ -49,6 +59,14 @@ public class OsmContext extends SmartGovContext {
 		sinkNodes.clear();
 	}
 	
+	/**
+	 * Can load the following scenarios :
+	 * <ul>
+	 * 	<li> "visualization": Loads only the nodes and arcs</li>
+	 * 	<li> "randomTraffic": Loads the OSM graph and create some
+	 * 	random traffic agents </li>
+	 * </ul>
+	 */
 	@Override
 	public Scenario loadScenario(String scenarioName) {
 		super.loadScenario(scenarioName);
