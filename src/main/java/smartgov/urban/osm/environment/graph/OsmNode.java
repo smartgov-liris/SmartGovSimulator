@@ -7,8 +7,10 @@ import org.locationtech.jts.geom.Coordinate;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.urban.geo.environment.graph.GeoNode;
+import smartgov.urban.osm.output.RoadIdSerializer;
 
 /**
  * Class used to represents OSM nodes, i.e. crossroads and line breaks.
@@ -20,6 +22,7 @@ import smartgov.urban.geo.environment.graph.GeoNode;
 public class OsmNode extends GeoNode {
 
 	// TODO : serialize as id?
+	@JsonSerialize(using = RoadIdSerializer.class)
 	private Road road;
 	
 	/**

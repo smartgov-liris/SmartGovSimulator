@@ -9,7 +9,9 @@ import org.junit.Test;
 
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
+import smartgov.core.agent.moving.events.DestinationReachedEvent;
 import smartgov.core.agent.moving.events.MoveEvent;
+import smartgov.core.agent.moving.events.NodeReachedEvent;
 import smartgov.core.events.EventHandler;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.simulation.GISComputation;
@@ -90,15 +92,34 @@ public class CarMoverTest {
 		GeoAgentBody followerAgent = (GeoAgentBody) smartGov.getContext().agents.get("1").getBody();
 		GeoAgentBody leaderAgent = (GeoAgentBody) smartGov.getContext().agents.get("2").getBody();
 		
+		leaderAgent.addOnNodeReachedListener(new EventHandler<NodeReachedEvent>() {
+			@Override
+			public void handle(NodeReachedEvent event) {
+				// TODO : Bug here, when the leader reaches a node,
+				// it probably disappear from the road what causes
+				// a follower acceleration, and the distance goes bellow
+				// the legal limit.
+				System.out.println(
+						"Node reached, distance between agents : " +
+						GISComputation.GPS2Meter(followerAgent.getPosition(), leaderAgent.getPosition())
+						);
+				
+			}
+			
+		});
+		
 		followerAgent.addOnMoveListener(new EventHandler<MoveEvent>(){
 
 				@Override
 				public void handle(MoveEvent event) {
 					followerMaxSpeed.update(followerAgent.getSpeed());
 
+					Double currentDistance = GISComputation.GPS2Meter(followerAgent.getPosition(), leaderAgent.getPosition());
 					minDistanceBetweenAgents.update(
-							GISComputation.GPS2Meter(followerAgent.getPosition(), leaderAgent.getPosition())
+							currentDistance
 							);
+
+					System.out.println(currentDistance);
 					
 					Road followerRoad = ((OsmArc) followerAgent.getPlan().getCurrentArc()).getRoad();
 					Road leaderRoad = ((OsmArc) leaderAgent.getPlan().getCurrentArc()).getRoad();
@@ -116,7 +137,7 @@ public class CarMoverTest {
 				
 			});
 		
-		SmartGov.getRuntime().start(1000);
+		SmartGov.getRuntime().start(500);
 		
 		while(SmartGov.getRuntime().isRunning()) {
 			TimeUnit.MICROSECONDS.sleep(10);

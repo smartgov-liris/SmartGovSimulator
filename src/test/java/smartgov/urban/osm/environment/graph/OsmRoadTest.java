@@ -1,10 +1,8 @@
 package smartgov.urban.osm.environment.graph;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 
@@ -13,13 +11,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -234,10 +230,7 @@ public class OsmRoadTest {
 				);
 	}
 	
-	/*
-	 * Does not work because Jackson don't fall into the trap of serializing the spied road. =P
-	 * And I don't want to instantiate a real road.
-	 */
+
 	@Test
 	public void serializerTest() throws Exception {
 		Road testRoad = new Road("testRoad", Arrays.asList("4", "8", "2"));
