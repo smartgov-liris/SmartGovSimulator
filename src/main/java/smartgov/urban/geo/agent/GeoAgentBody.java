@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.SmartGov;
+import smartgov.core.agent.moving.MovingAgent;
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.ParkingArea;
 import smartgov.core.output.coordinate.CoordinateSerializer;
@@ -137,14 +138,12 @@ public class GeoAgentBody extends MovingAgentBody {
 
 	@Override
 	public void handleEnter(ParkingArea parkingArea) {
-		// TODO Auto-generated method stub
-		
+		parkingArea.enter((MovingAgent) this.getAgent());
 	}
 
 	@Override
 	public void handleLeave(ParkingArea parkingArea) {
-		// TODO Auto-generated method stub
-		
+		parkingArea.leave((MovingAgent) this.getAgent());
 	}
 
 	@Override
