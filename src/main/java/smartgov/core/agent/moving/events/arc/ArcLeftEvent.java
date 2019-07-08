@@ -1,4 +1,4 @@
-package smartgov.core.agent.moving.events;
+package smartgov.core.agent.moving.events.arc;
 
 import smartgov.core.environment.graph.Arc;
 

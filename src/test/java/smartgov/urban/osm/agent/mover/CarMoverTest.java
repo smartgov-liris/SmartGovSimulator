@@ -10,7 +10,7 @@ import org.junit.Test;
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
 import smartgov.core.agent.moving.events.MoveEvent;
-import smartgov.core.agent.moving.events.NodeReachedEvent;
+import smartgov.core.agent.moving.events.node.NodeReachedEvent;
 import smartgov.core.events.EventHandler;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.utils.GISComputation;

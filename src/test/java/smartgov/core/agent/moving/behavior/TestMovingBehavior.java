@@ -1,7 +1,7 @@
 package smartgov.core.agent.moving.behavior;
 
 import smartgov.core.agent.moving.MovingAgentBody;
-import smartgov.core.agent.moving.events.DestinationReachedEvent;
+import smartgov.core.agent.moving.events.node.DestinationReachedEvent;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.graph.Node;
 import smartgov.core.events.EventHandler;

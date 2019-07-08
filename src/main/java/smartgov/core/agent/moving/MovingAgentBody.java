@@ -6,12 +6,14 @@ import java.util.List;
 
 import smartgov.core.agent.core.AgentBody;
 import smartgov.core.agent.moving.behavior.MoverAction;
-import smartgov.core.agent.moving.events.ArcLeftEvent;
-import smartgov.core.agent.moving.events.ArcReachedEvent;
-import smartgov.core.agent.moving.events.DestinationReachedEvent;
 import smartgov.core.agent.moving.events.MoveEvent;
-import smartgov.core.agent.moving.events.NodeReachedEvent;
-import smartgov.core.agent.moving.events.OriginReachedEvent;
+import smartgov.core.agent.moving.events.arc.ArcLeftEvent;
+import smartgov.core.agent.moving.events.arc.ArcReachedEvent;
+import smartgov.core.agent.moving.events.node.DestinationReachedEvent;
+import smartgov.core.agent.moving.events.node.NodeReachedEvent;
+import smartgov.core.agent.moving.events.node.OriginReachedEvent;
+import smartgov.core.agent.moving.events.parking.EnterParkingAreaEvent;
+import smartgov.core.agent.moving.events.parking.LeaveParkingAreaEvent;
 import smartgov.core.agent.moving.plan.FirstNodeEvent;
 import smartgov.core.agent.moving.plan.NextNodeEvent;
 import smartgov.core.agent.moving.plan.Plan;
@@ -45,6 +47,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	private Collection<EventHandler<ArcLeftEvent>> arcLeftListeners;
 	private Collection<EventHandler<OriginReachedEvent>> originReachedListeners;
 	private Collection<EventHandler<DestinationReachedEvent>> destinationReachedListeners;
+	private Collection<EventHandler<EnterParkingAreaEvent>> parkingEnteredListeners;
+	private Collection<EventHandler<LeaveParkingAreaEvent>> parkingLeftListeners;
 
 	/**
 	 * MovingAgentBody constructor.
@@ -56,6 +60,9 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 		this.arcLeftListeners = new ArrayList<>();
 		this.originReachedListeners = new ArrayList<>();
 		this.destinationReachedListeners = new ArrayList<>();
+		this.parkingEnteredListeners = new ArrayList<>();
+		this.parkingLeftListeners = new ArrayList<>();
+		
 		this.plan = new Plan();
 		
 		this.plan.addNextNodeListener(new EventHandler<NextNodeEvent>() {
@@ -152,9 +159,11 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 			break;
 		case ENTER:
 			handleEnter(action.getParkingArea());
+			triggerParkingEnteredListeners(new EnterParkingAreaEvent(action.getParkingArea()));
 			break;
 		case LEAVE:
 			handleLeave(action.getParkingArea());
+			triggerParkingLeftListeners(new LeaveParkingAreaEvent(action.getParkingArea()));
 			break;
 		default:
 			handleWander();
@@ -402,6 +411,62 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 */
 	public Collection<EventHandler<DestinationReachedEvent>> getDestinationReachedListeners() {
 		return destinationReachedListeners;
+	}
+	
+	// Parking entered listeners
+	/**
+	 * Adds a new handler for ParkingEntered.
+	 *
+	 * Triggered when the agent enters a ParkingArea.
+	 *
+	 * @param parkingEnteredListener new parking entered event
+	 * handler to add
+	 */
+	public void addOnParkingEnteredListener(EventHandler<EnterParkingAreaEvent> parkingEnteredListener) {
+		parkingEnteredListeners.add((EventHandler<EnterParkingAreaEvent>) parkingEnteredListener);
+	}
+	
+	private void triggerParkingEnteredListeners(EnterParkingAreaEvent event) {
+		for (EventHandler<EnterParkingAreaEvent> eventHandler : parkingEnteredListeners) {
+			eventHandler.handle(event);
+		}
+	}
+
+	/**
+	 * EventHandlers for EnterParkingAreaEvents.
+	 *
+	 * @return current parking entered event listeners
+	 */
+	public Collection<EventHandler<EnterParkingAreaEvent>> getParkingEnteredListeners() {
+		return parkingEnteredListeners;
+	}
+	
+	// Parking left listeners
+	/**
+	 * Adds a new handler for ParkingLeft.
+	 *
+	 * Triggered when the agent leaves a ParkingArea.
+	 *
+	 * @param parkingLeftListener new parking left event
+	 * handler to add
+	 */
+	public void addOnParkingLeftListener(EventHandler<LeaveParkingAreaEvent> parkingLeftListener) {
+		parkingLeftListeners.add((EventHandler<LeaveParkingAreaEvent>) parkingLeftListener);
+	}
+	
+	private void triggerParkingLeftListeners(LeaveParkingAreaEvent event) {
+		for (EventHandler<LeaveParkingAreaEvent> eventHandler : parkingLeftListeners) {
+			eventHandler.handle(event);
+		}
+	}
+
+	/**
+	 * EventHandlers for LeaveParkingAreaEvents.
+	 *
+	 * @return current parking left event listeners
+	 */
+	public Collection<EventHandler<LeaveParkingAreaEvent>> getParkingLeftListeners() {
+		return parkingLeftListeners;
 	}
 	
 }

@@ -4,6 +4,9 @@ smartgov.core.agent.core.behavior
 smartgov.core.agent.moving
 smartgov.core.agent.moving.behavior
 smartgov.core.agent.moving.events
+smartgov.core.agent.moving.events.arc
+smartgov.core.agent.moving.events.node
+smartgov.core.agent.moving.events.parking
 smartgov.core.agent.moving.plan
 smartgov.core.environment
 smartgov.core.environment.graph
