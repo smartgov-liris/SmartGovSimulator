@@ -16,6 +16,7 @@ smartgov.core.output.node
 smartgov.core.scenario
 smartgov.core.simulation
 smartgov.core.simulation.events
+smartgov.core.simulation.time
 smartgov.core.utils
 smartgov.urban.geo.agent
 smartgov.urban.geo.agent.event

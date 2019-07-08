@@ -16,6 +16,8 @@ import smartgov.core.simulation.events.SimulationResumed;
 import smartgov.core.simulation.events.SimulationStarted;
 import smartgov.core.simulation.events.SimulationStep;
 import smartgov.core.simulation.events.SimulationStopped;
+import smartgov.core.simulation.time.Clock;
+import smartgov.core.simulation.time.Time;
 
 /**
  * Class used to run the simulation and update the context elements.
@@ -35,6 +37,9 @@ public class SimulationRuntime {
 	
 	// Delay between each ticks in ms
 	private long tickDelay = 0;
+	
+	// Simulation clock
+	private Clock clock;
 	
 	private SimulationThread simulationThread;
 
@@ -71,6 +76,7 @@ public class SimulationRuntime {
 		pause = false;
 		tickCount = 0;
 		logger.info("Start simulation");
+		clock = new Clock();
 		simulationThread = new SimulationThread();
 		simulationThread.start();
 		triggerSimulationStartedListeners();
@@ -169,6 +175,8 @@ public class SimulationRuntime {
 			agent.live();
 		}
 		tickCount ++;
+		clock.increment(tickDuration);
+
 		triggerSimulationStepListeners();
 		if(tickCount >= maxTicks) {
 			stop();
@@ -253,6 +261,16 @@ public class SimulationRuntime {
 	 */
 	public void setTickDelay(long tickDelay) {
 		this.tickDelay = tickDelay;
+	}
+	
+	public Time getClock() {
+		return clock;
+	}
+	
+	public void waitUntilSimulatioEnd() throws InterruptedException {
+		while(isRunning()) {
+			TimeUnit.MICROSECONDS.sleep(10);
+		}
 	}
 	
 	private class SimulationThread extends Thread {

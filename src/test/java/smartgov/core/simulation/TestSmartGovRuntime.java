@@ -18,6 +18,8 @@ import smartgov.core.events.EventHandler;
 import smartgov.core.simulation.SimulationRuntime;
 import smartgov.core.simulation.events.SimulationPaused;
 import smartgov.core.simulation.events.SimulationStep;
+import smartgov.core.simulation.time.Time;
+import smartgov.core.simulation.time.WeekDay;
 
 public class TestSmartGovRuntime {
 	
@@ -338,5 +340,40 @@ public class TestSmartGovRuntime {
 	
 	private class ExceptionThrownChecker {
 		public boolean exceptionThrown = false;
+	}
+	
+	@Test
+	public void testClock() throws InterruptedException {
+		SmartGovTest.loadSmartGov();
+		SmartGov.getRuntime().start(3 * 24 * 3600 + 15 * 3600 + 10 * 60 + 24);
+		
+		SmartGov.getRuntime().waitUntilSimulatioEnd();
+		
+		Time clock = SmartGov.getRuntime().getClock();
+		assertThat(
+				clock.getDay(),
+				equalTo(3)
+				);
+
+		assertThat(
+				clock.getWeekDay(),
+				equalTo(WeekDay.THURSDAY)
+				);
+		
+		assertThat(
+				clock.getHour(),
+				equalTo(15)
+				);
+		
+		assertThat(
+				clock.getMinutes(),
+				equalTo(10)
+				);
+		
+		assertThat(
+				clock.getSeconds(),
+				equalTo(24.)
+				);
+		
 	}
 }
