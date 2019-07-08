@@ -10,21 +10,11 @@ import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.TestMovingAgent;
 import smartgov.core.agent.moving.TestMovingAgentBody;
 import smartgov.core.agent.moving.behavior.TestMovingBehavior;
-import smartgov.core.agent.moving.events.ArcLeftEvent;
-import smartgov.core.agent.moving.events.ArcReachedEvent;
-import smartgov.core.agent.moving.events.DestinationReachedEvent;
 import smartgov.core.agent.moving.events.MoveEvent;
-import smartgov.core.agent.moving.events.NodeReachedEvent;
-import smartgov.core.agent.moving.events.OriginReachedEvent;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.TestContext;
 import smartgov.core.environment.graph.Arc;
 import smartgov.core.environment.graph.Node;
-import smartgov.core.environment.graph.events.AgentArrival;
-import smartgov.core.environment.graph.events.AgentDeparture;
-import smartgov.core.environment.graph.events.AgentDestination;
-import smartgov.core.environment.graph.events.AgentOrigin;
-import smartgov.core.events.EventHandler;
 import smartgov.core.simulation.TestScenario;
 
 public class TestEventsScenario extends TestScenario {
@@ -105,26 +95,14 @@ public class TestEventsScenario extends TestScenario {
 	 * Arc reached
 	 */
 	private void setUpArcReachedListeners(MovingAgentBody shuttleBody) {
-		shuttleBody.addOnArcReachedListener(new EventHandler<ArcReachedEvent>() {
-
-			@Override
-			public void handle(ArcReachedEvent event) {
-				arcReachedIds.add(event.getArc().getId());
-			}
-			
-		});
+		shuttleBody.addOnArcReachedListener((event) -> arcReachedIds.add(event.getArc().getId()));
 	}
 	
 	private void setUpArcAgentArrivalListeners(Collection<Arc> arcs) {
 		for(Arc arc : arcs) {
-			arc.addAgentArrivalListener(new EventHandler<AgentArrival>() {
-
-				@Override
-				public void handle(AgentArrival event) {
-					arcAgentArrivalTriggeredIds.add(arc.getId());
-				}
-				
-			});
+			arc.addAgentArrivalListener((event) ->
+					arcAgentArrivalTriggeredIds.add(arc.getId())
+				);
 		}
 	}
 	
@@ -132,26 +110,16 @@ public class TestEventsScenario extends TestScenario {
 	 * Arc left
 	 */
 	private void setUpArcLeftListeners(MovingAgentBody shuttleBody) {
-		shuttleBody.addOnArcLeftListener(new EventHandler<ArcLeftEvent>() {
-
-			@Override
-			public void handle(ArcLeftEvent event) {
-				arcLeftIds.add(event.getArc().getId());
-			}
-			
-		});
+		shuttleBody.addOnArcLeftListener((event) ->
+				arcLeftIds.add(event.getArc().getId())
+		);
 	}
 	
 	private void setUpArcAgentDepartureListeners(Collection<Arc> arcs) {
 		for(Arc arc : arcs) {
-			arc.addAgentDepartureListener(new EventHandler<AgentDeparture>() {
-
-				@Override
-				public void handle(AgentDeparture event) {
-					arcAgentDepartureTriggeredIds.add(arc.getId());
-				}
-				
-			});
+			arc.addAgentDepartureListener((event) ->
+					arcAgentDepartureTriggeredIds.add(arc.getId())
+			);
 		}
 	}
 	
@@ -159,26 +127,16 @@ public class TestEventsScenario extends TestScenario {
 	 * Node reached
 	 */
 	private void setUpNodeReachedListeners(MovingAgentBody shuttleBody) {
-		shuttleBody.addOnNodeReachedListener(new EventHandler<NodeReachedEvent>() {
-
-			@Override
-			public void handle(NodeReachedEvent event) {
-				nodeReachedIds.add(event.getNode().getId());
-			}
-			
-		});
+		shuttleBody.addOnNodeReachedListener((event) ->
+					nodeReachedIds.add(event.getNode().getId())
+				);
 	}
 	
 	private void setUpNodeAgentArrivalListeners(Collection<Node> nodes) {
 		for(Node node : nodes) {
-			node.addAgentArrivalListener(new EventHandler<AgentArrival>() {
-
-				@Override
-				public void handle(AgentArrival event) {
-					nodeAgentArrivalTriggeredIds.add(node.getId());
-				}
-				
-			});
+			node.addAgentArrivalListener((event) ->
+						nodeAgentArrivalTriggeredIds.add(node.getId())
+					);
 		}
 	}
 	
@@ -186,26 +144,16 @@ public class TestEventsScenario extends TestScenario {
 	 * Origin reached
 	 */
 	private void setUpOriginReachedListeners(MovingAgentBody shuttleBody) {
-		shuttleBody.addOnOriginReachedListener(new EventHandler<OriginReachedEvent>() {
-
-			@Override
-			public void handle(OriginReachedEvent event) {
-				originReachedIds.add(event.getNode().getId());
-			}
-			
-		});
+		shuttleBody.addOnOriginReachedListener((event) ->
+					originReachedIds.add(event.getNode().getId())
+				);
 	}
 	
 	private void setUpNodeAgentOriginListeners(Collection<Node> nodes) {
 		for(Node node : nodes) {
-			node.addAgentOriginListener(new EventHandler<AgentOrigin>() {
-
-				@Override
-				public void handle(AgentOrigin event) {
-					nodeAgentOriginTriggeredIds.add(node.getId());
-				}
-				
-			});
+			node.addAgentOriginListener((event) ->
+						nodeAgentOriginTriggeredIds.add(node.getId())
+					);
 		}
 	}
 	
@@ -213,26 +161,16 @@ public class TestEventsScenario extends TestScenario {
 	 * Destination reached
 	 */
 	private void setUpDestinationReachedListeners(MovingAgentBody shuttleBody) {
-		shuttleBody.addOnDestinationReachedListener(new EventHandler<DestinationReachedEvent>() {
-
-			@Override
-			public void handle(DestinationReachedEvent event) {
-				destinationReachedIds.add(event.getNode().getId());
-			}
-			
-		});
+		shuttleBody.addOnDestinationReachedListener((event) ->
+				destinationReachedIds.add(event.getNode().getId())
+		);
 	}
 	
 	private void setUpNodeAgentDestinationListeners(Collection<Node> nodes) {
 		for(Node node : nodes) {
-			node.addAgentDestinationListener(new EventHandler<AgentDestination>() {
-
-				@Override
-				public void handle(AgentDestination event) {
-					nodeAgentDestinationTriggeredIds.add(node.getId());
-				}
-				
-			});
+			node.addAgentDestinationListener((event) ->
+					nodeAgentDestinationTriggeredIds.add(node.getId())
+			);
 		}
 	}
 	
@@ -240,13 +178,8 @@ public class TestEventsScenario extends TestScenario {
 	 * Move
 	 */
 	private void setUpMoveListeners(MovingAgentBody shuttleBody) {
-		shuttleBody.addOnMoveListener(new EventHandler<MoveEvent>() {
-
-			@Override
-			public void handle(MoveEvent event) {
-				moveEvents.add(event);
-			}
-			
-		});
+		shuttleBody.addOnMoveListener((event) ->
+				moveEvents.add(event)
+		);
 	}
 }
