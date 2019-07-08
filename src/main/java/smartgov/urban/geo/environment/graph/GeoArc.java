@@ -5,7 +5,7 @@ import org.locationtech.jts.math.Vector2D;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import smartgov.core.environment.graph.Arc;
-import smartgov.urban.geo.simulation.GISComputation;
+import smartgov.urban.geo.utils.GISComputation;
 
 /**
  * Represents a geographical arc.

@@ -1,14 +1,14 @@
 package smartgov.urban.osm.environment;
 
 import smartgov.core.environment.SmartGovContext;
-import smartgov.core.simulation.Scenario;
+import smartgov.core.scenario.Scenario;
 import smartgov.urban.osm.environment.graph.OsmNode;
 import smartgov.urban.osm.environment.graph.Road;
 import smartgov.urban.osm.environment.graph.factory.DefaultOsmArcFactory;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.SinkNode;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.SourceNode;
-import smartgov.urban.osm.simulation.scenario.lowLayer.RandomTrafficScenario;
-import smartgov.urban.osm.simulation.scenario.lowLayer.ScenarioVisualization;
+import smartgov.urban.osm.scenario.lowLayer.RandomTrafficScenario;
+import smartgov.urban.osm.scenario.lowLayer.ScenarioVisualization;
 
 import java.util.ArrayList;
 import java.util.HashMap;

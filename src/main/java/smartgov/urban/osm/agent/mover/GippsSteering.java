@@ -2,7 +2,7 @@ package smartgov.urban.osm.agent.mover;
 
 import org.locationtech.jts.geom.Coordinate;
 
-import smartgov.urban.geo.simulation.GISComputation;
+import smartgov.urban.geo.utils.GISComputation;
 
 /**
  * Implementation of Gipps steering behavior explained in the following paper :

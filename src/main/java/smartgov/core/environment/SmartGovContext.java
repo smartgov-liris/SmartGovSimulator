@@ -10,7 +10,7 @@ import smartgov.core.agent.core.Agent;
 import smartgov.core.environment.graph.Arc;
 import smartgov.core.environment.graph.Graph;
 import smartgov.core.environment.graph.Node;
-import smartgov.core.simulation.Scenario;
+import smartgov.core.scenario.Scenario;
 
 /**
  * Context implementation, that contains common elements to any simulation.

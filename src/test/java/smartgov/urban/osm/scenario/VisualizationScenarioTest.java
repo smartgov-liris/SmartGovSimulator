@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import smartgov.SmartGov;
 import smartgov.urban.osm.environment.OsmContext;
-import smartgov.urban.osm.simulation.scenario.lowLayer.ScenarioVisualization;
+import smartgov.urban.osm.scenario.lowLayer.ScenarioVisualization;
 
 public class VisualizationScenarioTest {
 

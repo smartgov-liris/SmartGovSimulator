@@ -19,10 +19,10 @@ import smartgov.core.agent.moving.events.DestinationReachedEvent;
 import smartgov.core.agent.moving.events.NodeReachedEvent;
 import smartgov.core.environment.graph.Node;
 import smartgov.core.events.EventHandler;
-import smartgov.core.main.events.SimulationStep;
+import smartgov.core.simulation.events.SimulationStep;
 import smartgov.urban.osm.agent.behavior.RandomTrafficBehavior;
 import smartgov.urban.osm.environment.OsmContext;
-import smartgov.urban.osm.simulation.scenario.lowLayer.RandomTrafficScenario;
+import smartgov.urban.osm.scenario.lowLayer.RandomTrafficScenario;
 
 public class RandomTrafficScenarioTest {
 	

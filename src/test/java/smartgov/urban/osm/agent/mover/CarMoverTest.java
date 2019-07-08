@@ -14,7 +14,7 @@ import smartgov.core.agent.moving.events.MoveEvent;
 import smartgov.core.agent.moving.events.NodeReachedEvent;
 import smartgov.core.events.EventHandler;
 import smartgov.urban.geo.agent.GeoAgentBody;
-import smartgov.urban.geo.simulation.GISComputation;
+import smartgov.urban.geo.utils.GISComputation;
 import smartgov.urban.osm.environment.TestOsmContext;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.Road;

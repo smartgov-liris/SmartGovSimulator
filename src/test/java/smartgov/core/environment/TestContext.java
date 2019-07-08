@@ -1,8 +1,8 @@
 package smartgov.core.environment;
 
-import smartgov.core.simulation.Scenario;
-import smartgov.core.simulation.TestScenario;
-import smartgov.urban.geo.simulation.GeoTestScenario;
+import smartgov.core.scenario.Scenario;
+import smartgov.core.scenario.TestScenario;
+import smartgov.urban.geo.scenario.GeoTestScenario;
 
 public class TestContext extends SmartGovContext {
 

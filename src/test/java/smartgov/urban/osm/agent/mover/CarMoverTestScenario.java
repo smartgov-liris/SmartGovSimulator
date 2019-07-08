@@ -8,7 +8,7 @@ import smartgov.core.agent.moving.behavior.TestMovingBehavior;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.urban.osm.agent.OsmAgent;
 import smartgov.urban.osm.agent.OsmAgentBody;
-import smartgov.urban.osm.simulation.scenario.BasicOsmScenario;
+import smartgov.urban.osm.scenario.BasicOsmScenario;
 
 /**
  * Basic OSM scenario with only four nodes, linked into a loop.

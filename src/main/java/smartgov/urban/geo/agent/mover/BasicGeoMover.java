@@ -11,7 +11,7 @@ import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.agent.event.GeoMoveEvent;
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.environment.graph.GeoNode;
-import smartgov.urban.geo.simulation.GISComputation;
+import smartgov.urban.geo.utils.GISComputation;
 
 public class BasicGeoMover implements GeoMover {
 	

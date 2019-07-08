@@ -1,7 +1,7 @@
 package smartgov.core.agent.moving.events.scenario;
 
 import smartgov.core.environment.TestContext;
-import smartgov.core.simulation.Scenario;
+import smartgov.core.scenario.Scenario;
 
 public class TestEventsContext extends TestContext {
 

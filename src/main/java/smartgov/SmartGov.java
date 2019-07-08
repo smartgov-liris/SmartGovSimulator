@@ -13,9 +13,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.events.EventHandler;
-import smartgov.core.main.SimulationBuilder;
-import smartgov.core.main.SimulationRuntime;
-import smartgov.core.main.events.SimulationStopped;
+import smartgov.core.simulation.SimulationBuilder;
+import smartgov.core.simulation.SimulationRuntime;
+import smartgov.core.simulation.events.SimulationStopped;
 import smartgov.urban.osm.environment.OsmContext;
 
 public class SmartGov {

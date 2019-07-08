@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.output.agent.AgentBodyListIdSerializer;
-import smartgov.urban.geo.simulation.GISComputation;
+import smartgov.urban.geo.utils.GISComputation;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.utils.OneWayDeserializer;
 

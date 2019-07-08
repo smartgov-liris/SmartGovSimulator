@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import smartgov.SmartGov;
-import smartgov.core.simulation.Scenario;
+import smartgov.core.scenario.Scenario;
 import smartgov.core.utils.FileLoader;
 
 /**

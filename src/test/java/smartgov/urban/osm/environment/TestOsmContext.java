@@ -1,6 +1,6 @@
 package smartgov.urban.osm.environment;
 
-import smartgov.core.simulation.Scenario;
+import smartgov.core.scenario.Scenario;
 import smartgov.urban.osm.agent.mover.CarMoverTestScenario;
 import smartgov.urban.osm.environment.OsmContext;
 
