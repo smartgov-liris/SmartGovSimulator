@@ -55,7 +55,7 @@ public class TestSimulationBuilder {
 		SimulationBuilder simulationBuilder = new SimulationBuilder(TestSmartGovContext.loadTestContext());
 		simulationBuilder.build();
 		
-		for(Agent agent : simulationBuilder.getContext().agents.values()) {
+		for(Agent<?> agent : simulationBuilder.getContext().agents.values()) {
 			assertThat(
 					agent.getBehavior() instanceof TestMovingBehavior,
 					equalTo(true)

@@ -44,7 +44,7 @@ public class TimeTest {
 		Time time = new Date(0, WeekDay.MONDAY, 0, 0);
 		
 		for (int i = 0; i < 2 * 60 + 10; i++) {
-			time.increment(1);
+			time._increment(1);
 		}
 		
 		// Incremented time
@@ -63,7 +63,7 @@ public class TimeTest {
 	public void timeIncrementHours() {
 		Time time = new Date(0, WeekDay.MONDAY, 0, 0);
 		
-		time.increment(3 * 3600 + 3 * 60 + 10);
+		time._increment(3 * 3600 + 3 * 60 + 10);
 		
 		// Incremented time
 		assertThat(
@@ -86,7 +86,7 @@ public class TimeTest {
 	public void timeIncrementDays() {
 		Time time = new Date(0, WeekDay.MONDAY, 0, 0);
 		
-		time.increment(3 * 24 * 3600 + 3 * 3600 + 3 * 60 + 10);
+		time._increment(3 * 24 * 3600 + 3 * 3600 + 3 * 60 + 10);
 		
 		// Incremented time
 		assertThat(

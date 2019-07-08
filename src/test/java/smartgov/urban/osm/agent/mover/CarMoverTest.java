@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
-import smartgov.core.agent.moving.events.DestinationReachedEvent;
 import smartgov.core.agent.moving.events.MoveEvent;
 import smartgov.core.agent.moving.events.NodeReachedEvent;
 import smartgov.core.events.EventHandler;

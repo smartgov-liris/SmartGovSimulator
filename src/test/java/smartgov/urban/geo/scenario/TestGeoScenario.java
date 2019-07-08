@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
-import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import smartgov.SmartGov;

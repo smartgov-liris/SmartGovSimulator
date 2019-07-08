@@ -51,7 +51,7 @@ public abstract class Time implements Comparable<Time> {
 	 * Instantiated with the specified times, and <code>seconds = 0</code>.
 	 * 
 	 * Hour and minutes do not need to be in range [0, 60], the correct values
-	 * will be automatically set up with the {@link #increment increment()} method.
+	 * will be automatically set up with the {@link #_increment _increment()} method.
 	 * 
 	 * @param day days count
 	 * @param weekDay weekDay
@@ -62,7 +62,7 @@ public abstract class Time implements Comparable<Time> {
 		super();
 		this.seconds = 0;
 		this.weekDay = weekDay;
-		this.increment(day * 24 * 3600 + hour * 3600 + minutes * 60);
+		this._increment(day * 24 * 3600 + hour * 3600 + minutes * 60);
 	}
 
 	/**
@@ -132,7 +132,7 @@ public abstract class Time implements Comparable<Time> {
 	 * 
 	 * @param seconds seconds counts
 	 */
-	protected void increment(double seconds) {
+	protected void _increment(double seconds) {
 		this.seconds += seconds;
 		while(this.seconds >= 60) {
 			this.seconds -= 60;

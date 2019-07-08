@@ -20,5 +20,9 @@ public class Date extends Time {
 		super(day, weekDay, hour, minutes);
 		this.seconds = 0;
 	}
+	
+	public Date(Clock origin, int day, int hour, int minutes) {
+		this(day, origin.getWeekDay().after(day), hour, minutes);
+	}
 
 }

@@ -16,10 +16,15 @@ public enum WeekDay {
 		this.offset = offset;
 	}
 	
-	public int getOffset() {
+	private int getOffset() {
 		return offset;
 	}
 	
+	/**
+	 * Computes the week day <i>dayCount</i> days after this day.
+	 * @param dayCount day count to add
+	 * @return corresponding week day
+	 */
 	public WeekDay after(int dayCount) {
 		int offset = (getOffset() + dayCount) % 7;
 		return valuesByOffset[offset];
