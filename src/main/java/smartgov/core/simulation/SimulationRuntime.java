@@ -263,10 +263,19 @@ public class SimulationRuntime {
 		this.tickDelay = tickDelay;
 	}
 	
-	public Time getClock() {
+	/**
+	 * Current simulation clock
+	 * @return simulation clock
+	 */
+	public Clock getClock() {
 		return clock;
 	}
 	
+	/**
+	 * Blocking function to wait until the simulation has stopped.
+	 * 
+	 * @throws InterruptedException if interrupted while sleeping 
+	 */
 	public void waitUntilSimulatioEnd() throws InterruptedException {
 		while(isRunning()) {
 			TimeUnit.MICROSECONDS.sleep(10);
