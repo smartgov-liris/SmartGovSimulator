@@ -17,7 +17,6 @@ import smartgov.core.simulation.events.SimulationStarted;
 import smartgov.core.simulation.events.SimulationStep;
 import smartgov.core.simulation.events.SimulationStopped;
 import smartgov.core.simulation.time.Clock;
-import smartgov.core.simulation.time.Time;
 
 /**
  * Class used to run the simulation and update the context elements.

@@ -14,8 +14,6 @@ import smartgov.core.agent.moving.events.node.NodeReachedEvent;
 import smartgov.core.agent.moving.events.node.OriginReachedEvent;
 import smartgov.core.agent.moving.events.parking.EnterParkingAreaEvent;
 import smartgov.core.agent.moving.events.parking.LeaveParkingAreaEvent;
-import smartgov.core.agent.moving.plan.FirstNodeEvent;
-import smartgov.core.agent.moving.plan.NextNodeEvent;
 import smartgov.core.agent.moving.plan.Plan;
 import smartgov.core.environment.graph.Arc;
 import smartgov.core.environment.graph.Node;
@@ -65,23 +63,15 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 		
 		this.plan = new Plan();
 		
-		this.plan.addNextNodeListener(new EventHandler<NextNodeEvent>() {
-
-			@Override
-			public void handle(NextNodeEvent event) {
+		this.plan.addNextNodeListener((event) ->
 				buildAndTriggerEventsAtMove(
 					event.getOldArc(),
 					event.getOldNode(),
 					event.getNewArc(),
-					event.getNewNode());
-			}
-			
-		});
+					event.getNewNode())
+				);
 		
-		this.plan.addFirstNodeListener(new EventHandler<FirstNodeEvent>() {
-
-			@Override
-			public void handle(FirstNodeEvent event) {
+		this.plan.addFirstNodeListener((event) -> {
 				// Node reached events
 				triggerNodeReachedListeners(new NodeReachedEvent(event.getFirstNode()));
 				event.getFirstNode().triggerAgentArrivalListeners(new AgentArrival((MovingAgent) getAgent()));
@@ -95,8 +85,7 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 				event.getFirstArc().triggerAgentArrivalListeners(new AgentArrival((MovingAgent) getAgent()));
 
 			}
-			
-		});
+		);
 	}
 
 	/**

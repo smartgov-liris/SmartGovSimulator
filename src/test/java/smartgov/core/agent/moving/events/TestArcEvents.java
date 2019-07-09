@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 import smartgov.SmartGov;
-import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.agent.moving.events.scenario.TestEventsContext;
 import smartgov.core.agent.moving.events.scenario.TestEventsScenario;
 
