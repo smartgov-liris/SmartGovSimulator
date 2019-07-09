@@ -21,7 +21,16 @@ public class Date extends Time {
 		this.seconds = 0;
 	}
 	
-	public Date(Clock origin, int day, int hour, int minutes) {
+	/**
+	 * Build a new date from the specified origin. The origin is just used
+	 * to compute the good week day.
+	 * 
+	 * @param origin used to compute the corresponding week day
+	 * @param day days counts
+	 * @param hour hours count
+	 * @param minutes minutes count
+	 */
+	public Date(Date origin, int day, int hour, int minutes) {
 		this(day, origin.getWeekDay().after(day), hour, minutes);
 	}
 

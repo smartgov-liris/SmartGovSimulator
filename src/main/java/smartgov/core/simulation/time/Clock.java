@@ -18,14 +18,29 @@ public class Clock extends Time {
 	 */
 	public static final Date origin = new Date(0, WeekDay.MONDAY, 0, 0);
 	
+	private Date clockOrigin;
 
 
 	/**
-	 * Clock constructor, initialized at the origin.
+	 * Clock constructor, initialized at the default origin.
 	 */
 	public Clock() {
+		this(origin);
+	}
+	
+	/**
+	 * Creates a clock from the specified origin.
+	 * 
+	 * @param origin time origin to consider
+	 */
+	public Clock(Date origin) {
 		super(origin.getDay(), origin.getWeekDay(), origin.getHour(), origin.getMinutes());
+		this.clockOrigin = origin;
 		this.actions = new TreeSet<>();
+	}
+	
+	public Date getOrigin() {
+		return clockOrigin;
 	}
 	
 

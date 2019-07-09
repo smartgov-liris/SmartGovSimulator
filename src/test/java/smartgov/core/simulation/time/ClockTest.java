@@ -15,7 +15,12 @@ public class ClockTest {
 	public void testDelayedActions() {
 		Clock clock = new Clock();
 		
-		List<Date> dates = Arrays.asList(new Date(clock, 2, 2, 0), new Date(clock, 0, 1, 30), new Date(clock, 1, 1, 30));
+		List<Date> dates = Arrays.asList(
+				new Date(clock.getOrigin(), 2, 2, 0),
+				new Date(clock.getOrigin(), 0, 1, 30),
+				new Date(clock.getOrigin(), 1, 1, 30)
+				);
+
 		List<Date> eventsTriggered = new ArrayList<>();
 		
 		for(Date date : dates) {
