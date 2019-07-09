@@ -229,7 +229,9 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 *
 	 * @param parkingArea parking area to enter in
 	 */	
-	public abstract void handleEnter(ParkingArea parkingArea);
+	public void handleEnter(ParkingArea parkingArea) {
+		parkingArea.enter((MovingAgent) this.getAgent());
+	}
 
 	/**
 	 * Automatically called to perform a {@link smartgov.core.agent.moving.behavior.MoverAction#LEAVE LEAVE} action
@@ -237,7 +239,9 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 *
 	 * @param parkingArea parking area to leave from
 	 */	
-	public abstract void handleLeave(ParkingArea parkingArea);
+	public void handleLeave(ParkingArea parkingArea) {
+		parkingArea.leave((MovingAgent) this.getAgent());
+	}
 	
 	// Move listeners
 	/**

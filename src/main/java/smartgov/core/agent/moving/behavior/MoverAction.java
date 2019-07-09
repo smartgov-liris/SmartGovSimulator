@@ -91,7 +91,7 @@ public class MoverAction extends AgentAction{
 	 * @return an ENTER action
 	 */
 	public static MoverAction ENTER(ParkingArea parkingArea) {
-		return new MoverAction(ActionType.MOVE, parkingArea);
+		return new MoverAction(ActionType.ENTER, parkingArea);
 	}
 
 	/**

@@ -8,16 +8,6 @@ public class TestMovingAgentBody extends MovingAgentBody {
 	}
 
 	@Override
-	public void handleEnter(ParkingArea parkingArea) {
-		
-	}
-
-	@Override
-	public void handleLeave(ParkingArea parkingArea) {
-		
-	}
-
-	@Override
 	public void handleWait() {
 		
 	}
