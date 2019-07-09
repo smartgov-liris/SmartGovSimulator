@@ -62,6 +62,7 @@ public class OsmArc extends GeoArc {
 		super(id, startNode, targetNode);
 		this.road = road;
 		this.roadDirection = roadDirection;
+		this.road.setOutgoingArcForNode(startNode.getId(), this);
 	}
 	
 	/**

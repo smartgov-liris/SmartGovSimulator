@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.SmartGov;
-import smartgov.core.agent.moving.MovingAgent;
 import smartgov.core.agent.moving.MovingAgentBody;
-import smartgov.core.agent.moving.ParkingArea;
 import smartgov.core.output.coordinate.CoordinateSerializer;
 import smartgov.urban.geo.agent.mover.GeoMover;
 
@@ -134,16 +132,6 @@ public class GeoAgentBody extends MovingAgentBody {
 		// Distance to cross in one tick
 		double distance = getSpeed() * SmartGov.getRuntime().getTickDuration();
 		setPosition(this.mover.moveOn(distance));
-	}
-
-	@Override
-	public void handleEnter(ParkingArea parkingArea) {
-		parkingArea.enter((MovingAgent) this.getAgent());
-	}
-
-	@Override
-	public void handleLeave(ParkingArea parkingArea) {
-		parkingArea.leave((MovingAgent) this.getAgent());
 	}
 
 	@Override

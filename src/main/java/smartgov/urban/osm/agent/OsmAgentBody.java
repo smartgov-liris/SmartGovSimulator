@@ -64,7 +64,9 @@ public class OsmAgentBody extends GeoAgentBody {
 		setPosition(((GeoNode) getPlan().getCurrentNode()).getPosition());
 		
 		// Adds the agent to the new road
-		((OsmArc) getPlan().getCurrentArc()).getRoad().addAgent(this);
+		Road currentRoad = ((OsmArc) getPlan().getCurrentArc()).getRoad();
+		currentRoad.addAgent(this);
+		setCurrentRoad(currentRoad);
 		
 	}
 	

@@ -21,8 +21,6 @@ import smartgov.urban.osm.environment.graph.Road;
  *
  */
 public class CarMover extends BasicGeoMover {
-	
-	public static final double reactionTime = 1.0;
 
 	private GippsSteering gippsSteering;
 	private double maximumSpeed;
@@ -37,7 +35,7 @@ public class CarMover extends BasicGeoMover {
 	 * @param vehicleSize vehicle size, that includes any security margin
 	 */
 	public CarMover(double maximumAcceleration, double maximumBraking, double maximumSpeed, double vehicleSize) {
-		gippsSteering = new GippsSteering(reactionTime, maximumAcceleration, maximumBraking);
+		gippsSteering = new GippsSteering(maximumAcceleration, maximumBraking);
 		this.maximumSpeed = maximumSpeed;
 		this.vehicleSize = vehicleSize;
 	}
@@ -68,6 +66,7 @@ public class CarMover extends BasicGeoMover {
 			((OsmArc) oldArc).getRoad().removeAgent((OsmAgentBody) agentBody);
 			
 			((OsmArc) newArc).getRoad().addAgent((OsmAgentBody) agentBody);
+			((OsmAgentBody) agentBody).setCurrentRoad(((OsmArc) newArc).getRoad());
 			
 		}
 		agentBody.setDirection(newArc.getDirection());
@@ -85,11 +84,11 @@ public class CarMover extends BasicGeoMover {
 					gippsSteering.getSpeed(
 						agentBody.getSpeed(), // current speed
 						maximumSpeed, // Max speed
-						leader.getPosition(), // Position of the leader
 						leader.getSpeed(),
 						((CarMover) leader.getMover()).getVehicleSize(),
-						((CarMover) leader.getMover()).getGippsSteering().getMaximumBraking(),
-						agentBody.getPosition())
+						((CarMover) leader.getMover()).getGippsSteering().getMaxBraking(),
+						road.distanceBetweenTwoAgents(leader, (OsmAgentBody) agentBody)
+						)
 					);
 		}
 		else {

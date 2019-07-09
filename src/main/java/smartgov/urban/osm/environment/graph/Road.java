@@ -10,7 +10,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.core.agent.moving.MovingAgentBody;
+import smartgov.core.environment.graph.Arc;
 import smartgov.core.output.agent.AgentBodyListIdSerializer;
+import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.geo.utils.GISComputation;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.utils.OneWayDeserializer;
@@ -253,18 +255,53 @@ public class Road extends OsmWay {
 	}
 	
 	/**
-	 * Utility function to compute the distance between two agents.
+	 * Compute the distance between two agents along the current road, taking into account road breaks
+	 * (nodes and arcs between agents).
 	 *
 	 * <p>
-	 * Equivalent to <code>GISComputation.GPS2Meter(leader.getPosition(), follower.getPosition());</code>
+	 * Computing the direct distance between two agents doesn't make much sense in general : use this
+	 * function to compute the real distance between agents, along the road.
 	 * </p>
+	 * 
+	 * <p>
+	 * Also make sure that the follower is really located after the leader on the road.
+	 * If leader and follower are not on this road, or are exchanged, unexpected things might happen.
+	 * This could be hard checked in the function, but for efficiency purposes we will leave this
+	 * responsibility to the user, at least for now.
+	 * </p> 
 	 *
 	 * @param leader first agent
 	 * @param follower second agent
 	 * @return distance between the two agents, in meter
 	 */
-	public static double distanceBetweenTwoAgents(OsmAgentBody leader, OsmAgentBody follower){
-		return GISComputation.GPS2Meter(leader.getPosition(), follower.getPosition());
+	public double distanceBetweenTwoAgents(OsmAgentBody leader, OsmAgentBody follower){
+		Arc leaderArc = leader.getPlan().getCurrentArc();
+		Arc followerArc = follower.getPlan().getCurrentArc();
+		
+		if (leaderArc == followerArc) {
+			// Agents are in the same arc, so distance between them is the direct distance along the arc
+			return GISComputation.GPS2Meter(follower.getPosition(), leader.getPosition());
+		}
+		
+		// There is at least one other node between the two agents, so we need to compute
+		// the real distance between agents.
+		Arc currentArc = followerArc;
+		GeoNode currentTarget = (GeoNode) currentArc.getTargetNode();
+		double distance = GISComputation.GPS2Meter(follower.getPosition(), currentTarget.getPosition()); 
+		
+		while(currentArc != leaderArc) {
+			// Get the next arc of the road
+			currentArc = this.outgoingArcByNodeId.get(currentTarget.getId());
+			
+			if(currentArc != leaderArc) {
+				// A complete arc is between the two agents
+				distance+=currentArc.getLength();
+				currentTarget = (GeoNode) currentArc.getTargetNode();
+			}
+		}
+		// Final part, between the last node and the leader
+		distance+=GISComputation.GPS2Meter(currentTarget.getPosition(), leader.getPosition());
+		return distance;
 	}
 
 	@Override

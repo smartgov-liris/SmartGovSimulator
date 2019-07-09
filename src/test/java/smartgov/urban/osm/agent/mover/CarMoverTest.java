@@ -14,6 +14,7 @@ import smartgov.core.agent.moving.events.node.NodeReachedEvent;
 import smartgov.core.events.EventHandler;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.utils.GISComputation;
+import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.TestOsmContext;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.Road;
@@ -53,7 +54,7 @@ public class CarMoverTest {
 		
 		MaxBean maxSpeed = new MaxBean();
 		
-		GeoAgentBody leaderAgent = (GeoAgentBody) smartGov.getContext().agents.get("2").getBody();
+		OsmAgentBody leaderAgent = (OsmAgentBody) smartGov.getContext().agents.get("2").getBody();
 		
 		leaderAgent.addOnMoveListener(new EventHandler<MoveEvent>(){
 
@@ -88,24 +89,8 @@ public class CarMoverTest {
 		MaxBean followerMaxSpeed = new MaxBean();
 		MinBean minDistanceBetweenAgents = new MinBean();
 		
-		GeoAgentBody followerAgent = (GeoAgentBody) smartGov.getContext().agents.get("1").getBody();
-		GeoAgentBody leaderAgent = (GeoAgentBody) smartGov.getContext().agents.get("2").getBody();
-		
-		leaderAgent.addOnNodeReachedListener(new EventHandler<NodeReachedEvent>() {
-			@Override
-			public void handle(NodeReachedEvent event) {
-				// TODO : Bug here, when the leader reaches a node,
-				// it probably disappear from the road what causes
-				// a follower acceleration, and the distance goes bellow
-				// the legal limit.
-				System.out.println(
-						"Node reached, distance between agents : " +
-						GISComputation.GPS2Meter(followerAgent.getPosition(), leaderAgent.getPosition())
-						);
-				
-			}
-			
-		});
+		OsmAgentBody followerAgent = (OsmAgentBody) smartGov.getContext().agents.get("1").getBody();
+		OsmAgentBody leaderAgent = (OsmAgentBody) smartGov.getContext().agents.get("2").getBody();
 		
 		followerAgent.addOnMoveListener(new EventHandler<MoveEvent>(){
 
@@ -113,7 +98,7 @@ public class CarMoverTest {
 				public void handle(MoveEvent event) {
 					followerMaxSpeed.update(followerAgent.getSpeed());
 
-					Double currentDistance = GISComputation.GPS2Meter(followerAgent.getPosition(), leaderAgent.getPosition());
+					Double currentDistance = followerAgent.getCurrentRoad().distanceBetweenAgentAndLeader(followerAgent);
 					minDistanceBetweenAgents.update(
 							currentDistance
 							);
@@ -219,7 +204,7 @@ public class CarMoverTest {
 		assertThat(
 				leaderMaxAcceleration.getValue(),
 				greaterThan(
-						2.5*CarMoverTestScenario.maximumAcceleration*CarMover.reactionTime*Math.sqrt(0.025) - 0.1
+						2.5 * CarMoverTestScenario.maximumAcceleration * GippsSteering.teta * Math.sqrt(0.025) - 0.1
 						)
 				);
 		

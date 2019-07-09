@@ -1,6 +1,8 @@
 package smartgov.urban.osm.environment.graph;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,6 +17,14 @@ public class OsmWay {
 
 	private String id;
 	private List<String> nodeRefs;
+	
+	/*
+	 * For each node, stores the reference to the arc
+	 * going out from the node represented by the key id,
+	 * and so that necessarily goes to the next node in
+	 * the same order as in node refs.
+	 */
+	protected Map<String, OsmArc> outgoingArcByNodeId;
 
 	/**
 	 * JsonCreator used to load Roads from a Json file.
@@ -32,6 +42,7 @@ public class OsmWay {
 		@JsonProperty("nodeRefs") List<String> nodeRefs) {
 		this.id = id;
 		this.nodeRefs = nodeRefs;
+		this.outgoingArcByNodeId = new HashMap<>();
 	}
 
 	/**
@@ -50,5 +61,9 @@ public class OsmWay {
 	 */
 	public List<String> getNodes() {
 		return nodeRefs;
+	}
+	
+	public void setOutgoingArcForNode(String nodeId, OsmArc arc) {
+		this.outgoingArcByNodeId.put(nodeId, arc);
 	}
 }
