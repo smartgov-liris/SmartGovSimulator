@@ -60,6 +60,7 @@ public class SimulationRuntime {
 		simulationPausedEventHandlers = new ArrayList<>();
 		simulationResumedEventHandlers = new ArrayList<>();
 		simulationStepEventHandlers = new ArrayList<>();
+		clock = new Clock();
 	}
 	
 	/**
@@ -74,8 +75,8 @@ public class SimulationRuntime {
 		run = true;
 		pause = false;
 		tickCount = 0;
+		clock.reset();
 		logger.info("Start simulation");
-		clock = new Clock();
 		simulationThread = new SimulationThread();
 		simulationThread.start();
 		triggerSimulationStartedListeners();

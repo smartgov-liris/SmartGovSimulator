@@ -39,6 +39,10 @@ public class Clock extends Time {
 		this.actions = new TreeSet<>();
 	}
 	
+	/**
+	 * Clock origin.
+	 * @return clock origin
+	 */
 	public Date getOrigin() {
 		return clockOrigin;
 	}
@@ -56,6 +60,18 @@ public class Clock extends Time {
 		while(actions.size() > 0 && this.compareTo(actions.first().getDate()) >= 0) {
 			actions.pollFirst().getAction().trigger();
 		}
+	}
+	
+	/**
+	 * Reset the clock to its origin value and clears
+	 * registered delayed actions.
+	 */
+	public void reset() {
+		this.day = clockOrigin.getDay();
+		this.weekDay = clockOrigin.getWeekDay();
+		this.hour = clockOrigin.getHour();
+		this.minutes = clockOrigin.getMinutes();
+		this.actions.clear();
 	}
 	
 	public void addDelayedAction(DelayedActionHandler action) {
