@@ -75,7 +75,6 @@ public class SimulationRuntime {
 		run = true;
 		pause = false;
 		tickCount = 0;
-		clock.reset();
 		logger.info("Start simulation");
 		simulationThread = new SimulationThread();
 		simulationThread.start();
@@ -137,6 +136,7 @@ public class SimulationRuntime {
 		logger.info("Stop simulation after " + tickCount + " ticks.");
 		pause = false;
 		run = false;
+		clock.reset();
 		triggerSimulationStoppedListeners();
 	}
 	
