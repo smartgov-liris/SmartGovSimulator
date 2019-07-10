@@ -57,7 +57,8 @@ public class TestPauseEvent {
 		
 		assertThat(
 				checker.json,
-				equalTo("{\"pause\":{\"tick\":5}}")
+				equalTo("{\"pause\":{\"tick\":5,\"date\":{\"day\":0,\"weekDay\":\"MONDAY\",\"hour\":\"0:0:5.0\"}}}")
 				);
 	}
+
 }

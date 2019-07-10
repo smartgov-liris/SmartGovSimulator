@@ -65,7 +65,7 @@ public class TestResumeEvent {
 		
 		assertThat(
 				checker.json,
-				equalTo("{\"resume\":{\"tick\":5}}")
+				equalTo("{\"resume\":{\"tick\":5,\"date\":{\"day\":0,\"weekDay\":\"MONDAY\",\"hour\":\"0:0:5.0\"}}}")
 				);
 	}
 }

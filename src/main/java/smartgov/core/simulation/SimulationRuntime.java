@@ -136,8 +136,8 @@ public class SimulationRuntime {
 		logger.info("Stop simulation after " + tickCount + " ticks.");
 		pause = false;
 		run = false;
-		clock.reset();
 		triggerSimulationStoppedListeners();
+		clock.reset();
 	}
 	
 	/**
@@ -327,7 +327,7 @@ public class SimulationRuntime {
 	}
 	
 	private void triggerSimulationStoppedListeners() {
-		SimulationStopped event = new SimulationStopped(tickCount);
+		SimulationStopped event = new SimulationStopped(tickCount, clock.time());
 		for(EventHandler<SimulationStopped> listener : simulationStoppedEventHandlers) {
 			listener.handle(event);
 		}
@@ -344,7 +344,7 @@ public class SimulationRuntime {
 	}
 	
 	private void triggerSimulationPausedListeners() {
-		SimulationPaused event = new SimulationPaused(tickCount);
+		SimulationPaused event = new SimulationPaused(tickCount, clock.time());
 		for(EventHandler<SimulationPaused> listener : simulationPausedEventHandlers) {
 			listener.handle(event);
 		}
@@ -361,7 +361,7 @@ public class SimulationRuntime {
 	}
 	
 	private void triggerSimulationResumedListeners() {
-		SimulationResumed event = new SimulationResumed(tickCount);
+		SimulationResumed event = new SimulationResumed(tickCount, clock.time());
 		for(EventHandler<SimulationResumed> listener : simulationResumedEventHandlers) {
 			listener.handle(event);
 		}
@@ -378,7 +378,7 @@ public class SimulationRuntime {
 	}
 	
 	private void triggerSimulationStepListeners() {
-		SimulationStep event = new SimulationStep(tickCount);
+		SimulationStep event = new SimulationStep(tickCount, clock.time());
 		for(EventHandler<SimulationStep> listener : simulationStepEventHandlers) {
 			listener.handle(event);
 		}

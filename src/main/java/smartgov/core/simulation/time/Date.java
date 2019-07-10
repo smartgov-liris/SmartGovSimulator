@@ -22,6 +22,20 @@ public class Date extends Time {
 	}
 	
 	/**
+	 * Date constructor.
+	 * 
+	 * @param day days count
+	 * @param weekDay week day
+	 * @param hour hours count
+	 * @param minutes minutes count
+	 * @param seconds seconds
+	 */
+	public Date(int day, WeekDay weekDay, int hour, int minutes, double seconds) {
+		super(day, weekDay, hour, minutes);
+		this.seconds = seconds;
+	}
+	
+	/**
 	 * Build a new date from the specified origin. The origin is just used
 	 * to compute the good week day.
 	 * 

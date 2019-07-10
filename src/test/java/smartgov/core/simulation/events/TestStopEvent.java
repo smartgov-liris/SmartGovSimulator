@@ -9,8 +9,6 @@ import org.junit.Test;
 
 import smartgov.SmartGov;
 import smartgov.SmartGovTest;
-import smartgov.core.events.EventHandler;
-import smartgov.core.simulation.events.SimulationStopped;
 
 public class TestStopEvent {
 	
@@ -20,21 +18,14 @@ public class TestStopEvent {
 		
 		EventTriggeredChecker checker = new EventTriggeredChecker();
 		
-		SmartGov.getRuntime().addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
-
-			@Override
-			public void handle(SimulationStopped event) {
+		SmartGov.getRuntime().addSimulationStoppedListener((event) -> {
 				checker.eventTriggered = true;
 				checker.buildJson(event);
-			}
-			
-		});
+			});
 		
 		SmartGov.getRuntime().start(100);
 		
-		while(SmartGov.getRuntime().isRunning()) {
-			TimeUnit.MICROSECONDS.sleep(10);
-		}
+		SmartGov.getRuntime().waitUntilSimulatioEnd();
 		
 		TimeUnit.SECONDS.sleep(1);
 		
@@ -45,7 +36,7 @@ public class TestStopEvent {
 		
 		assertThat(
 				checker.json,
-				equalTo("{\"stop\":{\"tick\":100}}")
+				equalTo("{\"stop\":{\"tick\":100,\"date\":{\"day\":0,\"weekDay\":\"MONDAY\",\"hour\":\"0:1:40.0\"}}}")
 				);
 	}
 	

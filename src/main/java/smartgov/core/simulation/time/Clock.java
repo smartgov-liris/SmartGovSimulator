@@ -47,6 +47,10 @@ public class Clock extends Time {
 		return clockOrigin;
 	}
 	
+	public Date time() {
+		return new Date(this.getDay(), this.getWeekDay(), this.getHour(), this.getMinutes(), this.getSeconds());
+	}
+	
 
 	/**
 	 * Increments this clock with the given amount of seconds,

@@ -50,19 +50,26 @@ public abstract class Time implements Comparable<Time> {
 	 * 
 	 * Instantiated with the specified times, and <code>seconds = 0</code>.
 	 * 
-	 * Hour and minutes do not need to be in range [0, 60], the correct values
-	 * will be automatically set up with the {@link #_increment _increment()} method.
-	 * 
 	 * @param day days count
 	 * @param weekDay weekDay
 	 * @param hour hours count
 	 * @param minutes minutes count
+	 * @throws IllegalArgumentException when hours or minutes are not in a valid range
 	 */
 	public Time(int day, WeekDay weekDay, int hour, int minutes) {
 		super();
+		if (hour < 0 || hour >= 24) {
+			throw new IllegalArgumentException("Hours must be specified in [0, 24[");
+		}
+		if (minutes < 0 || minutes >= 60) {
+			throw new IllegalArgumentException("Minutes must be specified in [0, 60[");
+		}
 		this.seconds = 0;
+		this.day = day;
 		this.weekDay = weekDay;
-		this._increment(day * 24 * 3600 + hour * 3600 + minutes * 60);
+		this.hour = hour;
+		this.minutes = minutes;
+		// this._increment(day * 24 * 3600 + hour * 3600 + minutes * 60);
 	}
 
 	/**

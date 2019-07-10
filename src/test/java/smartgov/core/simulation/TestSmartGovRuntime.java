@@ -18,7 +18,7 @@ import smartgov.core.events.EventHandler;
 import smartgov.core.simulation.SimulationRuntime;
 import smartgov.core.simulation.events.SimulationPaused;
 import smartgov.core.simulation.events.SimulationStep;
-import smartgov.core.simulation.time.Time;
+import smartgov.core.simulation.time.Date;
 import smartgov.core.simulation.time.WeekDay;
 
 public class TestSmartGovRuntime {
@@ -347,33 +347,56 @@ public class TestSmartGovRuntime {
 		SmartGovTest.loadSmartGov();
 		SmartGov.getRuntime().start(3 * 24 * 3600 + 15 * 3600 + 10 * 60 + 24);
 		
+		EventChecker endCheck = new EventChecker();
+		
+		SmartGov.getRuntime().addSimulationStoppedListener((event) -> {
+			Date date = event.getDate();
+			assertThat(
+					date.getDay(),
+					equalTo(3)
+					);
+
+			assertThat(
+					date.getWeekDay(),
+					equalTo(WeekDay.THURSDAY)
+					);
+			
+			assertThat(
+					date.getHour(),
+					equalTo(15)
+					);
+			
+			assertThat(
+					date.getMinutes(),
+					equalTo(10)
+					);
+			
+			assertThat(
+					date.getSeconds(),
+					equalTo(24.)
+					);
+			endCheck.check();
+		});
 		SmartGov.getRuntime().waitUntilSimulatioEnd();
 		
-		Time clock = SmartGov.getRuntime().getClock();
-		assertThat(
-				clock.getDay(),
-				equalTo(3)
-				);
-
-		assertThat(
-				clock.getWeekDay(),
-				equalTo(WeekDay.THURSDAY)
-				);
+		TimeUnit.MICROSECONDS.sleep(100);
 		
 		assertThat(
-				clock.getHour(),
-				equalTo(15)
+				endCheck.hasBeenTriggered(),
+				equalTo(true)
 				);
 		
-		assertThat(
-				clock.getMinutes(),
-				equalTo(10)
-				);
+	}
+	
+	private class EventChecker {
+		private Boolean triggered = false;
 		
-		assertThat(
-				clock.getSeconds(),
-				equalTo(24.)
-				);
+		public void check() {
+			this.triggered = true;
+		}
 		
+		public Boolean hasBeenTriggered() {
+			return triggered;
+		}
 	}
 }
