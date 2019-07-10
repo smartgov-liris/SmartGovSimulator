@@ -103,6 +103,7 @@ public class SimulationRuntime {
 		}
 		logger.info("Simulation paused at " + tickCount + " ticks.");
 		pause = true;
+		simulationThread.pauseSimulation();
 		triggerSimulationPausedListeners();
 	}
 	
@@ -121,6 +122,7 @@ public class SimulationRuntime {
 		}
 		logger.info("Resume simulation from " + tickCount + " ticks.");
 		pause = false;
+		simulationThread.resumeSimulation();
 		triggerSimulationResumedListeners();
 	}
 	
@@ -284,15 +286,31 @@ public class SimulationRuntime {
 	
 	private class SimulationThread extends Thread {
 		
+		private boolean internalRun = true;
+		
+		/*
+		 * Synchronized methods to safely handle thread pause and resume
+		 */
+		public synchronized void pauseSimulation() {
+			internalRun = false;
+		}
+		
+		public synchronized void resumeSimulation() {
+			internalRun = true;
+			notify();
+		}
+		
 		@Override
 		public void run() {
 			while(run) {
 				_step();
-				while(pause) {
-					try {
-						TimeUnit.MICROSECONDS.sleep(100);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+				synchronized(this) {
+					while(!internalRun) {
+						try {
+							wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
