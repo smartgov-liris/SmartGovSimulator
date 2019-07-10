@@ -274,6 +274,17 @@ public class SimulationRuntime {
 	}
 	
 	/**
+	 * Returns the Thread in which the simulation is
+	 * currently running. A new Thread is created each
+	 * time the simulation starts.
+	 * 
+	 * @return current simulation thread
+	 */
+	public Thread getSimulationThread() {
+		return simulationThread;
+	}
+	
+	/**
 	 * Blocking function to wait until the simulation has stopped.
 	 * 
 	 * @throws InterruptedException if interrupted while sleeping 
