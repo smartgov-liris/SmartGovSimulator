@@ -23,15 +23,16 @@ public class OsmArcsBuilder {
 		
 		for (Road road : roads) {
 			for(int i = 0; i < road.getNodes().size() - 1; i++) {
-				arcs.add(
-						arcFactory.create(
-								String.valueOf(id),
-								(OsmNode) nodes.get(road.getNodes().get(i)),
-								(OsmNode) nodes.get(road.getNodes().get(i+1)),
-								road,
-								RoadDirection.FORWARD
-								)
-							);
+				OsmArc newArc = arcFactory.create(
+						String.valueOf(id),
+						(OsmNode) nodes.get(road.getNodes().get(i)),
+						(OsmNode) nodes.get(road.getNodes().get(i+1)),
+						road,
+						RoadDirection.FORWARD
+						);
+				arcs.add(newArc);
+				road.addArc(newArc);
+
 				((OsmNode) nodes.get(road.getNodes().get(i))).setRoad(road);
 				id++;
 			}
@@ -39,18 +40,19 @@ public class OsmArcsBuilder {
 
 			if (!road.isOneway()) {
 				for(int i = road.getNodes().size() - 1; i > 0; i--) {
-					arcs.add(
-							arcFactory.create(
-									String.valueOf(id),
-									(OsmNode) nodes.get(road.getNodes().get(i)),
-									(OsmNode) nodes.get(road.getNodes().get(i-1)),
-									road,
-									RoadDirection.BACKWARD
-									)
-								);
+					OsmArc newArc = arcFactory.create(
+							String.valueOf(id),
+							(OsmNode) nodes.get(road.getNodes().get(i)),
+							(OsmNode) nodes.get(road.getNodes().get(i-1)),
+							road,
+							RoadDirection.BACKWARD
+							);
+					arcs.add(newArc);
+					road.addArc(newArc);
 					id++;
 				}
 			}
+			road.checkIntegrity();
 		}
 		
 		return arcs;

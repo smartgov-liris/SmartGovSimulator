@@ -4,9 +4,7 @@ import java.util.Random;
 
 import smartgov.core.agent.moving.behavior.MoverAction;
 import smartgov.core.agent.moving.behavior.MovingBehavior;
-import smartgov.core.agent.moving.events.node.DestinationReachedEvent;
 import smartgov.core.environment.graph.Node;
-import smartgov.core.events.EventHandler;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.SinkNode;
@@ -28,15 +26,13 @@ public class RandomTrafficBehavior extends MovingBehavior {
 	 */
 	public RandomTrafficBehavior(OsmAgentBody agentBody, Node origin, Node destination, OsmContext context) {
 		super(agentBody, origin, destination, context);
-		agentBody.addOnDestinationReachedListener(new EventHandler<DestinationReachedEvent>() {
-
-			@Override
-			public void handle(DestinationReachedEvent event) {
-				refresh();
-				agentBody.initialize();
-			}
-			
-		});
+		/*
+		 * Notice that agents are removed from road in the CarMover, when the last arc has been left.
+		 */
+		agentBody.addOnDestinationReachedListener((event) -> {
+				refresh(); // Pick a new source / destination
+				agentBody.initialize(); // Set up agent body position
+			});
 	}
 	
 	/**

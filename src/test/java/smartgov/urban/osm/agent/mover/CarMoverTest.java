@@ -1,272 +1,203 @@
 package smartgov.urban.osm.agent.mover;
 
-import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
+import java.util.Collection;
+
+import static org.hamcrest.Matchers.*;
 
 import org.junit.Test;
 
 import smartgov.SmartGov;
 import smartgov.core.agent.core.Agent;
-import smartgov.core.agent.moving.events.MoveEvent;
-import smartgov.core.events.EventHandler;
-import smartgov.urban.geo.agent.GeoAgentBody;
+import smartgov.core.agent.moving.MovingAgentBody;
+import smartgov.core.agent.moving.behavior.MoverAction;
+import smartgov.core.agent.moving.behavior.MovingBehavior;
+import smartgov.core.environment.SmartGovContext;
+import smartgov.core.scenario.Scenario;
+import smartgov.testUtils.EventChecker;
+import smartgov.urban.osm.agent.OsmAgent;
 import smartgov.urban.osm.agent.OsmAgentBody;
-import smartgov.urban.osm.environment.TestOsmContext;
+import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.Road;
+import smartgov.urban.osm.scenario.BasicOsmScenario;
 
+/*
+ * The basic movements of the car and the steering model is tested
+ * in the GippsSteeringTest.
+ * 
+ * Here, we will check if road changes are handled properly in specific
+ * a specific situation with two roads :
+ * - 1 -> 2 -> 4
+ * - 3 -> 4 -> 1
+ * Where nodes [1, 2, 3, 4] represent a square.
+ */
 public class CarMoverTest {
-	
-	public static SmartGov loadCarMoverTestScenario() {
-		return new SmartGov(new TestOsmContext(CarMoverTest.class.getResource("car_mover_test.properties").getFile()));
-	}
-	
-	@Test
-	public void testLoadEnvironment() {
-		SmartGov smartGov = loadCarMoverTestScenario();
-		
-		assertThat(
-				smartGov.getContext().nodes.values(),
-				hasSize(4)
-				);
-		
-		assertThat(
-				smartGov.getContext().arcs.values(),
-				hasSize(4)
-				);
-		
-		for (Agent<?> agent : smartGov.getContext().agents.values()) {
-			assertThat(
-					((GeoAgentBody) agent.getBody()).getMover() instanceof CarMover,
-					equalTo(true)
-					);
-			
-		}
-	}
-	
-	@Test
-	public void testMaxSpeedReach() throws InterruptedException {
-		SmartGov smartGov = loadCarMoverTestScenario();
-		
-		MaxBean maxSpeed = new MaxBean();
-		
-		OsmAgentBody leaderAgent = (OsmAgentBody) smartGov.getContext().agents.get("2").getBody();
-		
-		leaderAgent.addOnMoveListener(new EventHandler<MoveEvent>(){
 
-				@Override
-				public void handle(MoveEvent event) {
-					maxSpeed.update(leaderAgent.getSpeed());
-				}
-				
-			});
-		
-		SmartGov.getRuntime().start(100);
-		
-		while(SmartGov.getRuntime().isRunning()) {
-			TimeUnit.MICROSECONDS.sleep(10);
-		}
+	private static SmartGov loadScenario() {
+		return new SmartGov(new CarMoverContext());
+	}
+	
+	@Test
+	public void testLoadScenario() {
+		SmartGov smartGov = loadScenario();
 		
 		assertThat(
-				maxSpeed.getValue(),
-				greaterThan(0.0)
+				((OsmContext) smartGov.getContext()).roads,
+				hasSize(2)
 				);
 		
+		Road road1 = ((OsmContext) smartGov.getContext()).roads.get(0);
+		Road road2 = ((OsmContext) smartGov.getContext()).roads.get(1);
+		
 		assertThat(
-				Math.abs(maxSpeed.getValue() - CarMoverTestScenario.leaderMaxSpeed),
-				lessThanOrEqualTo(0.1)
+				road1.getNodes(),
+				contains("1", "2", "4")
+				);
+		assertThat(
+				road2.getNodes(),
+				contains("3", "4", "1")
 				);
 	}
 	
 	@Test
-	public void testFollowerStayAfterLeader() throws InterruptedException {
-		SmartGov smartGov = loadCarMoverTestScenario();
+	public void testRoadChange() throws InterruptedException {
+		SmartGov smartGov = loadScenario();
 		
-		MaxBean followerMaxSpeed = new MaxBean();
-		MinBean minDistanceBetweenAgents = new MinBean();
+		OsmAgentBody testedAgent = (OsmAgentBody) smartGov.getContext().agents.get("1").getBody();
 		
-		OsmAgentBody followerAgent = (OsmAgentBody) smartGov.getContext().agents.get("1").getBody();
-		OsmAgentBody leaderAgent = (OsmAgentBody) smartGov.getContext().agents.get("2").getBody();
+		EventChecker node4reached = new EventChecker();
+		EventChecker firstMoveAfterRoadChanged = new EventChecker();
 		
-		followerAgent.addOnMoveListener(new EventHandler<MoveEvent>(){
-
-				@Override
-				public void handle(MoveEvent event) {
-					followerMaxSpeed.update(followerAgent.getSpeed());
-
-					Double currentDistance = followerAgent.getCurrentRoad().distanceBetweenAgentAndLeader(followerAgent);
-					minDistanceBetweenAgents.update(
-							currentDistance
-							);
-
-					System.out.println(currentDistance);
-					
-					Road followerRoad = ((OsmArc) followerAgent.getPlan().getCurrentArc()).getRoad();
-					Road leaderRoad = ((OsmArc) leaderAgent.getPlan().getCurrentArc()).getRoad();
-					
+		Road road1 = ((OsmContext) smartGov.getContext()).roads.get(0);
+		Road road2 = ((OsmContext) smartGov.getContext()).roads.get(1);
+		
+		testedAgent.addOnNodeReachedListener((event) -> {
+			if(event.getNode().getId().equals("4")) {
+				if(!node4reached.hasBeenTriggered()) {
 					assertThat(
-							followerRoad,
-							equalTo(leaderRoad)
+							((OsmArc) testedAgent.getPlan().getCurrentArc()).getRoad(),
+							equalTo(road2)
 							);
-					
 					assertThat(
-							followerRoad.leaderOfAgent(followerAgent),
-							equalTo(leaderAgent)
+							road2.getForwardAgents(),
+							contains(testedAgent)
 							);
-				}
-				
-			});
-		
-		SmartGov.getRuntime().start(500);
-		
-		while(SmartGov.getRuntime().isRunning()) {
-			TimeUnit.MICROSECONDS.sleep(10);
-		}
-		
-		assertThat(
-				CarMoverTestScenario.followerMaxSpeed,
-				greaterThan(CarMoverTestScenario.leaderMaxSpeed)
-				);
-		
-		assertThat(
-				minDistanceBetweenAgents.getValue(),
-				greaterThanOrEqualTo(CarMoverTestScenario.vehicleSize)
-				);
-	}
-	
-	@Test
-	public void maxAccelerationsAreRespected() throws InterruptedException {
-		SmartGov smartGov = loadCarMoverTestScenario();
-		
-		GeoAgentBody leaderAgent = (GeoAgentBody) smartGov.getContext().agents.get("2").getBody();
-		MaxBean leaderMaxAcceleration = new MaxBean();
-		MinBean leaderMinBraking = new MinBean();
-		ValueBean leaderLastSpeed = new ValueBean(leaderAgent.getSpeed());
-		
-		GeoAgentBody followerAgent = (GeoAgentBody) smartGov.getContext().agents.get("1").getBody();
-		MaxBean followerMaxAcceleration = new MaxBean();
-		MinBean followerMinBraking = new MinBean();
-		ValueBean followerLastSpeed = new ValueBean(followerAgent.getSpeed());
-		
-		leaderAgent.addOnMoveListener(new EventHandler<MoveEvent>(){
+					assertThat(
+							road1.getForwardAgents(),
+							hasSize(0)
+							);
 
-				@Override
-				public void handle(MoveEvent event) {
-					Double acceleration = (leaderAgent.getSpeed() - leaderLastSpeed.getValue()) / SmartGov.getRuntime().getTickDuration();
-					System.out.println(acceleration);
-					if (acceleration >= 0) {
-						leaderMaxAcceleration.update(acceleration);
-					}
-					else {
-						leaderMinBraking.update(acceleration);
-					}
-					leaderLastSpeed.setValue(leaderAgent.getSpeed());
+					node4reached.check();
+					
+					testedAgent.addOnMoveListener((moveEvent) -> {
+						if(!firstMoveAfterRoadChanged.hasBeenTriggered()) {
+							assertThat(
+									road1.getForwardAgents(),
+									hasSize(0)
+									);
+							assertThat(
+									road2.getForwardAgents(),
+									contains(testedAgent)
+									);
+							assertThat(
+									testedAgent.getCurrentRoad(),
+									equalTo(road2)
+									);
+							firstMoveAfterRoadChanged.check();
+						}
+					});
 				}
-				
-			});
-		
-		followerAgent.addOnMoveListener(new EventHandler<MoveEvent>(){
-
-			@Override
-			public void handle(MoveEvent event) {
-				Double acceleration = (followerAgent.getSpeed() - followerLastSpeed.getValue()) / SmartGov.getRuntime().getTickDuration();
-				
-				if (acceleration >= 0) {
-					followerMaxAcceleration.update(acceleration);
-				}
-				else {
-					followerMinBraking.update(acceleration);
-				}
-				followerLastSpeed.setValue(followerAgent.getSpeed());
 			}
-			
 		});
 		
-		SmartGov.getRuntime().start(100);
+		testedAgent.addOnDestinationReachedListener((event) -> {
+			if(event.getNode().getId().equals("1")) {
+				SmartGov.getRuntime().stop();
+			}
+		});
 		
-		while(SmartGov.getRuntime().isRunning()) {
-			TimeUnit.MICROSECONDS.sleep(10);
-		}
+		SmartGov.getRuntime().start(1000);
 		
-		/*
-		 * Acceleration
-		 */
+		SmartGov.getRuntime().waitUntilSimulatioEnd();
+		
 		assertThat(
-				leaderMaxAcceleration.getValue(),
-				lessThan(CarMoverTestScenario.maximumAcceleration)
+				node4reached.hasBeenTriggered(),
+				equalTo(true)
 				);
-		
-		// Leader should reach its maximum acceleration (computing from the Gipps' model, with a 0.1 threshold)
+
 		assertThat(
-				leaderMaxAcceleration.getValue(),
-				greaterThan(
-						2.5 * CarMoverTestScenario.maximumAcceleration * GippsSteering.teta * Math.sqrt(0.025) - 0.1
-						)
-				);
-		
-		assertThat(
-				followerMaxAcceleration.getValue(),
-				lessThan(CarMoverTestScenario.maximumAcceleration)
-				);
-		
-		/*
-		 * Braking
-		 */
-		assertThat(
-				leaderMinBraking.getValue(),
-				greaterThan(CarMoverTestScenario.maximumBraking)
-				);
-		
-		assertThat(
-				followerMinBraking.getValue(),
-				greaterThan(CarMoverTestScenario.maximumBraking)
+				firstMoveAfterRoadChanged.hasBeenTriggered(),
+				equalTo(true)
 				);
 	}
 	
-	private class ValueBean {
-		
-		private Double value;
-		
-		public ValueBean(Double defaultValue) {
-			this.value = defaultValue;
+	private static class CarMoverContext extends OsmContext {
+
+		public CarMoverContext() {
+			super(CarMoverTest.class.getResource("car_mover_test.properties").getFile());
 		}
 		
-		public void setValue(double value) {
-			this.value = value;
+		@Override
+		public Scenario loadScenario(String name) {
+			return new CarMoverScenario();
+		}
+		
+	}
+	
+	private static class CarMoverScenario extends BasicOsmScenario {
+
+		@Override
+		public Collection<? extends Agent<?>> buildAgents(SmartGovContext context) {
+			OsmAgentBody body = new OsmAgentBody(
+					new CarMover(
+							CarMoverTestScenario.maximumAcceleration,
+							CarMoverTestScenario.maximumBraking,
+							CarMoverTestScenario.followerMaxSpeed,
+							CarMoverTestScenario.vehicleSize
+							)
+					);
+			OsmAgent agent = new OsmAgent(
+					"1",
+					body,
+					new TestBehavior(body, context)
+					);
+			body.initialize();
+			return Arrays.asList(agent);
+		}
+		
+	}
+	
+	private static class TestBehavior extends MovingBehavior {
+		
+		private Boolean destinationReached1 = false;
+		private Boolean destinationReached2 = false;
+
+		public TestBehavior(MovingAgentBody agentBody, SmartGovContext context) {
+			super(
+				agentBody,
+				context.nodes.get("3"),
+				context.nodes.get("2"),
+				context);
+			agentBody.addOnDestinationReachedListener((event) -> {
+				if (destinationReached1) {
+					destinationReached2 = true;
+				}
+				else {
+					destinationReached1 = true;
+					refresh(context.nodes.get("2"), context.nodes.get("1"));
+				}
+			});
 		}
 
-		public Double getValue() {
-			return value;
+		@Override
+		public MoverAction provideAction() {
+			if (destinationReached2)
+				return MoverAction.WAIT();
+			return MoverAction.MOVE();
 		}
 		
 	}
-	
-	private class MaxBean extends ValueBean {
-		
-		public MaxBean() {
-			super(-Double.MAX_VALUE);
-		}
-		
-		public void update(Double value) {
-			if(value > getValue()) {
-				setValue(value);
-			}
-		}
-	}
-	
-	private class MinBean extends ValueBean {
-		
-		public MinBean() {
-			super(Double.MAX_VALUE);
-		}
-		
-		public void update(Double value) {
-			if(value < getValue()) {
-				setValue(value);
-			}
-		}
-	}
-
 }

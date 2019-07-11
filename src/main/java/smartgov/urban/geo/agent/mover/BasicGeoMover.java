@@ -9,7 +9,6 @@ import smartgov.core.agent.moving.plan.Plan;
 import smartgov.core.events.EventHandler;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.agent.event.GeoMoveEvent;
-import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.geo.utils.GISComputation;
 
@@ -47,7 +46,6 @@ public class BasicGeoMover implements GeoMover {
 		Plan plan = agentBody.getPlan();
 		Coordinate currentPosition = agentBody.getPosition();
 		if(!plan.isPlanComplete()){
-			GeoArc arc = (GeoArc) plan.getCurrentArc();
 			GeoNode destination = ((GeoNode) plan.getNextNode());
 			
 			// updateAgent(arc, agentBody);
@@ -57,14 +55,9 @@ public class BasicGeoMover implements GeoMover {
 				currentPosition = destination.getPosition();
 				plan.reachNextNode();
 				
-				handleArcChanged(arc, (GeoArc) plan.getCurrentArc());
-				
 				if(!plan.isPlanComplete()) {
 					// If this is not the last node, cross the remaining distance on the next arc
 					return moveOn(distance - remainingDistanceToNode);
-				}
-				else {
-					handleDestinationReached(agentBody, arc, destination);
 				}
 				
 			} else {
@@ -114,22 +107,6 @@ public class BasicGeoMover implements GeoMover {
 	}
 	
 	/**
-	 * Defines some behavior that should be applied each time an agent reaches the next arc
-	 * of the current plan from the mover.
-	 * 
-	 * <p>
-	 * Example : notify the road containing the new arc that a new agent arrives to handle
-	 * agents interactions. 
-	 * </p>
-	 * 
-	 * @param oldArc Previous arc
-	 * @param newArc Current arc
-	 */
-	protected void handleArcChanged(GeoArc oldArc, GeoArc newArc) {
-		
-	};
-	
-	/**
 	 * Called immediately when the {@link #moveOn moveOn()} function is called.
 	 * 
 	 * By default, will keep the agent speed constant.
@@ -141,30 +118,6 @@ public class BasicGeoMover implements GeoMover {
 	protected void updateAgentSpeed(GeoAgentBody agentBody) {
 		
 	};
-	
-	/**
-	 * Called immediately after the agent as reach it's destination from the 
-	 * <code>moveOn()</code> function, before any other initialization occured.
-	 * 
-	 * <p>
-	 * Useful for it's reference to the last arc and node crossed.
-	 * </p>
-	 * <p>
-	 * Example : To remove an agent from the last road once it has reached the 
-	 * end of it.
-	 * </p>
-	 * 
-	 * <p>
-	 * By default, does nothing.
-	 * </p>
-	 * 
-	 * @param agentBody Agents that reached its destination
-	 * @param lastArc last arc crossed
-	 * @param lastNode last node crossed
-	 */
-	protected void handleDestinationReached(GeoAgentBody agentBody, GeoArc lastArc, GeoNode lastNode) {
-		
-	}
 	
 	/**
 	 * Adds a new GeoMoveEvent handler.

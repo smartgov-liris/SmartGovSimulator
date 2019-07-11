@@ -1,0 +1,18 @@
+[
+{
+  "id" : "1",
+  "tags" : {
+    "highway" : "secondary",
+    "oneway" : "yes"
+  },
+  "nodeRefs" : ["1", "2", "4"]
+},
+{
+  "id" : "2",
+  "tags" : {
+    "highway" : "secondary",
+    "oneway" : "yes"
+  },
+  "nodeRefs" : ["3", "4", "1"]
+}
+]

@@ -143,18 +143,19 @@ public class RandomTrafficScenarioTest {
 			public void handle(SimulationStep event) {
 				
 				if(allDestinationReached(firstDestinationReached, secondDestinationReached)) {
-					SmartGov.getRuntime().stop();
-					SmartGov.logger.info("All destination has been reached.");
+					// SmartGov.getRuntime().stop();
+					// SmartGov.logger.info("All destination has been reached.");
 				}
 				
 			}
 			
 		});
 		
-		SmartGov.getRuntime().start(100000);
+		SmartGov.getRuntime().start(10000);
 		
 		while(SmartGov.getRuntime().isRunning()) {
-			TimeUnit.MICROSECONDS.sleep(100);
+			TimeUnit.MILLISECONDS.sleep(1000);
+			// System.out.println(SmartGov.getRuntime().getSimulationThread().getState() + " : " + SmartGov.getRuntime().getTickCount());
 		}
 		
 		assertThat(

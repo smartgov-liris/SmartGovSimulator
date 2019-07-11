@@ -1,6 +1,7 @@
 package smartgov.urban.osm.environment.graph;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import smartgov.core.output.agent.AgentBodyListIdSerializer;
 import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.geo.utils.GISComputation;
 import smartgov.urban.osm.agent.OsmAgentBody;
+import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
 import smartgov.urban.osm.utils.OneWayDeserializer;
 
 /**
@@ -154,6 +156,20 @@ public class Road extends OsmWay {
 	 * @param agentBody body of the agent entering the road
 	 */
 	public void addAgent(OsmAgentBody agentBody) {
+		/*
+		 * Forces agent removal before adding him.
+		 * Normally, this should be unnecessary.
+		 * But in some cases, such as when an agent reached its destination,
+		 * so it is removed from the road, but the behavior re-initialization add
+		 * him again and we don't really know in which order the events occurred,
+		 * the agent could be added just before it is removed, what caused 
+		 * problems. So we remove it there to be sure, because it's better to
+		 * remove him once,
+		 * 
+		 */
+//		forwardAgents.remove(agentBody);
+//		backwardAgents.remove(agentBody);
+		
 		int agentIndex;
 		
 		switch(((OsmArc) agentBody.getPlan().getCurrentArc()).getRoadDirection()) {
@@ -178,6 +194,7 @@ public class Road extends OsmWay {
 					}
 			backwardAgents.add(agentIndex, agentBody);
 		}
+		agentBody.setCurrentRoad(this);
 	}
 	
 	/**
@@ -189,7 +206,9 @@ public class Road extends OsmWay {
 		// Try to remove from the forward direction
 		if(!forwardAgents.remove(agentBody)) {
 			// if not in the forward direction, removes from the backward direction
-			backwardAgents.remove(agentBody);
+			if(!backwardAgents.remove(agentBody)) {
+				throw new IllegalStateException("Agent is not on the road.");
+			};
 		}
 	}
 
@@ -275,6 +294,23 @@ public class Road extends OsmWay {
 	 * @return distance between the two agents, in meter
 	 */
 	public double distanceBetweenTwoAgents(OsmAgentBody leader, OsmAgentBody follower){
+		switch(((OsmArc) follower.getPlan().getCurrentArc()).getRoadDirection()) {
+		case FORWARD:
+			if(forwardAgents.indexOf(follower) < 0) {
+				throw new IllegalArgumentException("Follower is not on the road.");
+			}
+			if(forwardAgents.indexOf(leader) < 0) {
+				throw new IllegalArgumentException("Leader is not on the road.");
+			}
+			break;
+		case BACKWARD:
+			if(backwardAgents.indexOf(follower) < 0) {
+				throw new IllegalArgumentException("Follower is not on the road.");
+			}
+			if(backwardAgents.indexOf(leader) < 0) {
+				throw new IllegalArgumentException("Leader is not on the road.");
+			}
+		}
 		Arc leaderArc = leader.getPlan().getCurrentArc();
 		Arc followerArc = follower.getPlan().getCurrentArc();
 		
@@ -289,9 +325,28 @@ public class Road extends OsmWay {
 		GeoNode currentTarget = (GeoNode) currentArc.getTargetNode();
 		double distance = GISComputation.GPS2Meter(follower.getPosition(), currentTarget.getPosition()); 
 		
-		while(currentArc != leaderArc) {
+		RoadDirection direction = ((OsmArc) follower.getPlan().getCurrentArc()).getRoadDirection();
+		List<OsmArc> roadArcs;
+		switch(direction) {
+		case BACKWARD:
+			roadArcs = backwardArcs;
+			break;
+		case FORWARD:
+			roadArcs = forwardArcs;
+			break;
+		default:
+			roadArcs = null;
+			break;
+		
+		}
+		int i = roadArcs.indexOf(currentArc);
+		if(i < 0) {
+			throw new IllegalStateException("Follower current arc doesn't seem to be on this road.");
+		}
+		while(i < roadArcs.size() - 1 && currentArc != leaderArc) {
+			i++;
 			// Get the next arc of the road
-			currentArc = this.outgoingArcByNodeId.get(currentTarget.getId());
+			currentArc = roadArcs.get(i);
 			
 			if(currentArc != leaderArc) {
 				// A complete arc is between the two agents
@@ -299,15 +354,103 @@ public class Road extends OsmWay {
 				currentTarget = (GeoNode) currentArc.getTargetNode();
 			}
 		}
+		if (currentArc != leaderArc) {
+			i = 0;
+			while(i < roadArcs.size() && currentArc != leaderArc) {
+				// Get the next arc of the road
+				currentArc = roadArcs.get(i);
+				
+				if(currentArc != leaderArc) {
+					// A complete arc is between the two agents
+					distance+=currentArc.getLength();
+					currentTarget = (GeoNode) currentArc.getTargetNode();
+				}
+				i++;
+			}
+		}
+		if (currentArc != leaderArc) {
+			throw new IllegalStateException("The leader has not been found.");
+		}
 		// Final part, between the last node and the leader
 		distance+=GISComputation.GPS2Meter(currentTarget.getPosition(), leader.getPosition());
 		return distance;
+	}
+	
+	public OsmArc endOfRoad(RoadDirection direction) {
+		switch(direction){
+		case BACKWARD:
+			return backwardArcs.get(backwardArcs.size() - 1);
+		case FORWARD:
+			return forwardArcs.get(forwardArcs.size() - 1);
+		default:
+			return null;
+		}
+	}
+	
+	
+	private void checkArcIntegrity(
+			String requiredSourceId,
+			String requiredTargetId,
+			List<OsmArc> arcsUnderTest) {
+		OsmArc currentArc = arcsUnderTest.get(0);
+		if (currentArc == null) {
+			throw new IllegalStateException("Node " + requiredSourceId + " has no outgoing arcs registered in the road.");
+		}
+		String targetId = currentArc.getTargetNode().getId();
+		if(!targetId.equals(requiredTargetId)) {
+			throw new IllegalStateException(
+					"Arc " + currentArc.getId()
+					+ " from node " + requiredSourceId
+					+ " should go to node " + requiredTargetId
+					+ " but it goes to node " + targetId);
+		}
+		// This arc is valid
+		arcsUnderTest.remove(currentArc);
+	}
+	
+	public void checkIntegrity() {
+		List<OsmArc> forwardArcs = new ArrayList<>(this.forwardArcs);
+		
+		for(int i = 0; i < getNodes().size() - 1; i++) {
+			checkArcIntegrity(
+					getNodes().get(i),
+					getNodes().get(i + 1),
+					forwardArcs
+					);
+		}
+		
+		if(forwardArcs.size() > 0) {
+			Collection<String> arcIds = new ArrayList<>();
+			for(OsmArc arc : forwardArcs) {
+				arcIds.add(arc.getId());
+			}
+			throw new IllegalStateException("The following forward arcs does not match anything in this road : " + arcIds);
+		}
+		
+		if(!isOneway()) {
+			List<OsmArc> backwardArcs = new ArrayList<>(this.backwardArcs);
+			
+			for(int i = getNodes().size() - 1; i > 0; i--) {
+				checkArcIntegrity(
+						getNodes().get(i),
+						getNodes().get(i - 1),
+						backwardArcs
+						);
+			}
+			
+			if(backwardArcs.size() > 0) {
+				Collection<String> arcIds = new ArrayList<>();
+				for(OsmArc arc : backwardArcs) {
+					arcIds.add(arc.getId());
+				}
+				throw new IllegalStateException("The following backward arcs does not match anything in this road : " + arcIds);
+			}
+		}
+		
 	}
 
 	@Override
 	public String toString() {
 		return "Road [id=" + getId() + "]";
 	}
-	
-	
 }
