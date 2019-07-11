@@ -170,6 +170,46 @@ public abstract class Time implements Comparable<Time> {
 		}
 		return 0;
 	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + day;
+		result = prime * result + hour;
+		result = prime * result + minutes;
+		long temp;
+		temp = Double.doubleToLongBits(seconds);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((weekDay == null) ? 0 : weekDay.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Time other = (Time) obj;
+		if (day != other.day)
+			return false;
+		if (hour != other.hour)
+			return false;
+		if (minutes != other.minutes)
+			return false;
+		if (Double.doubleToLongBits(seconds) != Double.doubleToLongBits(other.seconds))
+			return false;
+		if (weekDay != other.weekDay)
+			return false;
+		return true;
+	}
+	
+	
 	
 	
 
