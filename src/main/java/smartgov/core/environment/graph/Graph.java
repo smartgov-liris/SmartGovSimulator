@@ -32,8 +32,8 @@ public class Graph {
 		this.nodes = nodes;
 		this.arcs = arcs;
 		
-		MultiGraph g = new MultiGraph("graph");
-		g.setStrict(true);
+		MultiGraph g = new MultiGraph("graph", true, false, nodes.size(), arcs.size());
+		// g.setStrict(true);
 		for(Node node : nodes.values()){
 			g.addNode(node.getId());
 		}
