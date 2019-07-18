@@ -48,11 +48,11 @@ public class OsmNodeTest {
 					notNullValue()
 					);
 			assertThat(
-					osmNode.getPosition().x,
+					osmNode.getPosition().lon,
 					notNullValue()
 					);
 			assertThat(
-					osmNode.getPosition().y,
+					osmNode.getPosition().lat,
 					notNullValue()
 					);
 		}

@@ -1,14 +1,12 @@
 package smartgov.urban.geo.agent.mover;
 
-import org.locationtech.jts.geom.Coordinate;
+import smartgov.urban.geo.utils.LatLon;
 
 /**
  * Mover interface for geographical environments.
  */
 public interface GeoMover {
 
-	// TODO : huge parameter ambiguity. Need to refactor
-	// and unit test that.	
-	public Coordinate moveOn(double distance);
+	public LatLon moveOn(double distance);
 	
 }

@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import smartgov.core.environment.graph.Node;
+import smartgov.urban.geo.utils.LatLon;
+import smartgov.urban.geo.utils.lonLat.LonLat;
 
 /**
  * Represents a geographical node.
@@ -18,7 +20,7 @@ public class GeoNode extends Node {
 	
 	// Ignore the Coordinate field : uses the getPositionAsArray getter instead.
 	@JsonIgnore
-	private Coordinate position;
+	private LatLon position;
 	
 	/**
 	 * Minimal GeoNode constructor.
@@ -26,7 +28,7 @@ public class GeoNode extends Node {
 	 * @param id node id
 	 * @param position node position in longitude / latitude
 	 */
-	public GeoNode(String id, Coordinate position){
+	public GeoNode(String id, LatLon position){
 		super(id);
 		this.position = position;
 	}
@@ -39,31 +41,19 @@ public class GeoNode extends Node {
 	 * @param outgoingArcs list of outgoing arcs
 	 * @param incomingArcs list of incoming arcs
 	 */
-	public GeoNode(String id, Coordinate position, List<? extends GeoArc> outgoingArcs, List<? extends GeoArc> incomingArcs) {
+	public GeoNode(String id, LatLon position, List<? extends GeoArc> outgoingArcs, List<? extends GeoArc> incomingArcs) {
 		this(id, position);
 		this.outgoingArcs.addAll(outgoingArcs);
 		this.incomingArcs.addAll(incomingArcs);
 	}
 	
 	/**
-	 * Position of this node in longitude / latitude.
+	 * Geographical position of the node
 	 *
-	 * @return longitude / latitude coordinates
+	 * @return geographical node position
 	 */
-	public Coordinate getPosition() {
-		return position;
-	}
-	
 	@JsonProperty("position")
-	/**
-	 * Current position as a longitude / latitude array.
-	 *
-	 * @return longitude / latitude array
-	 */
-	public double[] getPositionAsArray(){
-		double[] coords = new double[2];
-		coords[0] = position.x;
-		coords[1] = position.y;
-		return coords;
+	public LatLon getPosition() {
+		return position;
 	}
 }

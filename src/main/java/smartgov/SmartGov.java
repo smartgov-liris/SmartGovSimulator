@@ -52,10 +52,10 @@ public class SmartGov {
 
 				try {
 					logger.info("Saving agents state to " + agentOutput.getPath());
-					objectMapper.writeValue(agentOutput, smartGov.getContext().agents);
+					objectMapper.writeValue(agentOutput, smartGov.getContext().agents.values());
 					
 					logger.info("Saving arcs state to " + agentOutput.getPath());
-					objectMapper.writeValue(arcsOutput, smartGov.getContext().arcs);
+					objectMapper.writeValue(arcsOutput, smartGov.getContext().arcs.values());
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -81,16 +81,17 @@ public class SmartGov {
 			try {
 				// Using maps is simpler when processed in JS, but IDs are duplicated.
 				logger.info("Saving initial nodes to " + nodeOutput.getPath());
-				objectMapper.writeValue(nodeOutput, smartGov.getContext().nodes);
+				objectMapper.writeValue(nodeOutput, smartGov.getContext().nodes.values());
 				
 				logger.info("Saving initial arcs to " + arcOutput.getPath());
-				objectMapper.writeValue(arcOutput, smartGov.getContext().arcs);
+				objectMapper.writeValue(arcOutput, smartGov.getContext().arcs.values());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
 		}
-        getRuntime().start(43200);
+        // getRuntime().start(43200);
+		getRuntime().start(100);
     }
     
     public SmartGovContext getContext() {

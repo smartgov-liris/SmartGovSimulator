@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.locationtech.jts.geom.Coordinate;
-
 import smartgov.core.agent.core.Agent;
 import smartgov.core.agent.moving.behavior.TestMovingBehavior;
 import smartgov.core.environment.SmartGovContext;
@@ -16,6 +14,7 @@ import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.agent.mover.BasicGeoMover;
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.environment.graph.GeoNode;
+import smartgov.urban.geo.utils.LatLon;
 
 public class GeoTestScenario extends Scenario {
 	
@@ -28,25 +27,25 @@ public class GeoTestScenario extends Scenario {
 		nodes.add(
 			new GeoNode(
 					"1",
-					new Coordinate(4.8680849, 45.7829296)
+					new LatLon(45.7829296, 4.8680849)
 					)
 			);
 		nodes.add(
 				new GeoNode(
 					"2",
-					new Coordinate(4.8648563, 45.7822063)
+					new LatLon(45.7822063, 4.8648563)
 					)
 				);
 		nodes.add(
 				new GeoNode(
 					"3",
-					new Coordinate(4.865034, 45.7842329)
+					new LatLon(45.7842329, 4.865034)
 					)
 				);
 		nodes.add(
 				new GeoNode(
 					"4",
-					new Coordinate(4.8673742, 45.7844936)
+					new LatLon(45.7844936, 4.8673742)
 					)
 				);
 		

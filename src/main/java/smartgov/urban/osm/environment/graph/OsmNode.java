@@ -1,15 +1,12 @@
 package smartgov.urban.osm.environment.graph;
 
-import java.util.Arrays;
-
-import org.locationtech.jts.geom.Coordinate;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.urban.geo.environment.graph.GeoNode;
+import smartgov.urban.geo.utils.LatLon;
 import smartgov.urban.osm.output.RoadIdSerializer;
 
 /**
@@ -38,7 +35,7 @@ public class OsmNode extends GeoNode {
 	 * @param id node id
 	 * @param coordinate node coordinates in longitude / latitude
 	 */
-	public OsmNode(String id, Coordinate coordinate) {
+	public OsmNode(String id, LatLon coordinate) {
 		super(id, coordinate);
 	}
 	
@@ -55,7 +52,7 @@ public class OsmNode extends GeoNode {
 		@JsonProperty("id") String id,
 		@JsonProperty("lat") double lat,
 		@JsonProperty("lon") double lon) {
-		super(id, new Coordinate(lon, lat));
+		super(id, new LatLon(lat, lon));
 	}
 	
 	/**
@@ -78,8 +75,8 @@ public class OsmNode extends GeoNode {
 
 	@Override
 	public String toString() {
-		return "OsmNode [road=" + road + ", id=" + id + ", position="
-				+ Arrays.toString(getPositionAsArray()) + "]";
+		return "OsmNode [road=" + road + ", id=" + id + ", position=["
+				+ getPosition().lat + ", " + getPosition().lon + "]";
 	}
 	
 	

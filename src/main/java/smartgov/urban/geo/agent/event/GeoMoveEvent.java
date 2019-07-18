@@ -1,29 +1,28 @@
 package smartgov.urban.geo.agent.event;
 
-import org.locationtech.jts.geom.Coordinate;
-
 import smartgov.core.events.Event;
+import smartgov.urban.geo.utils.LatLon;
 
 public class GeoMoveEvent extends Event {
 	
-	private Coordinate oldCoordinate;
-	private Coordinate newCoordinate;
+	private LatLon oldCoordinate;
+	private LatLon newCoordinate;
 	private double distanceCrossed;
 
 	public GeoMoveEvent(
-			Coordinate oldCoordinate,
-			Coordinate newCoordinate,
+			LatLon oldCoordinate,
+			LatLon newCoordinate,
 			double distanceCrossed) {
 		this.oldCoordinate = oldCoordinate;
 		this.newCoordinate = newCoordinate;
 		this.distanceCrossed = distanceCrossed;
 	}
 
-	public Coordinate getOldCoordinate() {
+	public LatLon getOldCoordinate() {
 		return oldCoordinate;
 	}
 
-	public Coordinate getNewCoordinate() {
+	public LatLon getNewCoordinate() {
 		return newCoordinate;
 	}
 	

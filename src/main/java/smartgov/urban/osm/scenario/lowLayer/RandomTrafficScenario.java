@@ -106,6 +106,7 @@ public class RandomTrafficScenario<Tnode extends OsmNode, Troad extends Road> ex
 	 * @param context current context
 	 */
 	public static void generateSourceAndSinkNodes(OsmContext context) {
+		SmartGov.logger.info("Generating source and sink nodes");
 		for(Node node : context.nodes.values()) {
 			if(node.getIncomingArcs().size() > 0 && node.getOutgoingArcs().size() == 0) {
 				OsmSinkNode sinkNode = new OsmSinkNode(node.getId());
@@ -123,44 +124,51 @@ public class RandomTrafficScenario<Tnode extends OsmNode, Troad extends Road> ex
 				}
 			}
 		}
-
-		Collection<String> sourceNodeIdsToRemove = new ArrayList<>();
-		Collection<String> sinkNodeIdsToRemove = new ArrayList<>();
-		for (SourceNode sourceNode : context.getSourceNodes().values()) {
-			for (SinkNode sinkNode : context.getSinkNodes().values()) {
-				if (sourceNode.getNodeId() != sinkNode.getNodeId()) {
-					try {
-						context.getGraph().shortestPath(context.nodes.get(sourceNode.getNodeId()), context.nodes.get(sinkNode.getNodeId()));
-						
-						// If no error is thrown, a path is available between the two nodes
-						sourceNode.destinations().add(sinkNode);
-						sinkNode.sources().add(sourceNode);
-						
-					}
-					catch (IllegalArgumentException e) {
-						// No path available between the two nodes
-					}
-				}
-			}
-			if (sourceNode.destinations().size() == 0) {
-				sourceNodeIdsToRemove.add(sourceNode.getNodeId());
-			}
-			for (SinkNode sinkNode : context.getSinkNodes().values()) {
-				if (sinkNode.sources().size() == 0) {
-					sinkNodeIdsToRemove.add(sinkNode.getNodeId());
-				}
-			}
-		}
-		
-		for(String id : sourceNodeIdsToRemove) {
-			context.getSourceNodes().remove(id);
-		}
-		for(String id : sinkNodeIdsToRemove) {
-			context.getSinkNodes().remove(id);
-		}
 		
 		SmartGov.logger.info("Number of source nodes : " + context.getSourceNodes().size());
 		SmartGov.logger.info("Number of sink nodes : " + context.getSinkNodes().size());
+		
+//		SmartGov.logger.info("Computing sources and destinations...");
+//		Collection<String> sourceNodeIdsToRemove = new ArrayList<>();
+//		Collection<String> sinkNodeIdsToRemove = new ArrayList<>();
+		for (SourceNode sourceNode : context.getSourceNodes().values()) {
+			for (SinkNode sinkNode : context.getSinkNodes().values()) {
+				if (sourceNode.getNodeId() != sinkNode.getNodeId()) {
+//					try {
+//						context.getGraph().shortestPath(context.nodes.get(sourceNode.getNodeId()), context.nodes.get(sinkNode.getNodeId()));
+//						
+//						// If no error is thrown, a path is available between the two nodes
+//						sourceNode.destinations().add(sinkNode);
+//						sinkNode.sources().add(sourceNode);
+//						
+//					}
+//					catch (IllegalArgumentException e) {
+//						// No path available between the two nodes
+//					}
+					sourceNode.destinations().add(sinkNode);
+					sinkNode.sources().add(sourceNode);
+				}
+			}
+//			if (sourceNode.destinations().size() == 0) {
+//				sourceNodeIdsToRemove.add(sourceNode.getNodeId());
+//			}
+//			for (SinkNode sinkNode : context.getSinkNodes().values()) {
+//				if (sinkNode.sources().size() == 0) {
+//					sinkNodeIdsToRemove.add(sinkNode.getNodeId());
+//				}
+//			}
+		}
+		
+//		for(String id : sourceNodeIdsToRemove) {
+//			context.getSourceNodes().remove(id);
+//		}
+//		for(String id : sinkNodeIdsToRemove) {
+//			context.getSinkNodes().remove(id);
+//		}
+		
+//		SmartGov.logger.info("All done.");
+//		SmartGov.logger.info("Remaining source nodes : " + context.getSourceNodes().size());
+//		SmartGov.logger.info("Remaining sink nodes : " + context.getSinkNodes().size());
 	}
 
 }

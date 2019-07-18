@@ -14,7 +14,7 @@ import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.environment.graph.Arc;
 import smartgov.core.output.agent.AgentBodyListIdSerializer;
 import smartgov.urban.geo.environment.graph.GeoNode;
-import smartgov.urban.geo.utils.GISComputation;
+import smartgov.urban.geo.utils.LatLon;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
 import smartgov.urban.osm.utils.OneWayDeserializer;
@@ -316,14 +316,14 @@ public class Road extends OsmWay {
 		
 		if (leaderArc == followerArc) {
 			// Agents are in the same arc, so distance between them is the direct distance along the arc
-			return GISComputation.GPS2Meter(follower.getPosition(), leader.getPosition());
+			return LatLon.distance(follower.getPosition(), leader.getPosition());
 		}
 		
 		// There is at least one other node between the two agents, so we need to compute
 		// the real distance between agents.
 		Arc currentArc = followerArc;
 		GeoNode currentTarget = (GeoNode) currentArc.getTargetNode();
-		double distance = GISComputation.GPS2Meter(follower.getPosition(), currentTarget.getPosition()); 
+		double distance = LatLon.distance(follower.getPosition(), currentTarget.getPosition()); 
 		
 		RoadDirection direction = ((OsmArc) follower.getPlan().getCurrentArc()).getRoadDirection();
 		List<OsmArc> roadArcs;
@@ -372,7 +372,7 @@ public class Road extends OsmWay {
 			throw new IllegalStateException("The leader has not been found.");
 		}
 		// Final part, between the last node and the leader
-		distance+=GISComputation.GPS2Meter(currentTarget.getPosition(), leader.getPosition());
+		distance+=LatLon.distance(currentTarget.getPosition(), leader.getPosition());
 		return distance;
 	}
 	

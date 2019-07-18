@@ -2,6 +2,7 @@ package smartgov.urban.osm.agent.behavior;
 
 import java.util.Random;
 
+import smartgov.SmartGov;
 import smartgov.core.agent.moving.behavior.MoverAction;
 import smartgov.core.agent.moving.behavior.MovingBehavior;
 import smartgov.core.environment.graph.Node;
@@ -45,6 +46,12 @@ public class RandomTrafficBehavior extends MovingBehavior {
 				rnd,
 				((OsmContext) getContext()).getSourceNodes().get(origin.getId()),
 				(OsmContext) getContext());
+		if (destination == null) {
+			((OsmContext) getContext()).getSourceNodes().remove(origin.getId());
+			SmartGov.logger.info("Removing useless source node " + origin.getId());
+			refresh();
+			return;
+		}
 		refresh(origin, destination);
 	}
 	
@@ -71,8 +78,19 @@ public class RandomTrafficBehavior extends MovingBehavior {
 	 * @return a random sink node, extracted from the possible destinations of the specified source node
 	 */
 	public static Node selectRandomSinkNode(Random rnd, SourceNode sourceNode, OsmContext context) {
-		SinkNode randomSinkNode = (SinkNode) sourceNode.destinations().toArray()[rnd.nextInt(sourceNode.destinations().size())];
-		return context.nodes.get(randomSinkNode.getNodeId());
+		if(sourceNode.destinations().size() > 0) {
+			SinkNode randomSinkNode = (SinkNode) sourceNode.destinations().toArray()[rnd.nextInt(sourceNode.destinations().size())];
+			try {
+				context.getGraph().shortestPath(context.nodes.get(sourceNode.getNodeId()), context.nodes.get(randomSinkNode.getNodeId()));
+			}
+			catch (IllegalArgumentException e) {
+				sourceNode.destinations().remove(randomSinkNode);
+				// No path available between the two nodes
+				return selectRandomSinkNode(rnd, sourceNode, context);
+			}
+			return context.nodes.get(randomSinkNode.getNodeId());
+		}
+		return null;
 	}
 	
 	/**

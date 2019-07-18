@@ -1,15 +1,13 @@
 package smartgov.urban.geo.agent;
 
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.math.Vector2D;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import smartgov.SmartGov;
 import smartgov.core.agent.moving.MovingAgentBody;
-import smartgov.core.output.coordinate.CoordinateSerializer;
 import smartgov.urban.geo.agent.mover.GeoMover;
+import smartgov.urban.geo.utils.LatLon;
 
 /**
  * Body of a GeoAgent.
@@ -26,10 +24,8 @@ public class GeoAgentBody extends MovingAgentBody {
 
 	protected double speed; //In meters per second
 	
-	@JsonIgnore
-	protected Coordinate destination;
-	@JsonSerialize(using=CoordinateSerializer.class)
-	protected Coordinate position;
+	protected LatLon position;
+
 	@JsonIgnore
 	protected GeoMover mover;
 
@@ -45,20 +41,20 @@ public class GeoAgentBody extends MovingAgentBody {
 	}
 
 	/**
-	 * Current position of the agent, in longitude / latitude.
+	 * Current geographical position of the agent.
 	 *
-	 * @return position of the agent
+	 * @return geographical position of the agent
 	 */
-	public Coordinate getPosition() {
+	public LatLon getPosition() {
 		return position;
 	}
 
 	/**
-	 * Sets the position of the agent, in longitude / latitude.
+	 * Sets the geographical position of the agent.
 	 *
 	 * @param position new body position
 	 */
-	public void setPosition(Coordinate position) {
+	public void setPosition(LatLon position) {
 		this.position = position;
 	}
 

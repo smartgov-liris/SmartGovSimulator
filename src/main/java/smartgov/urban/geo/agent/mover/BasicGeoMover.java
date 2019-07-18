@@ -10,7 +10,7 @@ import smartgov.core.events.EventHandler;
 import smartgov.urban.geo.agent.GeoAgentBody;
 import smartgov.urban.geo.agent.event.GeoMoveEvent;
 import smartgov.urban.geo.environment.graph.GeoNode;
-import smartgov.urban.geo.utils.GISComputation;
+import smartgov.urban.geo.utils.LatLon;
 
 public class BasicGeoMover implements GeoMover {
 	
@@ -41,15 +41,15 @@ public class BasicGeoMover implements GeoMover {
 	 * @param distance distance to move
 	 */
 	@Override
-	public Coordinate moveOn(double distance){
+	public LatLon moveOn(double distance){
 		updateAgentSpeed(agentBody);
 		Plan plan = agentBody.getPlan();
-		Coordinate currentPosition = agentBody.getPosition();
+		LatLon currentPosition = agentBody.getPosition();
 		if(!plan.isPlanComplete()){
 			GeoNode destination = ((GeoNode) plan.getNextNode());
 			
 			// updateAgent(arc, agentBody);
-			double remainingDistanceToNode = GISComputation.GPS2Meter(currentPosition, destination.getPosition());
+			double remainingDistanceToNode = LatLon.distance(currentPosition, destination.getPosition());
 			if(remainingDistanceToNode < distance){
 				// Reach a node on the distance to cross
 				currentPosition = destination.getPosition();
@@ -70,7 +70,7 @@ public class BasicGeoMover implements GeoMover {
 				 *  - the distance to cross in meter during this iteration ("distance") : d_to_travel
 				 * 
 				 * What we want :
-				 * 	- dx, dy, in longitude / latitude, such as (x1 + dx, y1 + dy) are the new coordinates at the
+				 * 	- dx, dy, in latitude / longitude, such as (x1 + dx, y1 + dy) are the new coordinates at the
 				 *    end of the iteration.
 				 * 
 				 * Solution :
@@ -89,14 +89,14 @@ public class BasicGeoMover implements GeoMover {
 				 *   dx[°] = (x_node[°] - x_origin[°]) * d_to_travel[m] / d_to_node[m]
 				 * 
 				 */
-				double dx = distance * (destination.getPosition().x - currentPosition.x) / remainingDistanceToNode;
-				double dy = distance * (destination.getPosition().y - currentPosition.y) / remainingDistanceToNode;
-				Coordinate newCoordinate = new Coordinate(currentPosition.x + dx, currentPosition.y + dy);
+				double dx = distance * (destination.getPosition().lat - currentPosition.lat) / remainingDistanceToNode;
+				double dy = distance * (destination.getPosition().lon - currentPosition.lon) / remainingDistanceToNode;
+				LatLon newCoordinate = new LatLon(currentPosition.lat + dx, currentPosition.lon + dy);
 				triggerGeoMoveListeners(
 						new GeoMoveEvent(
 								currentPosition,
 								newCoordinate,
-								GISComputation.GPS2Meter(currentPosition, newCoordinate)
+								LatLon.distance(currentPosition, newCoordinate)
 								)
 						);
 				return newCoordinate;

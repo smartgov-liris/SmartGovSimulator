@@ -5,7 +5,8 @@ import org.locationtech.jts.math.Vector2D;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import smartgov.core.environment.graph.Arc;
-import smartgov.urban.geo.utils.GISComputation;
+import smartgov.urban.geo.utils.LatLon;
+import smartgov.urban.geo.utils.lonLat.LonLat;
 
 /**
  * Represents a geographical arc.
@@ -25,8 +26,8 @@ public class GeoArc extends Arc {
 	 * @param targetNode Target Node
 	 */
 	public GeoArc(String id, GeoNode startNode, GeoNode targetNode){
-		super(id, startNode, targetNode, GISComputation.GPS2Meter(startNode.getPosition(), targetNode.getPosition()));
-		this.direction = new Vector2D(startNode.getPosition(), targetNode.getPosition());
+		super(id, startNode, targetNode, LatLon.distance(startNode.getPosition(), targetNode.getPosition()));
+		this.direction = new Vector2D(new LonLat().project(startNode.getPosition()), new LonLat().project(targetNode.getPosition()));
 		this.direction.normalize();
 	}
 	

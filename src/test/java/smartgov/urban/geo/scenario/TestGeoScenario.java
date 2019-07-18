@@ -19,7 +19,7 @@ import smartgov.core.events.EventHandler;
 import smartgov.urban.geo.SmartGovGeoTest;
 import smartgov.urban.geo.environment.graph.GeoArc;
 import smartgov.urban.geo.environment.graph.GeoNode;
-import smartgov.urban.geo.utils.GISComputation;
+import smartgov.urban.geo.utils.LatLon;
 
 public class TestGeoScenario {
 	
@@ -59,7 +59,7 @@ public class TestGeoScenario {
 		for (Arc arc : smartGov.getContext().arcs.values()) {
 			assertThat(
 					arc.getLength(),
-					equalTo(GISComputation.GPS2Meter(
+					equalTo(LatLon.distance(
 							((GeoNode) arc.getStartNode()).getPosition(),
 							((GeoNode) arc.getTargetNode()).getPosition()
 							)
