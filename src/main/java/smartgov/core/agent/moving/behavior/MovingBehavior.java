@@ -1,5 +1,7 @@
 package smartgov.core.agent.moving.behavior;
 
+import org.graphstream.algorithm.AStar;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -19,7 +21,7 @@ import smartgov.core.output.node.NodeIdSerializer;
  *
  * <p>
  * Notice that, from a model point of view, the agent should be given a MovingBehavior
- * once, at instantiation time, or if it needs to be <b>completely</b> reinirilized, aka
+ * once, at instantiation time, or if it needs to be <b>completely</b> reinitialized, aka
  * if its behavior change.
  * </p>
  *
@@ -41,26 +43,49 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 	@JsonSerialize(using=NodeIdSerializer.class)
 	private Node destination;
 	
+	private AStar.Costs costs;
+	
+
+	/**
+	 * MovingBehavior constructor. Uses distances as default costs to refresh the behavior.
+	 * 
+	 * <p>
+	 * Notice that this default cost is quite inefficient, because it doesn't use any heuristic,
+	 * even if it uses the generic arc length.
+	 * </p>
+	 *
+	 * @param agentBody AgentBody of the Agent to which this Behavior will be associated.
+	 * In practice, this reference is used by {@link #updateAgentBodyPlan}.
+	 * @param origin Initial origin
+	 * @param destination Initial destination
+	 * @param context Current context. Used by {@link #updateAgentBodyPlan} to compute the new AgentBody's Plan.
+	 */
+	public MovingBehavior(MovingAgentBody agentBody, Node origin, Node destination, SmartGovContext context) {
+		this(agentBody, origin, destination, context, new AStar.DefaultCosts("length"));
+	}
+	
 	/**
 	 * MovingBehavior constructor.
 	 *
 	 * @param agentBody AgentBody of the Agent to which this Behavior will be associated.
 	 * In practice, this reference is used by {@link #updateAgentBodyPlan}.
 	 * @param origin Initial origin
-	 * @param destination Initiali destination
+	 * @param destination Initial destination
 	 * @param context Current context. Used by {@link #updateAgentBodyPlan} to compute the new AgentBody's Plan.
+	 * @param costs AStar costs used to compute the shortest path between origin and destination
 	 */
 	
 	/*
 	 * Notice that the agent body's plan is not yet updated : {@link #updateAgentBodyPlan} should be called
-	 * later, once the agent body <b>AND</b> its agent have been instanciated. Typically, this is done in
+	 * later, once the agent body <b>AND</b> its agent have been instantiated. Typically, this is done in
 	 * the MovingAgent constructor.
 	 */
-	public MovingBehavior(MovingAgentBody agentBody, Node origin, Node destination, SmartGovContext context) {
+	public MovingBehavior(MovingAgentBody agentBody, Node origin, Node destination, SmartGovContext context, AStar.Costs costs) {
 		super(agentBody);
 		this.origin = origin;
 		this.destination = destination;
 		this.context = context;
+		this.costs = costs;
 	}
 
 	/**
@@ -90,12 +115,17 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 		return context;
 	}
 	
+	public void setCosts(AStar.Costs costs) {
+		this.costs = costs;
+	}
+
 	/**
 	 * Updates the AgentBody's Plan according to the current origin and destination.
 	 *
 	 * <p>
 	 * Computes the shortest path from origin to destination, and update the AgentBody's Plan
-	 * with the computed nodes.
+	 * with the computed nodes, using the costs specified in the constructor, set by {@link #setCosts}
+	 * or the default distances costs if no costs were provided.
 	 * </p>
 	 *
 	 * <p>
@@ -112,7 +142,7 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 	 * </p>
 	 */
 	public void updateAgentBodyPlan() {
-		((MovingAgentBody) getAgentBody()).updatePlan(context.getGraph().shortestPath(origin, destination));
+		((MovingAgentBody) getAgentBody()).updatePlan(context.getGraph().shortestPath(origin, destination, costs));
 	}
 
 	/**

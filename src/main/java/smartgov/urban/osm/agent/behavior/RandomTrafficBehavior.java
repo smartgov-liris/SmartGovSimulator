@@ -6,6 +6,7 @@ import smartgov.SmartGov;
 import smartgov.core.agent.moving.behavior.MoverAction;
 import smartgov.core.agent.moving.behavior.MovingBehavior;
 import smartgov.core.environment.graph.Node;
+import smartgov.urban.geo.agent.behavior.GeoMovingBehavior;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.SinkNode;
@@ -15,7 +16,7 @@ import smartgov.urban.osm.environment.graph.sinkSourceNodes.SourceNode;
  * A basic behavior that describes agent moving from a random source node to a
  * random sink node by the shortest path, performing only MOVE actions.
  */
-public class RandomTrafficBehavior extends MovingBehavior {
+public class RandomTrafficBehavior extends GeoMovingBehavior {
 	
 	/**
 	 * BasicBehavior constructor.

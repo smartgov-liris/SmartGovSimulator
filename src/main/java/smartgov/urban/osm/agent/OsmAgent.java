@@ -2,6 +2,7 @@ package smartgov.urban.osm.agent;
 
 import java.util.Random;
 
+import smartgov.SmartGov;
 import smartgov.core.agent.moving.behavior.MovingBehavior;
 import smartgov.core.environment.graph.Node;
 import smartgov.urban.geo.agent.GeoAgent;
@@ -31,12 +32,22 @@ public class OsmAgent extends GeoAgent {
 	}
 	
 	public static OsmAgent randomTrafficOsmAgent(String id, OsmContext context, OsmAgentBody body) {
+		// TODO : ugly, does the same thing that refresh(). Initialization must be improved.
 		Random rnd = new Random();
 		Node randomOrigin = RandomTrafficBehavior.selectRandomSourceNode(rnd, (OsmContext) context);
 		Node randomDestination = RandomTrafficBehavior.selectRandomSinkNode(
 				rnd,
 				context.getSourceNodes().get(randomOrigin.getId()),
 				(OsmContext) context);
+		while (randomDestination == null) {
+			((OsmContext) context).getSourceNodes().remove(randomOrigin.getId());
+			SmartGov.logger.info("Removing useless source node " + randomOrigin.getId());
+			randomOrigin = RandomTrafficBehavior.selectRandomSourceNode(rnd, (OsmContext) context);
+			randomDestination = RandomTrafficBehavior.selectRandomSinkNode(
+					rnd,
+					context.getSourceNodes().get(randomOrigin.getId()),
+					(OsmContext) context);
+		}
 		
 		OsmAgent newAgent = new OsmAgent(
 				id,

@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.graphstream.algorithm.AStar;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Path;
 import org.graphstream.graph.implementations.MultiGraph;
+import org.joda.time.DateTime;
+
+import smartgov.SmartGov;
 
 /**
  * Graph class.
@@ -35,16 +39,17 @@ public class Graph {
 		MultiGraph g = new MultiGraph("graph", true, false, nodes.size(), arcs.size());
 		// g.setStrict(true);
 		for(Node node : nodes.values()){
-			g.addNode(node.getId());
+			g.addNode(node.getId()).setAttribute("id", node.getId());;
 		}
 
 		for(Arc arc : arcs.values()) {
-			g.addEdge(
+			Edge edge = g.addEdge(
 						arc.getId(),
 						arc.getStartNode().getId(),
 						arc.getTargetNode().getId(),
-						true)
-			.setAttribute("distance", arc.getLength());
+						true);
+			edge.setAttribute("length", arc.getLength());
+			edge.setAttribute("id", arc.getId());
 		}
 		orientedGraph = g;
 	}
@@ -67,20 +72,24 @@ public class Graph {
 		return arcs;
 	}
 	
-	private List<String> pathBetween(Node from, Node to){
-		 AStar astar = new AStar(orientedGraph);
-		 astar.setCosts(new AStar.DefaultCosts("distance"));
-		 astar.compute(from.getId(), to.getId());
-		 Path path = astar.getShortestPath();
-		 List<String> nodesId=new ArrayList<>();
-		 if(path!=null && !path.empty()){
-			 for(org.graphstream.graph.Node n: path.getNodePath())
-				 nodesId.add(n.getId());
-		 }
-		 else {
-			 throw new IllegalArgumentException("No path could be built from " + from + " to " + to);
-		 }
-		 return nodesId;
+	private List<String> pathBetween(Node from, Node to, AStar.Costs costs){
+		long beginTime = DateTime.now().getMillis();
+		AStar astar = new AStar(orientedGraph);
+		astar.setCosts(costs);
+		astar.compute(from.getId(), to.getId());
+		Path path = astar.getShortestPath();
+		List<String> nodesId=new ArrayList<>();
+		if(path!=null && !path.empty()){
+			for(org.graphstream.graph.Node n: path.getNodePath())
+				nodesId.add(n.getId());
+			}
+		else {
+			throw new IllegalArgumentException("No path could be built from " + from + " to " + to);
+		}
+		SmartGov.logger.debug(
+				"Time to compute shortest path from " + from.getId() + " to " + to.getId() + " : " + (DateTime.now().getMillis() - beginTime)
+				);
+		return nodesId;
 	}
 
 	private List<Node> pathStringToNode(List<String> nodesId){
@@ -91,8 +100,12 @@ public class Graph {
 		return nodesPath;
 	}
 
+	public List<Node> shortestPath(Node from, Node to, AStar.Costs costs){
+		return pathStringToNode(pathBetween(from, to, costs));
+	}
+	
 	public List<Node> shortestPath(Node from, Node to){
-		return pathStringToNode(pathBetween(from, to));
+		return shortestPath(from, to, new AStar.DefaultCosts("length"));
 	}
 
 }

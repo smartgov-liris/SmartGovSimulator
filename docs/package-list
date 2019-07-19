@@ -22,6 +22,7 @@ smartgov.core.simulation.events
 smartgov.core.simulation.time
 smartgov.core.utils
 smartgov.urban.geo.agent
+smartgov.urban.geo.agent.behavior
 smartgov.urban.geo.agent.event
 smartgov.urban.geo.agent.mover
 smartgov.urban.geo.environment.graph

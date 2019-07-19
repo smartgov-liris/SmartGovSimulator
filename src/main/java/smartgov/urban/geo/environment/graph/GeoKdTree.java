@@ -1,7 +1,6 @@
 package smartgov.urban.geo.environment.graph;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -10,28 +9,26 @@ import org.locationtech.jts.math.Vector2D;
 
 import net.sf.javaml.core.kdtree.KDTree;
 import smartgov.core.environment.graph.Arc;
-import smartgov.core.environment.graph.Graph;
 import smartgov.urban.geo.utils.LatLon;
 import smartgov.urban.geo.utils.lonLat.LonLat;
 
 /**
- * A Graph implementation used to represent a geographical graph, such as a
- * road graph.
+ * A kdtree wrapper used to compute proximity relations among geo nodes.
  * 
  * @author pbreugnot
  */
-public class GeoGraph extends Graph {
+public class GeoKdTree {
 
+	private Map<String, ? extends GeoNode> nodes;
 	private KDTree kdtree;
 	
 	/**
 	 * GeoGraph constructor.
 	 *
 	 * @param nodes a GeoNode map
-	 * @param arcs a GeoArc map
 	 */
-	public GeoGraph(Map<String, ? extends GeoNode> nodes, Map<String, ? extends GeoArc> arcs){
-		super(nodes, Collections.unmodifiableMap(arcs));
+	public GeoKdTree(Map<String, ? extends GeoNode> nodes){
+		this.nodes = nodes;
 		this.kdtree = new KDTree(2);
 		for(GeoNode node : nodes.values()){
 			Coordinate projectedPoint = new LonLat().project(node.getPosition());
@@ -39,6 +36,17 @@ public class GeoGraph extends Graph {
 		}
 	}
 	
+	/**
+	 * GeoNode contained in this GeoKdTree.
+	 * 
+	 * @return nodes of this KdTree
+	 */
+	public Map<String, ? extends GeoNode> getNodes() {
+		return nodes;
+	}
+
+
+
 	/**
 	 * Computes the nearest node from the specified coordinates.
 	 *

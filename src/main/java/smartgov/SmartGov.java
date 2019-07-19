@@ -90,8 +90,8 @@ public class SmartGov {
 			}
 			
 		}
-        // getRuntime().start(43200);
-		getRuntime().start(100);
+        getRuntime().start(43200);
+		// getRuntime().start(100);
     }
     
     public SmartGovContext getContext() {
