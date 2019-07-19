@@ -2,14 +2,11 @@ package smartgov.urban.geo.environment.graph;
 
 import java.util.List;
 
-import org.locationtech.jts.geom.Coordinate;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import smartgov.core.environment.graph.Node;
 import smartgov.urban.geo.utils.LatLon;
-import smartgov.urban.geo.utils.lonLat.LonLat;
 
 /**
  * Represents a geographical node.
