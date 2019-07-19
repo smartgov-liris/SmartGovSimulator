@@ -3,8 +3,6 @@ package smartgov.urban.geo.agent.mover;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.locationtech.jts.geom.Coordinate;
-
 import smartgov.core.agent.moving.plan.Plan;
 import smartgov.core.events.EventHandler;
 import smartgov.urban.geo.agent.GeoAgentBody;
