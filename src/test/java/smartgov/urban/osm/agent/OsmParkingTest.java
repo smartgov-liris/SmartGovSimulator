@@ -200,7 +200,6 @@ public class OsmParkingTest {
 							context
 							)
 					);
-			leaderBody.initialize();
 
 			/*
 			 * Follower agent
@@ -216,7 +215,6 @@ public class OsmParkingTest {
 							context
 							)
 					);
-			followerBody.initialize();
 			
 			return Arrays.asList(leader, follower);
 		}

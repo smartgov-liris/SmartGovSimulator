@@ -29,6 +29,7 @@ public class OsmAgent extends GeoAgent {
 			OsmAgentBody body,
 			MovingBehavior basicBehavior) {
 		super(id, body, basicBehavior);
+		body.initialize();
 	}
 	
 	public static OsmAgent randomTrafficOsmAgent(String id, OsmContext context, OsmAgentBody body) {
@@ -58,7 +59,7 @@ public class OsmAgent extends GeoAgent {
 						randomDestination,
 						(OsmContext) context));
 
-		body.initialize();
+//		body.initialize();
 		return newAgent;
 	}
 	

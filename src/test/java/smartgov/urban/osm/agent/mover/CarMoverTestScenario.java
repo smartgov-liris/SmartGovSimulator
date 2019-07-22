@@ -48,7 +48,6 @@ public class CarMoverTestScenario extends BasicOsmScenario {
 						context.nodes.get("1"),
 						context.nodes.get("3"),
 						context));
-		agentBody.initialize();
 		
 		// Leader agent (slow)
 		mover = new CarMover(maximumAcceleration, maximumBraking, leaderMaxSpeed, vehicleSize);
@@ -67,7 +66,6 @@ public class CarMoverTestScenario extends BasicOsmScenario {
 						context.nodes.get("2"),
 						context.nodes.get("4"),
 						context));
-		agentBody.initialize();
 		
 		agents.add(osmAgent);
 		

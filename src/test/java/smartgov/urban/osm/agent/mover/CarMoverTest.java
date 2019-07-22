@@ -164,7 +164,6 @@ public class CarMoverTest {
 					body,
 					new TestBehavior(body, context)
 					);
-			body.initialize();
 			return Arrays.asList(agent);
 		}
 		
