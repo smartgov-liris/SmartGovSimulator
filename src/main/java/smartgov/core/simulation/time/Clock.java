@@ -1,6 +1,8 @@
 package smartgov.core.simulation.time;
 
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.TreeMap;
 
 /**
  * An incrementable instantiation of Time.
@@ -10,7 +12,7 @@ import java.util.TreeSet;
  */
 public class Clock extends Time {
 	
-	private TreeSet<DelayedActionHandler> actions;
+	private TreeMap<Date, Collection<DelayedActionHandler>> actions;
 	
 	/**
 	 * Time origin (day = 0, hour = 0, minutes = 0, seconds = 0, week day = MONDAY)
@@ -36,7 +38,7 @@ public class Clock extends Time {
 	public Clock(Date origin) {
 		super(origin.getDay(), origin.getWeekDay(), origin.getHour(), origin.getMinutes());
 		this.clockOrigin = origin;
-		this.actions = new TreeSet<>();
+		this.actions = new TreeMap<>();
 	}
 	
 	/**
@@ -61,8 +63,10 @@ public class Clock extends Time {
 	 */
 	public void increment(double seconds) {
 		super._increment(seconds);
-		while(actions.size() > 0 && this.compareTo(actions.first().getDate()) >= 0) {
-			actions.pollFirst().getAction().trigger();
+		while(actions.size() > 0 && this.compareTo(actions.firstKey()) >= 0) {
+			for(DelayedActionHandler handler : actions.pollFirstEntry().getValue()) {
+				handler.getAction().trigger();
+			}
 		}
 	}
 	
@@ -79,6 +83,9 @@ public class Clock extends Time {
 	}
 	
 	public void addDelayedAction(DelayedActionHandler action) {
-		actions.add(action);
+		if(!actions.containsKey(action.getDate())) {
+			actions.put(action.getDate(), new ArrayList<>());
+		}
+		actions.get(action.getDate()).add(action);
 	}
 }

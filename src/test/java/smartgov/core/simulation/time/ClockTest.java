@@ -38,4 +38,26 @@ public class ClockTest {
 				);
 		
 	}
+	
+	@Test
+	public void testMultipleDelayedActionsAtSameDate() {
+		Clock clock = new Clock();
+		Date date = new Date(clock.getOrigin(), 1, 1, 0);
+		
+		List<Date> eventsTriggered = new ArrayList<>();
+		
+		clock.addDelayedAction(new DelayedActionHandler(date, () -> eventsTriggered.add(date)));
+		clock.addDelayedAction(new DelayedActionHandler(date, () -> eventsTriggered.add(date)));
+		
+		clock.increment((24 + 1) * 3600 + 10);
+		
+		assertThat(
+				eventsTriggered,
+				contains(date, date)
+				);
+		
+		
+		
+		
+	}
 }

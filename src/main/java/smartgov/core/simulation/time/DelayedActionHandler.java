@@ -5,7 +5,7 @@ package smartgov.core.simulation.time;
  * 
  *
  */
-public class DelayedActionHandler implements Comparable<DelayedActionHandler>{
+public class DelayedActionHandler {
 	
 	private Date date;
 	private DelayedAction action;
@@ -35,16 +35,5 @@ public class DelayedActionHandler implements Comparable<DelayedActionHandler>{
 	 */
 	public DelayedAction getAction() {
 		return action;
-	}
-	
-	/**
-	 * DelayedActionHandlers are sorted according to their dates.
-	 * @param arg0 delayedActionHandler to compare
-	 * @return 0, -1 or +1 respectively if this handler should be trigger
-	 * at the same time, before of after the specified one.
-	 */
-	@Override
-	public int compareTo(DelayedActionHandler arg0) {
-		return this.getDate().compareTo(arg0.getDate());
 	}
 }

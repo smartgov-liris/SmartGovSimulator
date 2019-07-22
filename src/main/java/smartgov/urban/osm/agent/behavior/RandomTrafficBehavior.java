@@ -4,7 +4,6 @@ import java.util.Random;
 
 import smartgov.SmartGov;
 import smartgov.core.agent.moving.behavior.MoverAction;
-import smartgov.core.agent.moving.behavior.MovingBehavior;
 import smartgov.core.environment.graph.Node;
 import smartgov.urban.geo.agent.behavior.GeoMovingBehavior;
 import smartgov.urban.osm.agent.OsmAgentBody;
