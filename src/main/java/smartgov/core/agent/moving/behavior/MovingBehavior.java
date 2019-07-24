@@ -1,7 +1,5 @@
 package smartgov.core.agent.moving.behavior;
 
-import org.graphstream.algorithm.AStar;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -10,6 +8,7 @@ import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.graph.DefaultLengthCosts;
 import smartgov.core.environment.graph.Node;
+import smartgov.core.environment.graph.astar.Costs;
 import smartgov.core.output.node.NodeIdSerializer;
 
 /**
@@ -44,7 +43,7 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 	@JsonSerialize(using=NodeIdSerializer.class)
 	private Node destination;
 	
-	private AStar.Costs costs;
+	private Costs costs;
 	
 
 	/**
@@ -62,7 +61,7 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 	 * @param context Current context. Used by {@link #updateAgentBodyPlan} to compute the new AgentBody's Plan.
 	 */
 	public MovingBehavior(MovingAgentBody agentBody, Node origin, Node destination, SmartGovContext context) {
-		this(agentBody, origin, destination, context, new DefaultLengthCosts(context.arcs));
+		this(agentBody, origin, destination, context, new DefaultLengthCosts());
 	}
 	
 	/**
@@ -81,7 +80,7 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 	 * later, once the agent body <b>AND</b> its agent have been instantiated. Typically, this is done in
 	 * the MovingAgent constructor.
 	 */
-	public MovingBehavior(MovingAgentBody agentBody, Node origin, Node destination, SmartGovContext context, AStar.Costs costs) {
+	public MovingBehavior(MovingAgentBody agentBody, Node origin, Node destination, SmartGovContext context, Costs costs) {
 		super(agentBody);
 		this.origin = origin;
 		this.destination = destination;
@@ -116,7 +115,7 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 		return context;
 	}
 	
-	public void setCosts(AStar.Costs costs) {
+	public void setCosts(Costs costs) {
 		this.costs = costs;
 	}
 

@@ -1,15 +1,13 @@
 package smartgov.core.environment.graph;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.graphstream.algorithm.AStar;
-import org.graphstream.graph.Path;
-import org.graphstream.graph.implementations.MultiGraph;
 import org.joda.time.DateTime;
 
 import smartgov.SmartGov;
+import smartgov.core.environment.graph.astar.AStar;
+import smartgov.core.environment.graph.astar.Costs;
 
 /**
  * Graph class.
@@ -23,8 +21,6 @@ public class Graph {
 	private Map<String, ? extends Node> nodes;
 	private Map<String, ? extends Arc> arcs;
 	
-	private MultiGraph orientedGraph;
-	
 	/**
 	 * Graph constructor.
 	 *
@@ -35,22 +31,22 @@ public class Graph {
 		this.nodes = nodes;
 		this.arcs = arcs;
 		
-		MultiGraph g = new MultiGraph("graph", true, false, nodes.size(), arcs.size());
-		// g.setStrict(true);
-		for(Node node : nodes.values()){
-			g.addNode(node.getId());//.setAttribute("id", node.getId());;
-		}
-
-		for(Arc arc : arcs.values()) {
-			g.addEdge(
-					arc.getId(),
-					arc.getStartNode().getId(),
-					arc.getTargetNode().getId(),
-					true);
-			// edge.setAttribute("length", arc.getLength());
-			// edge.setAttribute("id", arc.getId());
-		}
-		orientedGraph = g;
+//		MultiGraph g = new MultiGraph("graph", true, false, nodes.size(), arcs.size());
+//		// g.setStrict(true);
+//		for(Node node : nodes.values()){
+//			g.addNode(node.getId());//.setAttribute("id", node.getId());;
+//		}
+//
+//		for(Arc arc : arcs.values()) {
+//			g.addEdge(
+//					arc.getId(),
+//					arc.getStartNode().getId(),
+//					arc.getTargetNode().getId(),
+//					true);
+//			// edge.setAttribute("length", arc.getLength());
+//			// edge.setAttribute("id", arc.getId());
+//		}
+//		orientedGraph = g;
 	}
 	
 	/**
@@ -71,33 +67,28 @@ public class Graph {
 		return arcs;
 	}
 	
-	private List<String> pathBetween(Node from, Node to, AStar.Costs costs){
+	private List<Node> pathBetween(Node from, Node to, Costs costs){
 		long beginTime = DateTime.now().getMillis();
-		AStar astar = new AStar(orientedGraph);
+		AStar astar = new AStar(this);
 		astar.setCosts(costs);
 		astar.compute(from.getId(), to.getId());
-		Path path = astar.getShortestPath();
-		List<String> nodesId=new ArrayList<>();
-		if(path!=null && !path.empty()){
-			for(org.graphstream.graph.Node n: path.getNodePath())
-				nodesId.add(n.getId());
-			}
-		else {
+		List<Node> path = astar.getShortestPath();
+		if(path==null || path.isEmpty()){
 			throw new IllegalArgumentException("No path could be built from " + from + " to " + to);
 		}
 		SmartGov.logger.debug(
 				"Time to compute shortest path from " + from.getId() + " to " + to.getId() + " : " + (DateTime.now().getMillis() - beginTime)
 				);
-		return nodesId;
+		return path;
 	}
 
-	private List<Node> pathStringToNode(List<String> nodesId){
-		List<Node> nodesPath = new ArrayList<>();
-		for(int i = 0; i < nodesId.size(); i++){
-			nodesPath.add(getNodes().get(nodesId.get(i)));
-		}
-		return nodesPath;
-	}
+//	private List<Node> pathStringToNode(List<String> nodesId){
+//		List<Node> nodesPath = new ArrayList<>();
+//		for(int i = 0; i < nodesId.size(); i++){
+//			nodesPath.add(getNodes().get(nodesId.get(i)));
+//		}
+//		return nodesPath;
+//	}
 
 	/**
 	 * Compute the shortest path from the specified nodes using the specified AStar costs.
@@ -107,8 +98,8 @@ public class Graph {
 	 * @param costs AStar costs
 	 * @return Shortest path between nodes as a node list
 	 */
-	public List<Node> shortestPath(Node from, Node to, AStar.Costs costs){
-		return pathStringToNode(pathBetween(from, to, costs));
+	public List<Node> shortestPath(Node from, Node to, Costs costs){
+		return pathBetween(from, to, costs);
 	}
 	
 	/**
@@ -122,7 +113,7 @@ public class Graph {
 	 * @return Shortest path between nodes as a node list
 	 */
 	public List<Node> shortestPath(Node from, Node to){
-		return shortestPath(from, to, new DefaultLengthCosts(arcs));
+		return shortestPath(from, to, new DefaultLengthCosts());
 	}
 
 }

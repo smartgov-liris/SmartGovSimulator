@@ -1,10 +1,6 @@
 package smartgov.core.environment.graph;
 
-import java.util.Map;
-
-import org.graphstream.algorithm.AStar.Costs;
-import org.graphstream.graph.Edge;
-import org.graphstream.graph.Node;
+import smartgov.core.environment.graph.astar.Costs;
 
 /**
  * A default AStar cost implementation, that uses the generic arc length as a cost.
@@ -20,16 +16,13 @@ import org.graphstream.graph.Node;
  * 
  */
 public class DefaultLengthCosts implements Costs {
-	
-	private Map<String, ? extends smartgov.core.environment.graph.Arc> arcs;
 
 	/**
 	 * DefaultLengthCost constructor.
 	 * 
 	 * @param arcs arcs map containing arcs of the current graph
 	 */
-	public DefaultLengthCosts(Map<String, ? extends smartgov.core.environment.graph.Arc> arcs) {
-		this.arcs = arcs;
+	public DefaultLengthCosts() {
 	}
 	
 	/**
@@ -53,8 +46,8 @@ public class DefaultLengthCosts implements Costs {
 	 * @return arc length
 	 */
 	@Override
-	public double cost(Node parent, Edge from, Node next) {
-		return arcs.get(from.getId()).getLength();
+	public double cost(Arc edge) {
+		return edge.getLength();
 	}
 
 }

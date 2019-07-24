@@ -2,10 +2,9 @@ package smartgov.urban.geo.environment.graph;
 
 import java.util.Map;
 
-import org.graphstream.algorithm.AStar.Costs;
-import org.graphstream.graph.Edge;
-import org.graphstream.graph.Node;
-
+import smartgov.core.environment.graph.Arc;
+import smartgov.core.environment.graph.Node;
+import smartgov.core.environment.graph.astar.Costs;
 import smartgov.urban.geo.utils.LatLon;
 
 /**
@@ -14,9 +13,6 @@ import smartgov.urban.geo.utils.LatLon;
  *
  */
 public class DistanceCosts implements Costs {
-	
-	private Map<String, ? extends smartgov.core.environment.graph.Node> nodes;
-	private Map<String, ? extends smartgov.core.environment.graph.Arc> arcs;
 
 	/**
 	 * DistanceCosts constructor. Responsibility is left to the user to make sure that specified
@@ -27,9 +23,8 @@ public class DistanceCosts implements Costs {
 	 * @param nodes current graph geo nodes
 	 * @param arcs current graph geo arcs
 	 */
-	public DistanceCosts(Map<String, ? extends smartgov.core.environment.graph.Node> nodes, Map<String, ? extends smartgov.core.environment.graph.Arc> arcs) {
-		this.nodes = nodes;
-		this.arcs = arcs;
+	public DistanceCosts() {
+
 	}
 
 	/**
@@ -44,8 +39,8 @@ public class DistanceCosts implements Costs {
 	@Override
 	public double heuristic(Node node, Node target) {
 		return LatLon.distance(
-				((GeoNode) nodes.get(node.getId())).getPosition(),
-				((GeoNode) nodes.get(target.getId())).getPosition()
+				((GeoNode) node).getPosition(),
+				((GeoNode) target).getPosition()
 				);
 	}
 	
@@ -59,8 +54,8 @@ public class DistanceCosts implements Costs {
 	 * @return arc length
 	 */
 	@Override
-	public double cost(Node parent, Edge from, Node next) {
-		return arcs.get(from.getId()).getLength();
+	public double cost(Arc edge) {
+		return edge.getLength();
 	}
 
 }

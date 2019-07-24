@@ -85,7 +85,7 @@ public class RandomTrafficBehavior extends GeoMovingBehavior {
 				context.getGraph().shortestPath(
 						context.nodes.get(sourceNode.getNodeId()),
 						context.nodes.get(randomSinkNode.getNodeId()),
-						new DistanceCosts(context.nodes, context.arcs));
+						new DistanceCosts());
 			}
 			catch (IllegalArgumentException e) {
 				sourceNode.destinations().remove(randomSinkNode);
