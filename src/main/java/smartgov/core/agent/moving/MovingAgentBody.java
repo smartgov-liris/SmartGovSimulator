@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import smartgov.core.agent.core.AgentBody;
 import smartgov.core.agent.moving.behavior.MoverAction;
 import smartgov.core.agent.moving.events.MoveEvent;
@@ -254,7 +256,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 * EventHandlers for MoveEvents.
 	 *
 	 * @return current move listeners
-	 */	
+	 */
+	@JsonIgnore
 	public Collection<EventHandler<MoveEvent>> getAgentMoveListeners() {
 		return agentMoveListeners;
 	}
@@ -295,6 +298,7 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 *
 	 * @return current node reached listeners
 	 */
+	@JsonIgnore
 	public Collection<EventHandler<NodeReachedEvent>> getNodeReachedListeners() {
 		return nodeReachedListeners;
 	}
@@ -322,6 +326,7 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 *
 	 * @return current arc reached event listeners
 	 */
+	@JsonIgnore
 	public Collection<EventHandler<ArcReachedEvent>> getArcReachedListeners() {
 		return arcReachedListeners;
 	}
@@ -348,7 +353,8 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 * EventHandlers for ArcLeftEvents.
 	 *
 	 * @return current arc left event listeners
-	 */	
+	 */
+	@JsonIgnore
 	public Collection<EventHandler<ArcLeftEvent>> getArcLeftListeners() {
 		return arcLeftListeners;
 	}
@@ -402,6 +408,7 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 *
 	 * @return current destination reached event listeners
 	 */
+	@JsonIgnore
 	public Collection<EventHandler<DestinationReachedEvent>> getDestinationReachedListeners() {
 		return destinationReachedListeners;
 	}
@@ -430,6 +437,7 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 *
 	 * @return current parking entered event listeners
 	 */
+	@JsonIgnore
 	public Collection<EventHandler<EnterParkingAreaEvent>> getParkingEnteredListeners() {
 		return parkingEnteredListeners;
 	}
@@ -458,6 +466,7 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 	 *
 	 * @return current parking left event listeners
 	 */
+	@JsonIgnore
 	public Collection<EventHandler<LeaveParkingAreaEvent>> getParkingLeftListeners() {
 		return parkingLeftListeners;
 	}
