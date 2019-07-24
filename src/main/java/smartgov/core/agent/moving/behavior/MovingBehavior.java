@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import smartgov.core.agent.core.behavior.Behavior;
 import smartgov.core.agent.moving.MovingAgentBody;
 import smartgov.core.environment.SmartGovContext;
+import smartgov.core.environment.graph.DefaultLengthCosts;
 import smartgov.core.environment.graph.Node;
 import smartgov.core.output.node.NodeIdSerializer;
 
@@ -61,7 +62,7 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 	 * @param context Current context. Used by {@link #updateAgentBodyPlan} to compute the new AgentBody's Plan.
 	 */
 	public MovingBehavior(MovingAgentBody agentBody, Node origin, Node destination, SmartGovContext context) {
-		this(agentBody, origin, destination, context, new AStar.DefaultCosts("length"));
+		this(agentBody, origin, destination, context, new DefaultLengthCosts(context.arcs));
 	}
 	
 	/**

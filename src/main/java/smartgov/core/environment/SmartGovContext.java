@@ -1,7 +1,7 @@
 package smartgov.core.environment;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.locationtech.jts.geom.GeometryFactory;
 
@@ -46,9 +46,9 @@ public class SmartGovContext extends AbstractContext {
 	 */
 	public SmartGovContext(String configFile) {
 		super(configFile);
-		agents = new HashMap<>();
-		nodes = new HashMap<>();
-		arcs = new HashMap<>();
+		agents = new TreeMap<>();
+		nodes = new TreeMap<>();
+		arcs = new TreeMap<>();
 	}
 	
 	/**

@@ -62,7 +62,7 @@ public abstract class Scenario {
 	/**
 	 * Automatically called to build nodes for this scenario.
 	 *
-	 * @param context current context, that can optionnaly be used to
+	 * @param context current context, that can optionally be used to
 	 * retrieve things.
 	 *
 	 * @return built nodes

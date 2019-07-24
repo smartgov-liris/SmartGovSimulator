@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.graphstream.algorithm.AStar;
-import org.graphstream.graph.Edge;
 import org.graphstream.graph.Path;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.joda.time.DateTime;
@@ -39,17 +38,17 @@ public class Graph {
 		MultiGraph g = new MultiGraph("graph", true, false, nodes.size(), arcs.size());
 		// g.setStrict(true);
 		for(Node node : nodes.values()){
-			g.addNode(node.getId()).setAttribute("id", node.getId());;
+			g.addNode(node.getId());//.setAttribute("id", node.getId());;
 		}
 
 		for(Arc arc : arcs.values()) {
-			Edge edge = g.addEdge(
-						arc.getId(),
-						arc.getStartNode().getId(),
-						arc.getTargetNode().getId(),
-						true);
-			edge.setAttribute("length", arc.getLength());
-			edge.setAttribute("id", arc.getId());
+			g.addEdge(
+					arc.getId(),
+					arc.getStartNode().getId(),
+					arc.getTargetNode().getId(),
+					true);
+			// edge.setAttribute("length", arc.getLength());
+			// edge.setAttribute("id", arc.getId());
 		}
 		orientedGraph = g;
 	}
@@ -100,12 +99,30 @@ public class Graph {
 		return nodesPath;
 	}
 
+	/**
+	 * Compute the shortest path from the specified nodes using the specified AStar costs.
+	 * 
+	 * @param from source node
+	 * @param to target node
+	 * @param costs AStar costs
+	 * @return Shortest path between nodes as a node list
+	 */
 	public List<Node> shortestPath(Node from, Node to, AStar.Costs costs){
 		return pathStringToNode(pathBetween(from, to, costs));
 	}
 	
+	/**
+	 * Compute the shortest path from the specified nodes using the {@link DefaultLengthCosts}.
+	 * 
+	 * Notice that <b>this is quite inefficient</b>, and should only be used in the case of a
+	 * non-geographical graph and if no other heuristics are available.
+	 * 
+	 * @param from source node
+	 * @param to target node
+	 * @return Shortest path between nodes as a node list
+	 */
 	public List<Node> shortestPath(Node from, Node to){
-		return shortestPath(from, to, new AStar.DefaultCosts("length"));
+		return shortestPath(from, to, new DefaultLengthCosts(arcs));
 	}
 
 }

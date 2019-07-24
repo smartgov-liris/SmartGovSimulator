@@ -6,6 +6,7 @@ import smartgov.SmartGov;
 import smartgov.core.agent.moving.behavior.MoverAction;
 import smartgov.core.environment.graph.Node;
 import smartgov.urban.geo.agent.behavior.GeoMovingBehavior;
+import smartgov.urban.geo.environment.graph.DistanceCosts;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.sinkSourceNodes.SinkNode;
@@ -81,7 +82,10 @@ public class RandomTrafficBehavior extends GeoMovingBehavior {
 		if(sourceNode.destinations().size() > 0) {
 			SinkNode randomSinkNode = (SinkNode) sourceNode.destinations().toArray()[rnd.nextInt(sourceNode.destinations().size())];
 			try {
-				context.getGraph().shortestPath(context.nodes.get(sourceNode.getNodeId()), context.nodes.get(randomSinkNode.getNodeId()));
+				context.getGraph().shortestPath(
+						context.nodes.get(sourceNode.getNodeId()),
+						context.nodes.get(randomSinkNode.getNodeId()),
+						new DistanceCosts(context.nodes, context.arcs));
 			}
 			catch (IllegalArgumentException e) {
 				sourceNode.destinations().remove(randomSinkNode);

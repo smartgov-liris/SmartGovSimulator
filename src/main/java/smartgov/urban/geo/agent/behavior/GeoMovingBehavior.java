@@ -40,7 +40,7 @@ public abstract class GeoMovingBehavior extends MovingBehavior {
 	 * @param context Current context. Used by {@link #updateAgentBodyPlan} to compute the new AgentBody's Plan.
 	 */
 	public GeoMovingBehavior(MovingAgentBody agentBody, Node origin, Node destination, SmartGovContext context) {
-		super(agentBody, origin, destination, context, new DistanceCosts(context.nodes));
+		super(agentBody, origin, destination, context, new DistanceCosts(context.nodes, context.arcs));
 	}
 
 }
