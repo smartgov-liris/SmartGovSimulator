@@ -10,6 +10,7 @@ smartgov.core.agent.moving.events.parking
 smartgov.core.agent.moving.plan
 smartgov.core.environment
 smartgov.core.environment.graph
+smartgov.core.environment.graph.astar
 smartgov.core.environment.graph.events
 smartgov.core.events
 smartgov.core.output.agent

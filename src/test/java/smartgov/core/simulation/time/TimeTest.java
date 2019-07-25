@@ -114,4 +114,23 @@ public class TimeTest {
 				equalTo(10.)
 				);		
 	}
+	
+	@Test
+	public void compareClockToDate() {
+		Clock clock = new Clock();
+		clock.increment(2 * 24 * 3600 + 5 * 3600 + 10 * 60 + 5);
+		
+		Date date = new Date(clock.getOrigin(), 2, 5, 10, 5);
+		
+		assertThat(
+			clock,
+			equalTo(date)
+			);
+		
+		Date otherDate = new Date(clock.getOrigin(), 1, 1, 1);
+		assertThat(
+			clock,
+			not(equalTo(otherDate))
+			);
+	}
 }

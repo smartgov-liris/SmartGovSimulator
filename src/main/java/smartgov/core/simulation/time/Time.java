@@ -193,7 +193,7 @@ public abstract class Time implements Comparable<Time> {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Time))
 			return false;
 		Time other = (Time) obj;
 		if (day != other.day)

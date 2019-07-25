@@ -50,6 +50,15 @@ public class LatLon {
 			return false;
 		return true;
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "(" + lat + ", " + lon + ")";
+	}
+
+
 
 	public static class Serializer extends StdSerializer<LatLon> {
 

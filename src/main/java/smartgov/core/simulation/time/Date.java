@@ -49,6 +49,20 @@ public class Date extends Time {
 	}
 	
 	/**
+	 * Build a new date from the specified origin. The origin is just used
+	 * to compute the good week day.
+	 * 
+	 * @param origin used to compute the corresponding week day
+	 * @param day days counts
+	 * @param hour hours count
+	 * @param minutes minutes count
+	 * @param seconds seconds
+	 */
+	public Date(Date origin, int day, int hour, int minutes, double seconds) {
+		this(day, origin.getWeekDay().after(day), hour, minutes, seconds);
+	}
+	
+	/**
 	 * Returns a new date incremented from this date by the specified 
 	 * amount of time.
 	 * 
