@@ -2,19 +2,24 @@ package smartgov.urban.osm.utils;
 
 import static org.hamcrest.MatcherAssert.assertThat; 
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.mock;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import smartgov.core.environment.graph.Node;
+import smartgov.urban.osm.environment.OsmContext;
 import smartgov.urban.osm.environment.graph.OsmArc;
 import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
 import smartgov.urban.osm.environment.graph.OsmNode;
@@ -27,7 +32,7 @@ public class ArcsBuilderTest {
 	
 	public static Map<String, OsmArc> buildArcs() throws JsonParseException, JsonMappingException, IOException {
 		Collection<Road> roads = OsmRoadTest.loadRoads(OsmRoadTest.complete_ways).values();
-		Map<String, OsmNode> nodes = OsmNodeTest.loadNodes();
+		Map<String, OsmNode> nodes = OsmNodeTest.loadNodes(OsmNodeTest.testNodes);
 		
 		List<OsmArc> arcs = OsmArcsBuilder.buildArcs(nodes, roads, new DefaultOsmArcFactory());
 		
@@ -144,6 +149,72 @@ public class ArcsBuilderTest {
 						);
 			}
 		}
+		
+	}
+	
+	@Test
+	public void testFixDeadEnds() throws JsonParseException, JsonMappingException, IOException {
+		Collection<Road> roads = OsmRoadTest.loadRoads(
+				new File(ArcsBuilderTest.class.getResource("ways_dead_end.json").getFile())
+				).values();
+		Map<String, OsmNode> nodes = OsmNodeTest.loadNodes(new File(ArcsBuilderTest.class.getResource("nodes_dead_end.json").getFile()));
+		
+		List<OsmArc> arcs = OsmArcsBuilder.buildArcs(nodes, roads, new DefaultOsmArcFactory());
+		
+		Map<String, OsmArc> arcMap = new HashMap<>();
+		
+		for (OsmArc arc : arcs) {
+			arcMap.put(arc.getId(), arc);
+		}
+		
+		OsmContext context = mock(OsmContext.class);
+		context.arcs = new TreeMap<>(arcMap);
+		context.nodes = new TreeMap<>(nodes);
+		
+		assertThat(
+				context.nodes.get("354040664").getOutgoingArcs(),
+				hasSize(0)
+				);
+		
+		assertThat(
+				((OsmNode) context.nodes.get("354040664")).getRoad().isOneway(),
+				equalTo(true)
+				);
+		
+		assertThat(
+				context.arcs.values(),
+				hasSize(6)
+				);
+		
+		
+		OsmArcsBuilder.fixDeadEnds(context, new DefaultOsmArcFactory());
+		
+		assertThat(
+				context.nodes.get("354040664").getOutgoingArcs(),
+				hasSize(1)
+				);
+		
+		assertThat(
+				context.arcs.values(),
+				hasSize(8)
+				);
+		
+		Boolean noDeadEnd = true;
+		for(Node node : context.nodes.values()) {
+			if(node.getOutgoingArcs().isEmpty()) {
+				noDeadEnd = false;
+			}
+		}
+		
+		assertThat(
+				((OsmNode) context.nodes.get("354040664")).getRoad().isOneway(),
+				equalTo(false)
+				);
+		
+		assertThat(
+				noDeadEnd,
+				equalTo(true)
+				);
 		
 	}
 

@@ -29,13 +29,13 @@ import smartgov.urban.osm.utils.OsmLoader;
 
 public class OsmRoadTest {
 	
-	public static final String complete_ways = "../../ways.json";
-	private static final String very_simple_way = "ways.json";
+	public static final File complete_ways = new File(OsmRoadTest.class.getResource("../../ways.json").getFile());
+	private static final File very_simple_way = new File(OsmRoadTest.class.getResource("ways.json").getFile());
 	
-	public static Map<String, Road> loadRoads(String file) throws JsonParseException, JsonMappingException, IOException {
+	public static Map<String, Road> loadRoads(File file) throws JsonParseException, JsonMappingException, IOException {
 		OsmLoader<Road> loader = new OsmLoader<>();
 		List<Road> roads = loader.loadOsmElements(
-				new File(OsmRoadTest.class.getResource(file).getFile()),
+				file,
 				Road.class
 				);
 		

@@ -18,11 +18,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import smartgov.urban.osm.utils.OsmLoader;
 
 public class OsmNodeTest {
+	
+	public static final File testNodes = new File(OsmNodeTest.class.getResource("../../nodes.json").getFile());
 
-	public static Map<String, OsmNode> loadNodes() throws JsonParseException, JsonMappingException, IOException {
+	public static Map<String, OsmNode> loadNodes(File file) throws JsonParseException, JsonMappingException, IOException {
 		OsmLoader<OsmNode> loader = new OsmLoader<>();
 		List<OsmNode> osmNodes = loader.loadOsmElements(
-				new File(OsmNodeTest.class.getResource("../../nodes.json").getFile()),
+				file,
 				OsmNode.class
 				);
 		
@@ -35,7 +37,7 @@ public class OsmNodeTest {
 	}
 	@Test
 	public void loadOsmNodesFromJson() throws JsonParseException, JsonMappingException, IOException {
-		Collection<OsmNode> osmNodes = loadNodes().values();
+		Collection<OsmNode> osmNodes = loadNodes(testNodes).values();
 		
 		assertThat(
 				osmNodes,

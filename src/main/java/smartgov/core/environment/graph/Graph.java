@@ -30,23 +30,6 @@ public class Graph {
 	public Graph(Map<String, ? extends Node> nodes, Map<String, ? extends Arc> arcs) {
 		this.nodes = nodes;
 		this.arcs = arcs;
-		
-//		MultiGraph g = new MultiGraph("graph", true, false, nodes.size(), arcs.size());
-//		// g.setStrict(true);
-//		for(Node node : nodes.values()){
-//			g.addNode(node.getId());//.setAttribute("id", node.getId());;
-//		}
-//
-//		for(Arc arc : arcs.values()) {
-//			g.addEdge(
-//					arc.getId(),
-//					arc.getStartNode().getId(),
-//					arc.getTargetNode().getId(),
-//					true);
-//			// edge.setAttribute("length", arc.getLength());
-//			// edge.setAttribute("id", arc.getId());
-//		}
-//		orientedGraph = g;
 	}
 	
 	/**

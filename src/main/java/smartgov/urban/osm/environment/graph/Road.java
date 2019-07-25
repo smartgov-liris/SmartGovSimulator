@@ -114,6 +114,20 @@ public class Road extends OsmWay {
 	}
 	
 	/**
+	 * Sets the oneway attribute of this road.
+	 * 
+	 * <p>
+	 * Might be used to replace the default OSM value
+	 * when fixing dead ends for example.
+	 * </p>
+	 * 
+	 * @param oneway oneway value
+	 */
+	public void setOneway(boolean oneway) {
+		this.oneway = oneway;
+	}
+	
+	/**
 	 * Returns the highway type of this road.
 	 * 
 	 * @return highway type
