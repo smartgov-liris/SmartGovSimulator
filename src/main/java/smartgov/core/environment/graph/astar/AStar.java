@@ -10,21 +10,25 @@ import smartgov.core.environment.graph.Arc;
 import smartgov.core.environment.graph.Graph;
 import smartgov.core.environment.graph.Node;
 
+/**
+ * The major part of this class has been directly copy/pasted from
+ * the <a href="http://graphstream-project.org/">graphstrean</a>
+ * <a href="https://github.com/graphstream/gs-algo/blob/master/src/org/graphstream/algorithm/AStar.java">
+ * AStar source code</a>, distributed under a <a href="http://www.gnu.org/licenses/gpl-3.0.html">GPLv3</a>
+ * license.
+ * 
+ * <p>
+ * This has been done for efficiency reasons, to directly use the our graph structure
+ * and avoid multiplying information with graph copies.
+ * </p>
+ * 
+ *
+ */
 public class AStar {
 	/**
 	 * The graph.
 	 */
 	protected Graph graph;
-
-	/**
-	 * The source node id.
-	 */
-	protected String source;
-
-	/**
-	 * The target node id.
-	 */
-	protected String target;
 
 	/**
 	 * How to compute the path cost, the cost between two nodes and the
@@ -71,46 +75,6 @@ public class AStar {
 	}
 
 	/**
-	 * New A* algorithm on the given graph.
-	 * 
-	 * @param graph
-	 *            The graph where the algorithm will compute paths.
-	 * @param src
-	 *            The start node.
-	 * @param trg
-	 *            The destination node.
-	 */
-	public AStar(Graph graph, String src, String trg) {
-		this(graph);
-		setSource(src);
-		setTarget(trg);
-	}
-
-	/**
-	 * Change the source node. This clears the already computed path, but
-	 * preserves the target node name.
-	 * 
-	 * @param nodeName
-	 *            Identifier of the source node.
-	 */
-	public void setSource(String nodeName) {
-		clearAll();
-		source = nodeName;
-	}
-
-	/**
-	 * Change the target node. This clears the already computed path, but
-	 * preserves the source node name.
-	 * 
-	 * @param nodeName
-	 *            Identifier of the target node.
-	 */
-	public void setTarget(String nodeName) {
-		clearAll();
-		target = nodeName;
-	}
-
-	/**
 	 * Specify how various costs are computed. The costs object is in charge of
 	 * computing the cost of displacement from one node to another (and
 	 * therefore allows to compute the cost from the source node to any node).
@@ -125,33 +89,9 @@ public class AStar {
 		this.costs = costs;
 	}
 
-	/*
-	 * @see
-	 * org.graphstream.algorithm.Algorithm#init(org.graphstream.graph.Graph)
-	 */
-	public void init(Graph graph) {
+	private void init(Graph graph) {
 		clearAll();
 		this.graph = graph;
-	}
-
-	/*
-	 * @see org.graphstream.algorithm.Algorithm#compute()
-	 */
-	public void compute() {
-		if (source != null && target != null) {
-			Node sourceNode = graph.getNodes().get(source);
-			Node targetNode = graph.getNodes().get(target);
-
-			if (sourceNode == null)
-				throw new RuntimeException("source node '" + source
-						+ "' does not exist in the graph");
-
-			if (targetNode == null)
-				throw new RuntimeException("target node '" + target
-						+ "' does not exist in the graph");
-
-			aStar(sourceNode, targetNode);
-		}
 	}
 
 	/**
@@ -164,21 +104,6 @@ public class AStar {
 	}
 
 	/**
-	 * After having called {@link #compute()} or
-	 * {@link #compute(String, String)}, if the {@link #getShortestPath()}
-	 * returns null, or this method return true, there is no path from the given
-	 * source node to the given target node. In other words, the graph has
-	 * several connected components. It also return true if the algorithm did
-	 * not run.
-	 * 
-	 * @return True if there is no possible path from the source to the
-	 *         destination or if the algorithm did not run.
-	 */
-	public boolean noPathFound() {
-		return (! pathFound);
-	}
-
-	/**
 	 * Build the shortest path from the target/destination node, following the
 	 * parent links.
 	 * 
@@ -186,7 +111,7 @@ public class AStar {
 	 *            The destination node.
 	 * @return The path.
 	 */
-	public List<Node> buildPath(AStarNode target) {
+	private List<Node> buildPath(AStarNode target) {
 		List<Node> path = new ArrayList<>();
 
 		ArrayList<AStarNode> thePath = new ArrayList<AStarNode>();
@@ -201,46 +126,34 @@ public class AStar {
 			path.add(thePath.get(i).node);
 		}
 
-//		int n = thePath.size();
-//
-//		if (n > 1) {
-//			AStarNode current = thePath.get(n - 1);
-//			AStarNode follow = thePath.get(n - 2);
-//
-//			path.add(current.node);
-//
-//			current = follow;
-//
-//			for (int i = n - 3; i >= 0; i--) {
-//				follow = thePath.get(i);
-//				// path.add(follow.edge);
-//				current = follow;
-//			}
-//		}
-
 		return path;
 	}
 
 	/**
-	 * Call {@link #compute()} after having called {@link #setSource(String)}
-	 * and {@link #setTarget(String)}.
+	 * Compute the shortest path between the source and sink nodes.
 	 * 
-	 * @param source
-	 *            Identifier of the source node.
-	 * @param target
-	 *            Identifier of the target node.
+	 * @param source source node ID
+	 * @param target target node ID
 	 */
 	public void compute(String source, String target) {
-		setSource(source);
-		setTarget(target);
-		compute();
+		Node sourceNode = graph.getNodes().get(source);
+		Node targetNode = graph.getNodes().get(target);
+
+		if (sourceNode == null)
+			throw new RuntimeException("source node '" + source
+					+ "' does not exist in the graph");
+
+		if (targetNode == null)
+			throw new RuntimeException("target node '" + target
+					+ "' does not exist in the graph");
+
+		aStar(sourceNode, targetNode);
 	}
 
 	/**
-	 * Clear the already computed path. This does not clear the source node
-	 * name, the target node name and the weight attribute name.
+	 * Clear the already computed path.
 	 */
-	protected void clearAll() {
+	private void clearAll() {
 		open.clear();
 		closed.clear();
 
@@ -256,7 +169,7 @@ public class AStar {
 	 * @param targetNode
 	 *            The target node.
 	 */
-	protected void aStar(Node sourceNode, Node targetNode) {
+	private void aStar(Node sourceNode, Node targetNode) {
 		clearAll();
 		open.put(
 				sourceNode.getId(),
@@ -351,7 +264,7 @@ public class AStar {
 	 * </ul>
 	 * </p>
 	 */
-	protected class AStarNode {
+	private class AStarNode {
 		/**
 		 * The node.
 		 */
@@ -388,8 +301,7 @@ public class AStar {
 		 * @param node
 		 *            The node.
 		 * @param edge
-		 *            The edge used to go from parent to node (useful for
-		 *            multi-graphs).
+		 *            The edge used to go from parent to node.
 		 * @param parent
 		 *            It's parent node.
 		 * @param g

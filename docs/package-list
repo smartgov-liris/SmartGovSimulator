@@ -37,6 +37,7 @@ smartgov.urban.osm.environment
 smartgov.urban.osm.environment.graph
 smartgov.urban.osm.environment.graph.factory
 smartgov.urban.osm.environment.graph.sinkSourceNodes
+smartgov.urban.osm.environment.graph.tags
 smartgov.urban.osm.output
 smartgov.urban.osm.scenario
 smartgov.urban.osm.scenario.lowLayer

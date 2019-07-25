@@ -20,7 +20,6 @@ public class DefaultLengthCosts implements Costs {
 	/**
 	 * DefaultLengthCost constructor.
 	 * 
-	 * @param arcs arcs map containing arcs of the current graph
 	 */
 	public DefaultLengthCosts() {
 	}
@@ -40,9 +39,7 @@ public class DefaultLengthCosts implements Costs {
 	/**
 	 * Default cost, that returns {@link smartgov.core.environment.graph.Arc#getLength() generic arc length}.
 	 * 
-	 * @param parent current node
-	 * @param from arc linking the two nodes
-	 * @param next target node
+	 * @param edge current arc
 	 * @return arc length
 	 */
 	@Override

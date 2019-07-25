@@ -106,6 +106,42 @@ public class OsmRoadTest {
 	}
 	
 	@Test
+	public void testHighwayTypes() throws JsonParseException, JsonMappingException, IOException {
+		Map<String, Road> roads = loadRoads(complete_ways);
+		
+		int residentialCount = 0;
+		int secondaryCount = 0;
+		
+		for(Road road : roads.values()) {
+			assertThat(
+					road.getHighway(),
+					notNullValue()
+					);
+			switch(road.getHighway()) {
+			case RESIDENTIAL:
+				residentialCount++;
+				break;
+			case SECONDARY:
+				secondaryCount++;
+				break;
+			default:
+				break;
+			}
+		}
+		
+		assertThat(
+				residentialCount,
+				equalTo(59)
+				);
+
+		assertThat(
+				secondaryCount,
+				equalTo(20)
+				);
+		
+	}
+	
+	@Test
 	public void testAddForwardAgentsToRoad() throws JsonParseException, JsonMappingException, IOException {
 		OsmLoader<OsmNode> loader = new OsmLoader<>();
 		List<OsmNode> nodes = loader.loadOsmElements(new File(OsmRoadTest.class.getResource("nodes.json").getFile()), OsmNode.class);
@@ -267,7 +303,7 @@ public class OsmRoadTest {
 		
 		assertThat(
 				result,
-				equalTo("{\"id\":\"testRoad\",\"oneway\":false,\"forwardAgents\":[\"2\"],\"backwardAgents\":[\"0\",\"1\"],\"nodes\":[\"4\",\"8\",\"2\"]}")
+				equalTo("{\"id\":\"testRoad\",\"oneway\":false,\"highway\":\"unclassified\",\"forwardAgents\":[\"2\"],\"backwardAgents\":[\"0\",\"1\"],\"nodes\":[\"4\",\"8\",\"2\"]}")
 				);
 
 	}

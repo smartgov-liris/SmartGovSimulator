@@ -1,6 +1,5 @@
 package smartgov.urban.geo.environment.graph;
 
-import java.util.Map;
 
 import smartgov.core.environment.graph.Arc;
 import smartgov.core.environment.graph.Node;
@@ -15,13 +14,7 @@ import smartgov.urban.geo.utils.LatLon;
 public class DistanceCosts implements Costs {
 
 	/**
-	 * DistanceCosts constructor. Responsibility is left to the user to make sure that specified
-	 * arcs and nodes (that usually come from the current SmartGovContext or Graph instance) are
-	 * GeoArcs and GeoNodes, in order to avoid cumbersome map casting. If its not the case, a
-	 * ClassCastException will be raised when trying to compute a cost.
-	 * 
-	 * @param nodes current graph geo nodes
-	 * @param arcs current graph geo arcs
+	 * DistanceCosts constructor.
 	 */
 	public DistanceCosts() {
 
@@ -48,9 +41,7 @@ public class DistanceCosts implements Costs {
 	 * Returns {@link smartgov.core.environment.graph.Arc#getLength() generic arc length},
 	 * that should correspond to the geographical GeoArc length in this context.
 	 * 
-	 * @param parent current node
-	 * @param from arc linking the two nodes
-	 * @param next target node
+	 * @param edge current geographical arc
 	 * @return arc length
 	 */
 	@Override

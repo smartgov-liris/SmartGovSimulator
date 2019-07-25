@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +18,10 @@ import smartgov.urban.geo.environment.graph.GeoNode;
 import smartgov.urban.geo.utils.LatLon;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
-import smartgov.urban.osm.utils.OneWayDeserializer;
+import smartgov.urban.osm.environment.graph.tags.Highway;
+import smartgov.urban.osm.environment.graph.tags.Oneway;
+import smartgov.urban.osm.environment.graph.tags.OsmTag;
+import smartgov.urban.osm.utils.OsmTagsDeserializer;
 
 /**
  * A Road is a particular OsmWay where agents can move.
@@ -25,32 +29,10 @@ import smartgov.urban.osm.utils.OneWayDeserializer;
  */
 public class Road extends OsmWay {
 	
-	/**
-	 * Describe the <i>oneway</i> status of a road, according
-	 * to the official <a
-	 * href="https://wiki.openstreetmap.org/wiki/Key:oneway">OSM tag documentation</a>.
-	 */
-	public enum OneWay {
-		/**
-		 * Corresponds to <i>highway="no"</i>, or any other situation
-		 * that does not correspond to <code>YES</code> or
-		 * <code>REVERSED</code>. Default value when no <i>highway</i>
-		 * tag is specified.
-		 */
-		NO,
-		
-		/**
-		 * Corresponds to <i>highway="no"</i>
-		 */
-		YES,
-		
-		/**
-		 * Corresponds to <i>highway="-1"</i>
-		 */
-		REVERSED
-	}
-	
 	private boolean oneway;
+	
+	@JsonSerialize(using = Highway.HighwaySerializer.class)
+	private Highway highway = Highway.UNCLASSIFIED;
 	
 	private ArrayList<OsmAgentBody> forwardAgents;
 	private ArrayList<OsmAgentBody> backwardAgents;
@@ -90,17 +72,17 @@ public class Road extends OsmWay {
 	}
 	
 	/*
-	 * Smart (or hacky?) solution to load the oneway BOOLEAN from
-	 * the Json file.
-	 * In the json file, tags are represented as an Object, and
-	 * "oneway: "yes"" might be one of them. But we want to represent this
-	 * attribute as a boolean. So what we do is that we give the "tags"
-	 * Object to a custom deserializer that will return a OneWay value from
-	 * the "tags" object, that we handle in this function.
+	 * Special function, automatically called by Jackson
+	 * when deserializing roads, that will build an osm
+	 * tag map from the json "tags" entry.
+	 * 
+	 * Used to deserialize the Oneway and Highway fields.
+	 * 
 	 */
-	@JsonDeserialize(using = OneWayDeserializer.class)
+	@JsonDeserialize(using = OsmTagsDeserializer.class)
 	@JsonProperty("tags")
-	private void processTags(OneWay oneway) {
+	private void processTags(Map<String, OsmTag> tags) {
+		Oneway oneway = (Oneway) tags.get("oneway");
 		switch(oneway) {
 		case NO:
 			this.oneway = false;
@@ -116,6 +98,8 @@ public class Road extends OsmWay {
 			break;
 		
 		}
+		
+		highway = (Highway) tags.get("highway");
 	}
 	
 	/**
@@ -129,6 +113,15 @@ public class Road extends OsmWay {
 		return oneway;
 	}
 	
+	/**
+	 * Returns the highway type of this road.
+	 * 
+	 * @return highway type
+	 */
+	public Highway getHighway() {
+		return highway;
+	}
+
 	/**
 	 * Computes the distance between the specified agent and its leader on
 	 * the road.
