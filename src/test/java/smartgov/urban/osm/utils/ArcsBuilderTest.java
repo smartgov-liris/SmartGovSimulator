@@ -201,7 +201,7 @@ public class ArcsBuilderTest {
 		
 		Boolean noDeadEnd = true;
 		for(Node node : context.nodes.values()) {
-			if(node.getOutgoingArcs().isEmpty()) {
+			if(node.getOutgoingArcs().isEmpty() || node.getIncomingArcs().isEmpty()) {
 				noDeadEnd = false;
 			}
 		}
@@ -216,6 +216,109 @@ public class ArcsBuilderTest {
 				equalTo(true)
 				);
 		
+	}
+	
+	@Test
+	public void testFixDeadEnds2() throws JsonParseException, JsonMappingException, IOException {
+		Collection<Road> roads = OsmRoadTest.loadRoads(
+				new File(ArcsBuilderTest.class.getResource("ways_dead_end_2.json").getFile())
+				).values();
+		Map<String, OsmNode> nodes = OsmNodeTest.loadNodes(new File(ArcsBuilderTest.class.getResource("nodes_dead_end_2.json").getFile()));
+		
+		List<OsmArc> arcs = OsmArcsBuilder.buildArcs(nodes, roads, new DefaultOsmArcFactory());
+		
+		Map<String, OsmArc> arcMap = new HashMap<>();
+		
+		for (OsmArc arc : arcs) {
+			arcMap.put(arc.getId(), arc);
+		}
+		
+		OsmContext context = mock(OsmContext.class);
+		context.arcs = new TreeMap<>(arcMap);
+		context.nodes = new TreeMap<>(nodes);
+		
+		assertThat(
+				context.nodes.get("354040664").getIncomingArcs(),
+				hasSize(0)
+				);
+		
+		assertThat(
+				((OsmNode) context.nodes.get("354040664")).getRoad().isOneway(),
+				equalTo(true)
+				);
+		
+		assertThat(
+				context.arcs.values(),
+				hasSize(6)
+				);
+		
+		
+		OsmArcsBuilder.fixDeadEnds(context, new DefaultOsmArcFactory());
+		
+		assertThat(
+				context.nodes.get("354040664").getIncomingArcs(),
+				hasSize(1)
+				);
+		
+		assertThat(
+				context.arcs.values(),
+				hasSize(8)
+				);
+		
+		Boolean noDeadEnd = true;
+		for(Node node : context.nodes.values()) {
+			if(node.getOutgoingArcs().isEmpty() || node.getIncomingArcs().isEmpty()) {
+				noDeadEnd = false;
+			}
+		}
+		
+		assertThat(
+				((OsmNode) context.nodes.get("354040664")).getRoad().isOneway(),
+				equalTo(false)
+				);
+		
+		assertThat(
+				noDeadEnd,
+				equalTo(true)
+				);
+		
+	}
+	
+	/*
+	 * This is an unsupported case.
+	 * 
+	 * 1 <=> 2 => 3 => 4 <=> 5
+	 * 
+	 * In that case, the graph is not fully connected and if an agent
+	 * go to 5 or 4, it will be stuck.
+	 */
+	// @Test
+	public void testFixDeadEnds3() throws JsonParseException, JsonMappingException, IOException {
+		Collection<Road> roads = OsmRoadTest.loadRoads(
+				new File(ArcsBuilderTest.class.getResource("ways_dead_end_2.json").getFile())
+				).values();
+		Map<String, OsmNode> nodes = OsmNodeTest.loadNodes(new File(ArcsBuilderTest.class.getResource("nodes_dead_end_2.json").getFile()));
+		
+		List<OsmArc> arcs = OsmArcsBuilder.buildArcs(nodes, roads, new DefaultOsmArcFactory());
+		
+		Map<String, OsmArc> arcMap = new HashMap<>();
+		
+		for (OsmArc arc : arcs) {
+			arcMap.put(arc.getId(), arc);
+		}
+		
+		OsmContext context = mock(OsmContext.class);
+		context.arcs = new TreeMap<>(arcMap);
+		context.nodes = new TreeMap<>(nodes);
+		
+		assertThat(
+				context.nodes.get("4").getOutgoingArcs(),
+				hasSize(1)
+				);
+		assertThat(
+				context.arcs.values(),
+				hasSize(6)
+				);
 	}
 
 }

@@ -80,13 +80,30 @@ public class OsmArcsBuilder {
 	 * Fixes dead ends eventually contained in the osm graph, adding arcs in the opposite
 	 * direction even if the road was originally a oneway road.
 	 * 
+	 * <p>
+	 * The algorithm only fixes the following situations, where 4 is considered as a dead end :
+	 * <ul>
+	 * <li> 1 &#60;=&#62; 2 =&#62; 3 =&#62; 4 </li>
+	 * <li> 1 &#60;=&#62; 2 &#60;= 3 &#60;= 4 </li>
+	 * </ul>
+	 * Notice that the following situation <b>is not handled</b> :
+	 * <ul>
+	 * <li> 1 &#60;=&#62; 2 =&#62; 3 &#60;=&#62; 4 </li>
+	 * </ul>
+	 * In that case, 3 and 4 might also look as dead ends, because any agent reaching
+	 * one of those two nodes will be stuck, but solving such situations would require some
+	 * directed graph connectivity check and fixing, what is far from this specific and simple solution.
+	 * 
 	 * @param context context to wich new arcs will be added if necessary
 	 * @param arcFactory arc factory used to build additional arcs
 	 */
 	public static void fixDeadEnds(OsmContext context, OsmArcFactory<? extends OsmArc> arcFactory) {
 		for(Node node : context.nodes.values()) {
+			/*
+			 * First case : 1 <=> 2 => 3 => 4
+			 */
 			if(node.getOutgoingArcs().size() == 0) {
-				if(!node.getIncomingArcs().isEmpty()) { // This should obviously always be true, but if its not the case we don't care
+				if(!node.getIncomingArcs().isEmpty()) { // This should obviously always be true in this subcase, but if its not the case we don't care
 					OsmNode deadEnd = (OsmNode) node;
 					OsmArc currentArc = (OsmArc) node.getIncomingArcs().get(0);
 					OsmNode firstDeadEndNode = (OsmNode) currentArc.getStartNode();
@@ -112,6 +129,45 @@ public class OsmArcsBuilder {
 								String.valueOf(id++),
 								currentNode,
 								previousNode,
+								deadArc.getRoad(),
+								oppositeDirection);
+						context.arcs.put(newArc.getId(), newArc);
+						currentNode = previousNode;
+					}
+					deadEnd.getRoad().setOneway(false);
+				}
+			}
+			/*
+			 * Second case : 1 <=> 2 <= 3 <= 4
+			 * 4 is considered as a dead end, because it can't be reached.
+			 */
+			if(node.getIncomingArcs().isEmpty()) {
+				if(!node.getOutgoingArcs().isEmpty()) {
+					OsmNode deadEnd = (OsmNode) node;
+					OsmArc currentArc = (OsmArc) node.getOutgoingArcs().get(0);
+					OsmNode firstDeadEndNode = (OsmNode) currentArc.getTargetNode();
+					while(firstDeadEndNode.getIncomingArcs().size() == 1 && firstDeadEndNode.getOutgoingArcs().size() >= 1) {
+						Node tempNode = firstDeadEndNode;
+						firstDeadEndNode = (OsmNode) currentArc.getTargetNode();
+						currentArc = (OsmArc) tempNode.getOutgoingArcs().get(0);
+					}
+					OsmNode currentNode = deadEnd;
+					while(!currentNode.equals(firstDeadEndNode)) {
+						OsmArc deadArc = (OsmArc) currentNode.getOutgoingArcs().get(0);
+						OsmNode previousNode = (OsmNode) deadArc.getTargetNode();
+						RoadDirection oppositeDirection;
+						switch(deadArc.getRoadDirection()) {
+						case FORWARD:
+							oppositeDirection = RoadDirection.BACKWARD;
+							break;
+						default:
+							oppositeDirection = RoadDirection.FORWARD;
+							break;
+						}
+						OsmArc newArc = arcFactory.create(
+								String.valueOf(id++),
+								previousNode,
+								currentNode,
 								deadArc.getRoad(),
 								oppositeDirection);
 						context.arcs.put(newArc.getId(), newArc);

@@ -1,0 +1,20 @@
+[
+{
+  "id" : "31651134",
+  "tags" : {
+    "name" : "Place de la Libération",
+    "highway" : "residential",
+    "oneway" : "-1"
+  },
+  "nodeRefs" : [ "354040649", "774836547", "354040664" ]
+},
+{
+  "id" : "1",
+  "tags" : {
+    "name" : "Fake",
+    "highway" : "residential",
+    "oneway" : "no"
+  },
+  "nodeRefs" : [ "1", "354040649", "2" ]
+}
+]
