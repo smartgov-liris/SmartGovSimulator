@@ -10,10 +10,8 @@ import smartgov.urban.osm.environment.graph.sinkSourceNodes.SourceNode;
 import smartgov.urban.osm.scenario.lowLayer.RandomTrafficScenario;
 import smartgov.urban.osm.scenario.lowLayer.ScenarioVisualization;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * CoreEnvironment extension that adds OSM specific features to the simulation environment.
@@ -23,16 +21,16 @@ import java.util.Map;
  */
 public class OsmContext extends SmartGovContext {
 	
-	public List<Road> roads;
+	public Map<String, Road> roads;
 	
 	private Map<String, SourceNode> sourceNodes;
 	private Map<String, SinkNode> sinkNodes;
 	
 	public OsmContext(String configFile) {
 		super(configFile);
-		roads = new ArrayList<>();
-		sourceNodes = new HashMap<>();
-		sinkNodes = new HashMap<>();
+		roads = new TreeMap<>();
+		sourceNodes = new TreeMap<>();
+		sinkNodes = new TreeMap<>();
 	}
 	
 	/**

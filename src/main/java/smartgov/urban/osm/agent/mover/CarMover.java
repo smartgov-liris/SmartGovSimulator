@@ -118,24 +118,6 @@ public class CarMover extends BasicGeoMover {
 	});
 	}
 
-//	@Override
-//	protected void handleArcChanged(GeoArc oldArc, GeoArc newArc) {
-//		Boolean roadChanged = ((OsmArc) oldArc).getRoad() != ((OsmArc) newArc).getRoad();
-//		
-//		if (roadChanged) {
-//			changeRoad((OsmArc) oldArc, (OsmArc) newArc);
-//			
-//		}
-////		else {
-////			Boolean endOfRoad = (((OsmArc) oldArc) == (((OsmArc) oldArc).getRoad().endOfRoad(((OsmArc) oldArc).getRoadDirection())));
-////			if(endOfRoad) {
-////				// Removes the agent from the end of the road, and add it at the beginning
-////				changeRoad((OsmArc) oldArc, (OsmArc) newArc);
-////			}
-////		}
-//		agentBody.setDirection(newArc.getDirection());
-//	}
-
 	@Override
 	protected void updateAgentSpeed(GeoAgentBody agentBody) {
 		Road road = ((OsmArc) agentBody.getPlan().getCurrentArc()).getRoad();
@@ -163,15 +145,4 @@ public class CarMover extends BasicGeoMover {
 					);
 		}
 	}
-	
-//	@Override
-//	protected void handleDestinationReached(GeoAgentBody agentBody, GeoArc lastArc, GeoNode lastNode) {
-//		/*
-//		 * Removes agent from the final road.
-//		 * At this point, we don't know if the origin of the next plan will be the same road...
-//		 * So we remove it in any case, and the agent will be added to the road again
-//		 * at behavior initialization.
-//		 */
-//		((OsmArc) lastArc).getRoad().removeAgent((OsmAgentBody) agentBody);
-//	}
 }

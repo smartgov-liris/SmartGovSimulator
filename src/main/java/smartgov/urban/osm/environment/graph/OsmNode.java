@@ -10,15 +10,12 @@ import smartgov.urban.geo.utils.LatLon;
 import smartgov.urban.osm.output.RoadIdSerializer;
 
 /**
- * Class used to represents OSM nodes, i.e. crossroads and line breaks.
- * 
- * @author pbreugnot
+ * Class used to represents OSM nodes.
  *
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OsmNode extends GeoNode {
 
-	// TODO : serialize as id?
 	@JsonSerialize(using = RoadIdSerializer.class)
 	private Road road;
 	
@@ -65,9 +62,24 @@ public class OsmNode extends GeoNode {
 	}
 
 	/**
-	 * Road to which this node belongs to. Might be null.
+	 * Road to which this node belongs to.
+	 * <p>
+	 * Notice that the road is automatically set by the
+	 * {@link smartgov.urban.osm.utils.OsmArcsBuilder}.
+	 * However, for nodes representing <b>the junction
+	 * between two roads</b>, which road is associated 
+	 * to the node is uncertain, because it depends on
+	 * the order in which roads are read.
+	 * </p>
+	 * 
+	 * <p>
+	 * However, the road associated to an arc is unambiguous,
+	 * so use arcs instead if it's really important. Arcs can be accessed
+	 * through {@link #getIncomingArcs()}, {@link #getOutgoingArcs()},
+	 * or event from {@link smartgov.core.agent.moving.plan.Plan#getCurrentArc()}.
+	 * </p>
 	 *
-	 * @return osm road
+	 * @return osm road associated to this node
 	 */
 	public Road getRoad() {
 		return road;

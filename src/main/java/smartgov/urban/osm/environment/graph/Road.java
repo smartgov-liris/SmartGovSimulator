@@ -163,20 +163,6 @@ public class Road extends OsmWay {
 	 * @param agentBody body of the agent entering the road
 	 */
 	public void addAgent(OsmAgentBody agentBody) {
-		/*
-		 * Forces agent removal before adding him.
-		 * Normally, this should be unnecessary.
-		 * But in some cases, such as when an agent reached its destination,
-		 * so it is removed from the road, but the behavior re-initialization add
-		 * him again and we don't really know in which order the events occurred,
-		 * the agent could be added just before it is removed, what caused 
-		 * problems. So we remove it there to be sure, because it's better to
-		 * remove him once,
-		 * 
-		 */
-//		forwardAgents.remove(agentBody);
-//		backwardAgents.remove(agentBody);
-		
 		int agentIndex;
 		
 		switch(((OsmArc) agentBody.getPlan().getCurrentArc()).getRoadDirection()) {

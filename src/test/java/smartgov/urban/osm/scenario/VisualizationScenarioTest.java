@@ -30,7 +30,7 @@ public class VisualizationScenarioTest {
 				);
 		
 		assertThat(
-				((OsmContext) smartGov.getContext()).roads,
+				((OsmContext) smartGov.getContext()).roads.values(),
 				hasSize(110)
 				);
 		

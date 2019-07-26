@@ -45,12 +45,12 @@ public class CarMoverTest {
 		SmartGov smartGov = loadScenario();
 		
 		assertThat(
-				((OsmContext) smartGov.getContext()).roads,
+				((OsmContext) smartGov.getContext()).roads.values(),
 				hasSize(2)
 				);
 		
-		Road road1 = ((OsmContext) smartGov.getContext()).roads.get(0);
-		Road road2 = ((OsmContext) smartGov.getContext()).roads.get(1);
+		Road road1 = ((OsmContext) smartGov.getContext()).roads.get("1");
+		Road road2 = ((OsmContext) smartGov.getContext()).roads.get("2");
 		
 		assertThat(
 				road1.getNodes(),
@@ -71,8 +71,8 @@ public class CarMoverTest {
 		EventChecker node4reached = new EventChecker();
 		EventChecker firstMoveAfterRoadChanged = new EventChecker();
 		
-		Road road1 = ((OsmContext) smartGov.getContext()).roads.get(0);
-		Road road2 = ((OsmContext) smartGov.getContext()).roads.get(1);
+		Road road1 = ((OsmContext) smartGov.getContext()).roads.get("1");
+		Road road2 = ((OsmContext) smartGov.getContext()).roads.get("2");
 		
 		testedAgent.addOnNodeReachedListener((event) -> {
 			if(event.getNode().getId().equals("4")) {

@@ -3,6 +3,7 @@ package smartgov.urban.osm.scenario;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import smartgov.core.environment.SmartGovContext;
 import smartgov.core.environment.graph.Arc;
@@ -84,13 +85,14 @@ public abstract class GenericOsmScenario<Tnode extends OsmNode, Troad extends Ro
 		
 		Collection<OsmArc> arcs = new ArrayList<>();
 		try {
-			((OsmContext) context).roads.addAll(
-					loader.loadOsmElements(
+			List<Troad> roads = loader.loadOsmElements(
 					context.getFileLoader().load("roads"),
 					roadClass
-					)
-				);
-			arcs = OsmArcsBuilder.buildArcs(context.nodes, ((OsmContext) context).roads, osmArcFactory);
+					);
+			for(Troad road : roads) {
+				((OsmContext) context).roads.put(road.getId(), road);
+			}
+			arcs = OsmArcsBuilder.buildArcs(context.nodes, ((OsmContext) context).roads.values(), osmArcFactory);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
