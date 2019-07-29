@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import smartgov.urban.osm.environment.graph.tags.Highway;
 import smartgov.urban.osm.environment.graph.tags.Oneway;
 import smartgov.urban.osm.environment.graph.tags.OsmTag;
+import smartgov.urban.osm.environment.graph.tags.Service;
 
 
 public class OsmTagsDeserializer extends StdDeserializer<Map<String, OsmTag>> {
@@ -36,6 +37,7 @@ public class OsmTagsDeserializer extends StdDeserializer<Map<String, OsmTag>> {
 		JsonNode node = p.getCodec().readTree(p);
 		Oneway oneway = Oneway.NO; // If no oneway tag is present, keep this value
 		Highway highway = Highway.OTHER;
+		Service service = Service.NONE;
 		
 		Iterator<String> keyIterator = node.fieldNames();
 		while(keyIterator.hasNext()) {
@@ -63,9 +65,14 @@ public class OsmTagsDeserializer extends StdDeserializer<Map<String, OsmTag>> {
 			if(key.equals("highway")) {
 				highway = Highway.fromOsmTag(node.get("highway").asText());
 			}
+			
+			if(key.equals("service")) {
+				service = Service.fromOsmTag(node.get("service").asText());
+			}
 		}
 		tags.put("oneway", oneway);
 		tags.put("highway", highway);
+		tags.put("service", service);
 		
 		return tags;
 	}

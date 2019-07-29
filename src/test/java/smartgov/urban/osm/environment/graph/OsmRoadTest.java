@@ -25,6 +25,8 @@ import smartgov.core.agent.moving.plan.Plan;
 import smartgov.urban.osm.agent.OsmAgent;
 import smartgov.urban.osm.agent.OsmAgentBody;
 import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
+import smartgov.urban.osm.environment.graph.tags.Highway;
+import smartgov.urban.osm.environment.graph.tags.Service;
 import smartgov.urban.osm.utils.OsmLoader;
 
 public class OsmRoadTest {
@@ -139,6 +141,51 @@ public class OsmRoadTest {
 				equalTo(20)
 				);
 		
+	}
+	
+	@Test
+	public void testServiceTypes() throws JsonParseException, JsonMappingException, IOException {
+		Map<String, Road> roads = loadRoads(complete_ways);
+		
+		int driveways = 0;
+		int alleys = 0;
+		int parking_aisles = 0;
+		
+		for(Road road : roads.values()) {
+			if(road.getHighway() == Highway.SERVICE) {
+				switch(road.getService()) {
+				case ALLEY:
+					alleys++;
+					break;
+				case DRIVEWAY:
+					driveways++;
+					break;
+				case PARKING_AISLE:
+					parking_aisles++;
+					break;
+				default:
+					break;
+				}
+			}
+			else {
+				assertThat(
+						road.getService(),
+						equalTo(Service.NONE)
+						);
+			}
+		}
+		assertThat(
+				driveways,
+				equalTo(8)
+				);
+		assertThat(
+				alleys,
+				equalTo(3)
+				);
+		assertThat(
+				parking_aisles,
+				equalTo(0)
+				);
 	}
 	
 	@Test
@@ -303,7 +350,7 @@ public class OsmRoadTest {
 		
 		assertThat(
 				result,
-				equalTo("{\"id\":\"testRoad\",\"oneway\":false,\"highway\":\"unclassified\",\"forwardAgents\":[\"2\"],\"backwardAgents\":[\"0\",\"1\"],\"nodes\":[\"4\",\"8\",\"2\"]}")
+				equalTo("{\"id\":\"testRoad\",\"oneway\":false,\"highway\":\"unclassified\",\"service\":\"\",\"forwardAgents\":[\"2\"],\"backwardAgents\":[\"0\",\"1\"],\"nodes\":[\"4\",\"8\",\"2\"]}")
 				);
 
 	}

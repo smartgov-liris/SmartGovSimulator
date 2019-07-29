@@ -21,6 +21,7 @@ import smartgov.urban.osm.environment.graph.OsmArc.RoadDirection;
 import smartgov.urban.osm.environment.graph.tags.Highway;
 import smartgov.urban.osm.environment.graph.tags.Oneway;
 import smartgov.urban.osm.environment.graph.tags.OsmTag;
+import smartgov.urban.osm.environment.graph.tags.Service;
 import smartgov.urban.osm.utils.OsmTagsDeserializer;
 
 /**
@@ -31,8 +32,10 @@ public class Road extends OsmWay {
 	
 	private boolean oneway;
 	
-	@JsonSerialize(using = Highway.HighwaySerializer.class)
+	@JsonSerialize(using = OsmTag.OsmTagSerializer.class)
 	private Highway highway = Highway.UNCLASSIFIED;
+	@JsonSerialize(using = OsmTag.OsmTagSerializer.class)
+	private Service service = Service.NONE;
 	
 	private ArrayList<OsmAgentBody> forwardAgents;
 	private ArrayList<OsmAgentBody> backwardAgents;
@@ -100,6 +103,7 @@ public class Road extends OsmWay {
 		}
 		
 		highway = (Highway) tags.get("highway");
+		service = (Service) tags.get("service");
 	}
 	
 	/**
@@ -134,6 +138,16 @@ public class Road extends OsmWay {
 	 */
 	public Highway getHighway() {
 		return highway;
+	}
+	
+	/**
+	 * Returns the service type of this road, if any.
+	 * Default value set to NONE.
+	 * 
+	 * @return service type
+	 */
+	public Service getService() {
+		return service;
 	}
 
 	/**

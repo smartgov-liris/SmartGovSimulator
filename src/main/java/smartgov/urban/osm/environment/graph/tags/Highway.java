@@ -29,6 +29,7 @@ public enum Highway implements OsmTag {
 	SECONDARY_LINK("secondary_link"),
 	TERTIARY_LINK("tertiary_link"),
 	SERVICE("service"),
+	LIVING_STREET("living_street"),
 	OTHER("");
 	
 	private String osmTag;
@@ -49,30 +50,5 @@ public enum Highway implements OsmTag {
 			}
 		}
 		return Highway.OTHER;
-	}
-	
-	/**
-	 * Custom jackson serializer used to serialize an Highway using the
-	 * corresponding OSM tag.
-	 *
-	 */
-	public static class HighwaySerializer extends StdSerializer<Highway> {
-		
-		private static final long serialVersionUID = 1L;
-
-		public HighwaySerializer() {
-			this(null);
-		}
-		
-		protected HighwaySerializer(Class<Highway> t) {
-			super(t);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		public void serialize(Highway value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-			gen.writeObject(value.getOsmTag());
-		}
-		
 	}
 }
