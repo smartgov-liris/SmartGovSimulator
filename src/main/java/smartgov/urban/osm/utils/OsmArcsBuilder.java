@@ -15,8 +15,6 @@ import smartgov.urban.osm.environment.graph.factory.OsmArcFactory;
 
 public class OsmArcsBuilder {
 	
-	private static int id = 0;
-	
 	/**
 	 * Build a list of arc from a set of roads, using the specified nodes
 	 * and the arc factory.
@@ -35,6 +33,8 @@ public class OsmArcsBuilder {
 			Map<String, ? extends Node> nodes,
 			Collection<Road> roads,
 			OsmArcFactory<? extends OsmArc> arcFactory) {
+		int currentId = 0;
+		
 		List<OsmArc> arcs = new ArrayList<>();
 		
 		for (Road road : roads) {
@@ -42,7 +42,7 @@ public class OsmArcsBuilder {
 			clearRoad(road, nodes.keySet());
 			for(int i = 0; i < road.getNodes().size() - 1; i++) {
 				OsmArc newArc = arcFactory.create(
-						String.valueOf(id),
+						String.valueOf(currentId),
 						(OsmNode) nodes.get(road.getNodes().get(i)),
 						(OsmNode) nodes.get(road.getNodes().get(i+1)),
 						road,
@@ -52,14 +52,14 @@ public class OsmArcsBuilder {
 				road.addArc(newArc);
 
 				((OsmNode) nodes.get(road.getNodes().get(i))).setRoad(road);
-				id++;
+				currentId++;
 			}
 			((OsmNode) nodes.get(road.getNodes().get(road.getNodes().size() - 1))).setRoad(road);
 
 			if (!road.isOneway()) {
 				for(int i = road.getNodes().size() - 1; i > 0; i--) {
 					OsmArc newArc = arcFactory.create(
-							String.valueOf(id),
+							String.valueOf(currentId),
 							(OsmNode) nodes.get(road.getNodes().get(i)),
 							(OsmNode) nodes.get(road.getNodes().get(i-1)),
 							road,
@@ -67,7 +67,7 @@ public class OsmArcsBuilder {
 							);
 					arcs.add(newArc);
 					road.addArc(newArc);
-					id++;
+					currentId++;
 				}
 			}
 			road.checkIntegrity();
@@ -126,7 +126,7 @@ public class OsmArcsBuilder {
 							break;
 						}
 						OsmArc newArc = arcFactory.create(
-								String.valueOf(id++),
+								deadArc.getId() + "bis",
 								currentNode,
 								previousNode,
 								deadArc.getRoad(),
@@ -165,7 +165,7 @@ public class OsmArcsBuilder {
 							break;
 						}
 						OsmArc newArc = arcFactory.create(
-								String.valueOf(id++),
+								String.valueOf(deadArc.getId() + "bis"),
 								previousNode,
 								currentNode,
 								deadArc.getRoad(),
