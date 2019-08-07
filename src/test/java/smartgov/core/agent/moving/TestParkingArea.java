@@ -222,7 +222,7 @@ public class TestParkingArea {
 					return MoverAction.ENTER(parkingArea);
 				}
 				
-				if (!((MovingAgentBody) getAgentBody()).getPlan().isPlanComplete()) {
+				if (!((MovingAgentBody) getAgentBody()).getPlan().isComplete()) {
 					return MoverAction.MOVE();
 				}
 				return MoverAction.WANDER();

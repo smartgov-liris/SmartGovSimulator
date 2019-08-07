@@ -183,7 +183,7 @@ public abstract class MovingAgentBody extends AgentBody<MoverAction> {
 		}
 		
 		// Has the agent reached its destination?
-		if(plan.isPlanComplete()) {
+		if(plan.isComplete()) {
 			/*
 			 * When the agent has reached its destination, there is no next arc, so oldArc = newArc,
 			 * but we still need to notify that the last arc has been left.

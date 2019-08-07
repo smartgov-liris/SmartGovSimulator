@@ -43,7 +43,7 @@ public class BasicGeoMover implements GeoMover {
 		updateAgentSpeed(agentBody);
 		Plan plan = agentBody.getPlan();
 		LatLon currentPosition = agentBody.getPosition();
-		if(!plan.isPlanComplete()){
+		if(!plan.isComplete()){
 			GeoNode destination = ((GeoNode) plan.getNextNode());
 			
 			// updateAgent(arc, agentBody);
@@ -53,7 +53,7 @@ public class BasicGeoMover implements GeoMover {
 				currentPosition = destination.getPosition();
 				plan.reachNextNode();
 				
-				if(!plan.isPlanComplete()) {
+				if(!plan.isComplete()) {
 					// If this is not the last node, cross the remaining distance on the next arc
 					return moveOn(distance - remainingDistanceToNode);
 				}

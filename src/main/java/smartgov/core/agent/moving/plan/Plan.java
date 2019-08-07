@@ -116,7 +116,7 @@ public class Plan {
 	 *
 	 * @return true if and only if the plan is complete
 	 */
-	public boolean isPlanComplete() {
+	public boolean isComplete() {
 		return planComplete;
 	}
 	
