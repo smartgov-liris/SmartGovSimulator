@@ -27,11 +27,11 @@ public abstract class GeoMovingBehavior extends MovingBehavior {
 	/**
 	 * GeoMovingBehavior constructor.
 	 * 
-	 * The default costs used are {@link smartgov.urban.geo.environment.graph.DistanceCosts} instantiated from
-	 * the current context nodes. This should be quite safe, because normally this function is called when building
-	 * agents, and <i>buildAgents</i> is called after <i>buildNodes</i> and <i>buildArcs</i>. However, in special cases,
-	 * you can manually pass a custom cost using the other constructor. 
-	 *
+	 * The default costs used are {@link smartgov.urban.geo.environment.graph.DistanceCosts}.
+	 * <p>
+	 * You can also manually pass a custom cost function using the other constructor. 
+	 * </p>
+	 * 
 	 * @param agentBody AgentBody of the Agent to which this Behavior will be associated.
 	 * In practice, this reference is used by {@link #updateAgentBodyPlan}.
 	 * @param origin Initial origin
