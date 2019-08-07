@@ -41,7 +41,6 @@ public abstract class AbstractContext {
 	 */
 	public AbstractContext(String configFile) {
 		parseConfig(configFile);
-		scenario = loadScenario((String) config.get("scenario"));
 	}
 	
 	/**
@@ -54,12 +53,27 @@ public abstract class AbstractContext {
 	}
 	
 	/**
-	 * Loads a scenario from the given name.
+	 * Loads the scenario specified by the "scenario" field of the
+	 * configuration file into this context, using
+	 * {@link #loadScenario(String)}.
+	 * 
+	 * <p>
+	 * Should not be called directly by the user, since it is called
+	 * by the {@link smartgov.core.simulation.SimulationBuilder}.
+	 * </p>
+	 */
+	public void _loadScenario() {
+		this.scenario = loadScenario((String) config.get("scenario"));
+	}
+	
+	/**
+	 * Loads a scenario from the given name. Should be 
+ 	 * overridden to provide user defined scenarios.
 	 *
 	 * @param scenarioName Name of the scenario to load.
 	 * @return new scenario instance
 	 */
-	public abstract Scenario loadScenario(String scenarioName);
+	protected abstract Scenario loadScenario(String scenarioName);
 	
 	private void parseConfig(String file) {
 		SmartGov.logger.info("Loading config from " + file);

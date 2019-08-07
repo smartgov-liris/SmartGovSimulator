@@ -26,7 +26,8 @@ public class SimulationBuilder {
 	 * Builds the current context.
 	 *
 	 * <p>
-	 * Clears the current context, and then calls the
+	 * Clears the current context, loads the scenario specified in
+	 * the configuration file, and then calls the
 	 * {@link smartgov.core.scenario.Scenario#loadWorld loadWorld}
 	 * method of the loaded scenario, if it exists.
 	 * </p>
@@ -43,6 +44,7 @@ public class SimulationBuilder {
 		long beginTime = System.currentTimeMillis();
 
 		context.clear();
+		context._loadScenario();
 
 		if (context.getScenario() != null) {
 			SmartGov.logger.info("Loading World for " + context.getScenario().getClass().getSimpleName());

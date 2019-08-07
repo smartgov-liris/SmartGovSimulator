@@ -1,11 +1,5 @@
 package smartgov.urban.osm.environment.graph.tags;
 
-import java.io.IOException;
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-
 /**
  * Enumeration that describes main roads usable by cars in OSM.
  * 

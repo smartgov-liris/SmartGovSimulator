@@ -76,7 +76,7 @@ public class SmartGovContext extends AbstractContext {
 	}
 
 	@Override
-	public Scenario loadScenario(String scenarioName) {
+	protected Scenario loadScenario(String scenarioName) {
 		SmartGov.logger.info("Loading Scenario : " + scenarioName);
 		return null;
 	}

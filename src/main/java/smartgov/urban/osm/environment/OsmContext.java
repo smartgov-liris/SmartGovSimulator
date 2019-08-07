@@ -68,7 +68,7 @@ public class OsmContext extends SmartGovContext {
 	 * </ul>
 	 */
 	@Override
-	public Scenario loadScenario(String scenarioName) {
+	protected Scenario loadScenario(String scenarioName) {
 		super.loadScenario(scenarioName);
 		switch (scenarioName) {
 			case ScenarioVisualization.name:
