@@ -43,6 +43,7 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 	@JsonSerialize(using=NodeIdSerializer.class)
 	private Node destination;
 	
+	@JsonIgnore
 	private Costs costs;
 	
 
@@ -115,6 +116,24 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 		return context;
 	}
 	
+	/**
+	 * Returns the currents costs used by the AStar algorithm
+	 * to compute shortest paths when refreshing the behavior
+	 * from one node to an other.
+	 * 
+	 * @return AStar costs
+	 */
+	public Costs getCosts() {
+		return costs;
+	}
+	
+	/**
+	 * Sets the costs used by the AStar algorithm
+	 * to compute shortest paths when refreshing the behavior
+	 * from one node to an other.
+	 * 
+	 * @param costs AStar costs
+	 */
 	public void setCosts(Costs costs) {
 		this.costs = costs;
 	}
