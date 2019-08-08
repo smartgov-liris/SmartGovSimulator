@@ -173,10 +173,14 @@ public class Road extends OsmWay {
 	 * middle of the road, its position will be computed accordingly so
 	 * that the follower / leader system keeps consistent.
 	 * </p>
+	 * <p>
+	 * This method is <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/syncmeth.html">
+	 * synchronized</a>, so that multiple threads can safely add agents on the same road concurrently.
+	 * </p>
 	 *
 	 * @param agentBody body of the agent entering the road
 	 */
-	public void addAgent(OsmAgentBody agentBody) {
+	public synchronized void addAgent(OsmAgentBody agentBody) {
 		int agentIndex;
 		
 		switch(((OsmArc) agentBody.getPlan().getCurrentArc()).getRoadDirection()) {
