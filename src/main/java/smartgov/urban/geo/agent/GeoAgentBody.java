@@ -61,7 +61,7 @@ public class GeoAgentBody extends MovingAgentBody {
 	/**
 	 * Sets this agent body speed.
 	 *
-	 * @param speed new agent body speed
+	 * @param speed new agent body speed in m/s
 	 */
 	public void setSpeed(double speed) {
 		if(Double.isNaN(speed)){
@@ -74,7 +74,7 @@ public class GeoAgentBody extends MovingAgentBody {
 	/**
 	 * Current speed of this agent body.
 	 *
-	 * @return speed of this agent body
+	 * @return speed of this agent body in m/s
 	 */
 	public double getSpeed() {
 		return speed;

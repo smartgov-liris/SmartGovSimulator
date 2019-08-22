@@ -63,12 +63,13 @@ public class BasicGeoMover implements GeoMover {
 				 * We are working in latitude / longitude there.
 				 * 
 				 * What we know :
-				 *  - currentCoordinates (x1, y1) and nextNodeCoordinates (x2, y2) in latitude / longitude
+				 *  - current agent coordinates (x_current, y_current)
+				 *  - next node coordinates (x_node, y_node) in latitude / longitude
 				 *  - distance in meter between the current position and the next node : d_to_node
 				 *  - the distance to cross in meter during this iteration ("distance") : d_to_travel
 				 * 
 				 * What we want :
-				 * 	- dx, dy, in latitude / longitude, such as (x1 + dx, y1 + dy) are the new coordinates at the
+				 * 	- dx, dy, in latitude / longitude, such as (x_next, y_next) = (x_current + dx, y_current + dy) are the new coordinates at the
 				 *    end of the iteration.
 				 * 
 				 * Solution :
@@ -78,13 +79,17 @@ public class BasicGeoMover implements GeoMover {
 				 *   x_2[m] - x_1[m] = k * ( x_2[°] - x_1[°] ) for any point x_2, x_1, where k is an unknown constant.
 				 *   
 				 *  From there : 
-				 *   dx[m] / (x_node[m] - x_origin[m]) = dx[°] / (x_node[°] - x_origin[°])
+				 *   dx[m] = x_next[m] - x_current[m]
+				 *   dx[m] = k * (x_next[°] - x_current[°]) = k * dx[°]
+				 *   x_node[m] - x_current[m] = k * (x_next[°] - x_current[°])
+				 *   
+				 *   dx[m] / (x_node[m] - x_current[m]) = dx[°] / (x_node[°] - x_current[°])
 				 *   
 				 *  But also, from the Thales theorem :
-				 *   dx[m] / (x_node[m] - x_origin[m]) = d_to_travel[m] / d_to_node[m]
+				 *   dx[m] / (x_node[m] - x_current[m]) = d_to_travel[m] / d_to_node[m]
 				 *   
 				 *  Finally :
-				 *   dx[°] = (x_node[°] - x_origin[°]) * d_to_travel[m] / d_to_node[m]
+				 *   dx[°] = (x_node[°] - x_current[°]) * d_to_travel[m] / d_to_node[m]
 				 * 
 				 */
 				double dx = distance * (destination.getPosition().lat - currentPosition.lat) / remainingDistanceToNode;
