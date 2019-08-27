@@ -34,6 +34,13 @@ public abstract class AbstractContext {
 	public abstract void clear();
 	
 	/**
+	 * Instantiates a Context without any configuration file.
+	 */
+	public AbstractContext() {
+		
+	}
+	
+	/**
 	 * Instantiates a context from the specified configFile and loads the
 	 * specified scenario (but don't build it yet).
 	 *
@@ -54,7 +61,7 @@ public abstract class AbstractContext {
 	
 	/**
 	 * Loads the scenario specified by the "scenario" field of the
-	 * configuration file into this context, using
+	 * configuration file into this context (if it exists), using
 	 * {@link #loadScenario(String)}.
 	 * 
 	 * <p>
@@ -63,7 +70,14 @@ public abstract class AbstractContext {
 	 * </p>
 	 */
 	public void _loadScenario() {
-		this.scenario = loadScenario((String) config.get("scenario"));
+		String scenarioName = "";
+		if (config != null) {
+			scenarioName = (String) config.get("scenario");
+			if (scenarioName == null) {
+				scenarioName = "";
+			}
+		}
+		this.scenario = loadScenario(scenarioName);
 	}
 	
 	/**
