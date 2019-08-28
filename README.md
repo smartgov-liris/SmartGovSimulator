@@ -32,6 +32,7 @@ From the repository where you want to install the source code, run :
 To build the project using the [Gradle CLI](https://docs.gradle.org/current/userguide/command_line_interface.html), run :
 
 - `./gradlew build` (Linux)
+- `gradlew.bat build` (Windows)
 
 This will compile the Java classes, and run all the unit tests.
 
@@ -39,5 +40,11 @@ This will compile the Java classes, and run all the unit tests.
 
 To import the project in the IntelliJ IDEA :
 
-`File` -> `New` -> `Project from Existing Sources` -> select the `SmartGovSimulator` folder -> `Import project from external model` -> select `Gradle` -> `Finish`
+`File` -> `New` -> `Project from Existing Sources` (or `Module from Existing Sources`) -> select the `SmartGovSimulator` folder -> `Import project from external model` -> select `Gradle` -> `Finish`
+
+## Eclipse IDE
+
+To import the project in the Eclipse Java IDE :
+
+`File` -> `Import...` -> `Gradle` -> `Existing Gradle Project` ->  select the `SmartGovSimulator` folder -> `Finish`
 
