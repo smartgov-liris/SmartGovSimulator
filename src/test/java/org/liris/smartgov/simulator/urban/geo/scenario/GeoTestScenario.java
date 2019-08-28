@@ -95,7 +95,6 @@ public class GeoTestScenario extends Scenario {
 	public Collection<Agent<?>> buildAgents(SmartGovContext context) {
 		BasicGeoMover mover = new BasicGeoMover();
 		GeoAgentBody agentBody = new GeoAgentBody(mover);
-		mover.setAgentBody(agentBody);
 		
 		agentBody.setSpeed(1);
 

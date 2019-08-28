@@ -37,9 +37,6 @@ public class CarMoverTestScenario extends BasicOsmScenario {
 		CarMover mover = new CarMover(maximumAcceleration, maximumBraking, followerMaxSpeed, vehicleSize);
 		
 		OsmAgentBody agentBody = new OsmAgentBody(mover);
-		mover.setAgentBody(agentBody);
-		
-		agentBody.setSpeed(0);
 
 		OsmAgent osmAgent = new OsmAgent(
 				"1",
