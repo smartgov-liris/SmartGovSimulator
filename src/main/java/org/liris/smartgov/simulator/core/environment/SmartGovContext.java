@@ -39,6 +39,16 @@ public class SmartGovContext extends AbstractContext {
 	private Graph graph;
 	
 	/**
+	 * Instantiates a Context without any configuration file.
+	 */
+	public SmartGovContext() {
+		super();
+		agents = new TreeMap<>();
+		nodes = new TreeMap<>();
+		arcs = new TreeMap<>();
+	}
+	
+	/**
 	 * Context constructor.
 	 *
 	 * @param configFile Absolute path of the configuration file to load.
