@@ -3,6 +3,7 @@ package org.liris.smartgov.simulator.urban.geo.agent;
 import org.liris.smartgov.simulator.SmartGov;
 import org.liris.smartgov.simulator.core.agent.moving.MovingAgentBody;
 import org.liris.smartgov.simulator.urban.geo.agent.mover.GeoMover;
+import org.liris.smartgov.simulator.urban.geo.environment.graph.GeoNode;
 import org.liris.smartgov.simulator.urban.geo.utils.LatLon;
 import org.locationtech.jts.math.Vector2D;
 
@@ -138,6 +139,15 @@ public class GeoAgentBody extends MovingAgentBody {
 	@Override
 	public void handleWander() {
 		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Sets the agent body position to the origin of the current plan.
+	 */
+	public void initialize() {
+		// Set up body position
+		setPosition(((GeoNode) getPlan().getCurrentNode()).getPosition());
 		
 	}
 	

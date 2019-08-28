@@ -29,9 +29,20 @@ public class OsmAgent extends GeoAgent {
 			OsmAgentBody body,
 			MovingBehavior basicBehavior) {
 		super(id, body, basicBehavior);
-		body.initialize();
 	}
 	
+	/**
+	 * Creates an agent that will spawn on a random source node from the current context
+	 * and go to a random sink node, using the shortest path.
+	 * When the agent reaches its destination, it spawns on a new random
+	 * source node and so on, as specified by the
+	 * {@link org.liris.smartgov.simulator.urban.osm.agent.behavior.RandomTrafficBehavior}.
+	 * 
+	 * @param id agent id
+	 * @param context current context, containing source and sink nodes
+	 * @param body initialized osm agent body
+	 * @return a random traffic agent
+	 */
 	public static OsmAgent randomTrafficOsmAgent(String id, OsmContext context, OsmAgentBody body) {
 		// TODO : ugly, does the same thing that refresh(). Initialization must be improved.
 		Random rnd = new Random();
@@ -59,15 +70,6 @@ public class OsmAgent extends GeoAgent {
 						randomDestination,
 						(OsmContext) context));
 
-//		body.initialize();
 		return newAgent;
 	}
-	
-//	/**
-//	 * Refresh the behavior and initialize the osmAgentBody.
-//	 */
-//	public void initialize() {
-//		// ((RandomTrafficBehavior) getBehavior()).refresh();
-//		((OsmAgentBody) getBody()).initialize();
-//	}
 }

@@ -20,5 +20,6 @@ public class GeoAgent extends MovingAgent {
 			GeoAgentBody body,
 			MovingBehavior behavior) {
 		super(id, body, behavior);
+		body.initialize();
 	}
 }

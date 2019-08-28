@@ -3,7 +3,6 @@ package org.liris.smartgov.simulator.urban.osm.agent;
 
 import org.liris.smartgov.simulator.core.agent.moving.ParkingArea;
 import org.liris.smartgov.simulator.urban.geo.agent.GeoAgentBody;
-import org.liris.smartgov.simulator.urban.geo.environment.graph.GeoNode;
 import org.liris.smartgov.simulator.urban.osm.agent.mover.CarMover;
 import org.liris.smartgov.simulator.urban.osm.environment.graph.Road;
 
@@ -77,15 +76,6 @@ public class OsmAgentBody extends GeoAgentBody {
 	public void handleLeave(ParkingArea parkingArea) {
 		super.handleLeave(parkingArea);
 		currentRoad.addAgent(this);
-	}
-
-	/**
-	 * Sets the agent body position to the origin of the current plan.
-	 */
-	public void initialize() {
-		// Set up body position
-		setPosition(((GeoNode) getPlan().getCurrentNode()).getPosition());
-		
 	}
 	
 }
