@@ -10,9 +10,7 @@ import org.liris.smartgov.simulator.urban.geo.agent.event.GeoMoveEvent;
 import org.liris.smartgov.simulator.urban.geo.environment.graph.GeoNode;
 import org.liris.smartgov.simulator.urban.geo.utils.LatLon;
 
-public class BasicGeoMover implements GeoMover {
-	
-	protected GeoAgentBody agentBody;
+public class BasicGeoMover extends GeoMover {
 
 	private Collection<EventHandler<GeoMoveEvent>> geoMoveListeners;
 	
@@ -21,15 +19,6 @@ public class BasicGeoMover implements GeoMover {
 	 */
 	public BasicGeoMover() {
 		this.geoMoveListeners = new ArrayList<>();
-	}
-	
-	/**
-	 * Sets the body associated to this mover.
-	 *
-	 * @param agentBody agent body
-	 */
-	public void setAgentBody(GeoAgentBody agentBody) {
-		this.agentBody = agentBody;
 	}
 	
 	/**

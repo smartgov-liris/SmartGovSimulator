@@ -36,6 +36,7 @@ public class GeoAgentBody extends MovingAgentBody {
 	 */
 	public GeoAgentBody(GeoMover mover) {
 		this.mover = mover;
+		mover.setAgentBody(this);
 		speed = 0.0;
 		direction = new Vector2D();
 	}

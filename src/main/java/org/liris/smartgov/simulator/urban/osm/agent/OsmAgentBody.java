@@ -26,7 +26,6 @@ public class OsmAgentBody extends GeoAgentBody {
 	 */
 	public OsmAgentBody(CarMover carMover) {
 		super(carMover);
-		carMover.setAgentBody(this);
 	}
 	
 	/**
