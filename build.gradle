@@ -7,13 +7,9 @@
  */
 
 plugins {
-    // Apply the java plugin to add support for Java
-    id 'java'
-
     // Apply the application plugin to add support for building an application
     id 'application'
-
-    id 'com.github.johnrengelman.shadow' version '5.0.0'
+    id 'maven'
 }
 
 repositories {
