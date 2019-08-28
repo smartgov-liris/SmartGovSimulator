@@ -38,5 +38,6 @@ This will compile the Java classes, and run all the unit tests.
 ## IntelliJ IDEA
 
 To import the project in the IntelliJ IDEA :
+
 `File` -> `New` -> `Project from Existing Sources` -> select the `SmartGovSimulator` folder -> `Import project from external model` -> select `Gradle` -> `Finish`
 
