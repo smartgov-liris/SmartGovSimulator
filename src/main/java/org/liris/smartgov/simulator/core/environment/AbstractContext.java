@@ -68,8 +68,11 @@ public abstract class AbstractContext {
 	 * Should not be called directly by the user, since it is called
 	 * by the {@link org.liris.smartgov.simulator.core.simulation.SimulationBuilder}.
 	 * </p>
+	 * 
+	 * @throws ScenarioNotFoundException if the \"scenario\" config field does not correspond
+	 * to any scenario, or if it is not present and no default scenario has been found.
 	 */
-	public void _loadScenario() {
+	public void _loadScenario() throws ScenarioNotFoundException {
 		String scenarioName = "";
 		if (config != null) {
 			scenarioName = (String) config.get("scenario");
@@ -78,6 +81,9 @@ public abstract class AbstractContext {
 			}
 		}
 		this.scenario = loadScenario(scenarioName);
+		if(this.scenario == null) {
+			throw new ScenarioNotFoundException(scenarioName);
+		}
 	}
 	
 	/**
@@ -88,6 +94,21 @@ public abstract class AbstractContext {
 	 * @return new scenario instance
 	 */
 	protected abstract Scenario loadScenario(String scenarioName);
+	
+	/**
+	 * 
+	 * @author paulbreugnot
+	 *
+	 */
+	public static class ScenarioNotFoundException extends IllegalArgumentException {
+
+		private static final long serialVersionUID = 1L;
+		
+		public ScenarioNotFoundException(String scenarioName) {
+			super("Scenario not found : " + scenarioName);
+		}
+		
+	}
 	
 	private void parseConfig(String file) {
 		SmartGov.logger.info("Loading config from " + file);

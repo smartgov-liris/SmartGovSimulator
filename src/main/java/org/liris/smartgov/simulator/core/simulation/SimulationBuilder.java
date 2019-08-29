@@ -46,14 +46,10 @@ public class SimulationBuilder {
 		context.clear();
 		context._loadScenario();
 
-		if (context.getScenario() != null) {
-			SmartGov.logger.info("Loading World for " + context.getScenario().getClass().getSimpleName());
-			context.getScenario().loadWorld(context);
-			SmartGov.logger.info("Time to process simulation creation: " + (System.currentTimeMillis() - beginTime) + " ms.");
-		}
-		else {
-			SmartGov.logger.error("Scenario not found");
-		}
+		SmartGov.logger.info("Loading World for " + context.getScenario().getClass().getSimpleName());
+		context.getScenario().loadWorld(context);
+		SmartGov.logger.info("Time to process simulation creation: " + (System.currentTimeMillis() - beginTime) + " ms.");
+
 	}
 	
 	/**
