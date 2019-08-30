@@ -25,6 +25,7 @@ All the SmartGov classes should now be available in your project.
 # Build locally
 
 From the repository where you want to install the source code, run :
+
 `git clone https://github.com/smartgov-liris/SmartGovSimulator`
 
 `cd SmartGovSimulator`
@@ -33,7 +34,7 @@ From the repository where you want to install the source code, run :
 
 To build the project using the [Gradle CLI](https://docs.gradle.org/current/userguide/command_line_interface.html), run :
 
-- `./gradlew build` (Linux)
+- `./gradlew build` (UNIX)
 - `gradlew.bat build` (Windows)
 
 This will compile the Java classes, and run all the unit tests.
