@@ -3,9 +3,11 @@ A multi-agent simulator for urban problems.
 
 The framework is sufficiently generic to handle any graph-based multi-agent simulation.
 
-For concrete examples and tutorials, check the [wiki](https://github.com/smartgov-liris/SmartGovSimulator/wiki).
+# Documentation
 
-For the complete java API, check the online [javadoc](https://smartgov-liris.github.io/SmartGovSimulator/).
+For concrete examples and tutorials, check the [wiki of this repository](https://github.com/smartgov-liris/SmartGovSimulator/wiki).
+
+For the complete Java API, check the online [javadoc](https://smartgov-liris.github.io/SmartGovSimulator/).
 
 # Gradle dependency
 
