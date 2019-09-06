@@ -11,7 +11,7 @@ import org.liris.smartgov.simulator.core.environment.graph.astar.Costs;
 /**
  * Graph class.
  *
- * Basically a container for arcs and nodes of
+ * A container for arcs and nodes of
  * the simulation.
  * 
  * @author pbreugnot
