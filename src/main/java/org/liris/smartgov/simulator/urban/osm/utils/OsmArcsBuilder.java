@@ -77,15 +77,25 @@ public class OsmArcsBuilder {
 	}
 	
 	/**
-	 * Fixes dead ends eventually contained in the osm graph, adding arcs in the opposite
-	 * direction even if the road was originally a oneway road.
+	 * Fixes dead ends eventually contained in the OSM graph contained in the input context,
+	 * adding arcs in the opposite direction even if the road was originally a oneway road.
+	 * Such situations are actually impossible in real life : a dead end can't be oneway,
+	 * otherwise cars would be indefinitely stuck in it. Either it's not a real dead end
+	 * (there is an "out" path), or it is not really oneway.
 	 * 
 	 * <p>
-	 * The algorithm only fixes the following situations, where 4 is considered as a dead end :
+	 * The algorithm only fixes the following situations, where 4 is considered as a dead end,
+	 * and nodes 1 and 2 can be connected to any other nodes. Node 3 is optional, but used for
+	 * illustration purposes.
 	 * <ul>
 	 * <li> 1 &#60;=&#62; 2 =&#62; 3 =&#62; 4 </li>
 	 * <li> 1 &#60;=&#62; 2 &#60;= 3 &#60;= 4 </li>
 	 * </ul>
+	 * The algorithm will replace those two situations as follow :
+	 * <ul>
+	 * <li> 1 &#60;=&#62; 2 &#60;=&#62; 3 &#60;=&#62; 4 </li>
+	 * </ul>
+	 * 
 	 * Notice that the following situation <b>is not handled</b> :
 	 * <ul>
 	 * <li> 1 &#60;=&#62; 2 =&#62; 3 &#60;=&#62; 4 </li>
@@ -94,7 +104,7 @@ public class OsmArcsBuilder {
 	 * one of those two nodes will be stuck, but solving such situations would require some
 	 * directed graph connectivity check and fixing, what is far from this specific and simple solution.
 	 * 
-	 * @param context context to wich new arcs will be added if necessary
+	 * @param context context to which new arcs will be added if necessary
 	 * @param arcFactory arc factory used to build additional arcs
 	 */
 	public static void fixDeadEnds(OsmContext context, OsmArcFactory<? extends OsmArc> arcFactory) {
