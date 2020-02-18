@@ -283,6 +283,10 @@ public class SimulationRuntime {
 		return simulationThread;
 	}
 	
+	public SmartGovContext getContext() {
+		return context;
+	}
+	
 	/**
 	 * Blocking function to wait until the simulation has stopped.
 	 * 
