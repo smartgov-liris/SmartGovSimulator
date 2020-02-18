@@ -45,7 +45,16 @@ public class SmartGov {
 		simulationBuilder = new SimulationBuilder(context);
 		simulationBuilder.build();
 	}
+	
+	
+	public void restart(SmartGovContext context) {
+		this.context = context;
+		smartGovRuntime.restart(context);
+		simulationBuilder = new SimulationBuilder(context);
+		simulationBuilder.build();
+	}
 
+	
     public static void main(String[] args) {
         SmartGov smartGov = new SmartGov(new OsmContext(args[0]));
         getRuntime().addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
