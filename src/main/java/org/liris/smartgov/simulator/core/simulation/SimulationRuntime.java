@@ -24,28 +24,28 @@ public class SimulationRuntime {
 	
 	private final Logger logger = LogManager.getLogger(SimulationRuntime.class);
 
-	private SmartGovContext context;
-	private int tickCount = 0;
-	private int maxTicks = Integer.MAX_VALUE;
-	private boolean run = false;
-	private boolean pause = true;
+	protected SmartGovContext context;
+	protected int tickCount = 0;
+	protected int maxTicks = Integer.MAX_VALUE;
+	protected boolean run = false;
+	protected boolean pause = true;
 
 	// Time that correspond to a tick, in seconds
-	private double tickDuration = 1.0;
+	protected double tickDuration = 1.0;
 	
 	// Delay between each ticks in ms
-	private long tickDelay = 0;
+	protected long tickDelay = 0;
 	
 	// Simulation clock
-	private Clock clock;
+	protected Clock clock;
 	
-	private SimulationThread simulationThread;
+	protected SimulationThread simulationThread;
 
-	private Collection<EventHandler<SimulationStarted>> simulationStartedEventHandlers;
-	private Collection<EventHandler<SimulationStopped>> simulationStoppedEventHandlers;
-	private Collection<EventHandler<SimulationPaused>> simulationPausedEventHandlers;
-	private Collection<EventHandler<SimulationResumed>> simulationResumedEventHandlers;
-	private Collection<EventHandler<SimulationStep>> simulationStepEventHandlers;
+	protected Collection<EventHandler<SimulationStarted>> simulationStartedEventHandlers;
+	protected Collection<EventHandler<SimulationStopped>> simulationStoppedEventHandlers;
+	protected Collection<EventHandler<SimulationPaused>> simulationPausedEventHandlers;
+	protected Collection<EventHandler<SimulationResumed>> simulationResumedEventHandlers;
+	protected Collection<EventHandler<SimulationStep>> simulationStepEventHandlers;
 	
 	/**
 	 * SimulationRuntime constructor.
