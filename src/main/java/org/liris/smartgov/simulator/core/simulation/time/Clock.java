@@ -12,7 +12,7 @@ import java.util.TreeMap;
  */
 public class Clock extends Time {
 	
-	private TreeMap<Date, Collection<DelayedActionHandler>> actions;
+	protected TreeMap<Date, Collection<DelayedActionHandler>> actions;
 	
 	/**
 	 * Time origin (day = 0, hour = 0, minutes = 0, seconds = 0, week day = MONDAY)
@@ -20,7 +20,7 @@ public class Clock extends Time {
 	 */
 	public static final Date origin = new Date(0, WeekDay.MONDAY, 0, 0);
 	
-	private Date clockOrigin;
+	protected Date clockOrigin;
 
 
 	/**
