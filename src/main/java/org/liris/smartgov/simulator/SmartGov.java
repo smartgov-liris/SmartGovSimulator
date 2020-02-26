@@ -46,6 +46,16 @@ public class SmartGov {
 		simulationBuilder.build();
 	}
 	
+	public SmartGov(SmartGovContext context, SimulationRuntime smartGovRuntime, SimulationBuilder simulationBuilder) {
+		if ( (! simulationBuilder.getContext().equals(context) ) ||  (! smartGovRuntime.getContext().equals(context) )) {
+			throw new IllegalArgumentException("The contexts are not the same");
+		}
+		this.context = context;
+		this.smartGovRuntime = smartGovRuntime;
+		this.simulationBuilder = simulationBuilder;
+		this.simulationBuilder.build();
+	}
+	
 	
 	public void restart(SmartGovContext context) {
 		this.context = context;
