@@ -21,9 +21,9 @@ public class SmartGov {
 	
 	public static final Logger logger = LogManager.getLogger(SmartGov.class);
 	
-	private SmartGovContext context;
-	private static SimulationBuilder simulationBuilder;
-	private static SimulationRuntime smartGovRuntime;
+	protected SmartGovContext context;
+	protected static SimulationBuilder simulationBuilder;
+	protected static SimulationRuntime smartGovRuntime;
 	
 	
 	public SmartGov(SmartGovContext context) {
