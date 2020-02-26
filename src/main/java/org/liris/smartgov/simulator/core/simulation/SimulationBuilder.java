@@ -49,7 +49,10 @@ public class SimulationBuilder {
 		SmartGov.logger.info("Loading World for " + context.getScenario().getClass().getSimpleName());
 		context.getScenario().loadWorld(context);
 		SmartGov.logger.info("Time to process simulation creation: " + (System.currentTimeMillis() - beginTime) + " ms.");
-
+	}
+	
+	public void rebuild() {
+		throw new UnsupportedOperationException("Not implemented on this builder");
 	}
 	
 	/**
