@@ -161,7 +161,7 @@ public abstract class MovingBehavior extends Behavior<MoverAction> {
 	 * </p>
 	 */
 	public void updateAgentBodyPlan() {
-		((MovingAgentBody) getAgentBody()).updatePlan(context.getGraph().shortestPath(origin, destination, costs));
+		((MovingAgentBody) getAgentBody()).updatePlan(context.getGraph().shortestPath(origin, destination, costs, (MovingAgentBody) getAgentBody()));
 	}
 
 	/**

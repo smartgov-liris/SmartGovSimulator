@@ -8,6 +8,7 @@ import org.liris.smartgov.simulator.core.environment.graph.Node;
 import org.liris.smartgov.simulator.urban.geo.agent.behavior.GeoMovingBehavior;
 import org.liris.smartgov.simulator.urban.geo.environment.graph.DistanceCosts;
 import org.liris.smartgov.simulator.urban.osm.agent.OsmAgentBody;
+import org.liris.smartgov.simulator.urban.osm.agent.mover.CarMover;
 import org.liris.smartgov.simulator.urban.osm.environment.OsmContext;
 import org.liris.smartgov.simulator.urban.osm.environment.graph.sinkSourceNodes.SinkNode;
 import org.liris.smartgov.simulator.urban.osm.environment.graph.sinkSourceNodes.SourceNode;
@@ -79,13 +80,17 @@ public class RandomTrafficBehavior extends GeoMovingBehavior {
 	 * @return a random sink node, extracted from the possible destinations of the specified source node
 	 */
 	public static Node selectRandomSinkNode(Random rnd, SourceNode sourceNode, OsmContext context) {
+		OsmAgentBody agent = new OsmAgentBody(new CarMover(4.,-6., 15., 6.));
+		
 		if(sourceNode.destinations().size() > 0) {
 			SinkNode randomSinkNode = (SinkNode) sourceNode.destinations().toArray()[rnd.nextInt(sourceNode.destinations().size())];
 			try {
 				context.getGraph().shortestPath(
 						context.nodes.get(sourceNode.getNodeId()),
 						context.nodes.get(randomSinkNode.getNodeId()),
-						new DistanceCosts());
+						new DistanceCosts(),
+						agent
+						);
 			}
 			catch (IllegalArgumentException e) {
 				sourceNode.destinations().remove(randomSinkNode);

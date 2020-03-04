@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.liris.smartgov.simulator.core.agent.moving.MovingAgentBody;
 import org.liris.smartgov.simulator.core.environment.graph.Arc;
 import org.liris.smartgov.simulator.core.environment.graph.Graph;
 import org.liris.smartgov.simulator.core.environment.graph.Node;
@@ -135,7 +136,7 @@ public class AStar {
 	 * @param source source node ID
 	 * @param target target node ID
 	 */
-	public void compute(String source, String target) {
+	public void compute(String source, String target, MovingAgentBody agent) {
 		Node sourceNode = graph.getNodes().get(source);
 		Node targetNode = graph.getNodes().get(target);
 
@@ -147,7 +148,7 @@ public class AStar {
 			throw new RuntimeException("target node '" + target
 					+ "' does not exist in the graph");
 
-		aStar(sourceNode, targetNode);
+		aStar(sourceNode, targetNode, agent);
 	}
 
 	/**
@@ -160,7 +161,7 @@ public class AStar {
 		result = null;
 		pathFound = false;
 	}
-
+	
 	/**
 	 * The A* algorithm proper.
 	 * 
@@ -168,8 +169,10 @@ public class AStar {
 	 *            The source node.
 	 * @param targetNode
 	 *            The target node.
+	 * @param agent
+	 * 			  The agent to be considered
 	 */
-	private void aStar(Node sourceNode, Node targetNode) {
+	private void aStar(Node sourceNode, Node targetNode, MovingAgentBody agent) {
 		clearAll();
 		open.put(
 				sourceNode.getId(),
@@ -201,7 +204,7 @@ public class AStar {
 					Arc edge = nexts.next();
 					Node next = edge.getTargetNode();
 					double h = costs.heuristic(next, targetNode);
-					double g = current.g + costs.cost(edge);
+					double g = current.g + costs.cost(edge, agent);
 					double f = g + h;
 
 					// If the node is already in open with a better rank, we

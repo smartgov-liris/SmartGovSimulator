@@ -1,6 +1,7 @@
 package org.liris.smartgov.simulator.urban.geo.environment.graph;
 
 
+import org.liris.smartgov.simulator.core.agent.moving.MovingAgentBody;
 import org.liris.smartgov.simulator.core.environment.graph.Arc;
 import org.liris.smartgov.simulator.core.environment.graph.Node;
 import org.liris.smartgov.simulator.core.environment.graph.astar.Costs;
@@ -47,6 +48,11 @@ public class DistanceCosts implements Costs {
 	@Override
 	public double cost(Arc edge) {
 		return edge.getLength();
+	}
+
+	@Override
+	public double cost(Arc arc, MovingAgentBody body) {
+		return cost(arc);
 	}
 
 }
