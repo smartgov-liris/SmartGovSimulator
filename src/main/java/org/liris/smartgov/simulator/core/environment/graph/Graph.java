@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.liris.smartgov.simulator.SmartGov;
-import org.liris.smartgov.simulator.core.agent.moving.MovingAgentBody;
 import org.liris.smartgov.simulator.core.environment.graph.astar.AStar;
 import org.liris.smartgov.simulator.core.environment.graph.astar.Costs;
 
@@ -50,11 +49,11 @@ public class Graph {
 		return arcs;
 	}
 	
-	private List<Node> pathBetween(Node from, Node to, Costs costs, MovingAgentBody agent){
+	private List<Node> pathBetween(Node from, Node to, Costs costs){
 		long beginTime = DateTime.now().getMillis();
 		AStar astar = new AStar(this);
 		astar.setCosts(costs);
-		astar.compute(from.getId(), to.getId(), agent);
+		astar.compute(from.getId(), to.getId());
 		List<Node> path = astar.getShortestPath();
 		if(path==null || path.isEmpty()){
 			throw new IllegalArgumentException("No path could be built from " + from + " to " + to);
@@ -81,8 +80,8 @@ public class Graph {
 	 * @param costs AStar costs
 	 * @return Shortest path between nodes as a node list
 	 */
-	public List<Node> shortestPath(Node from, Node to, Costs costs, MovingAgentBody agent){
-		return pathBetween(from, to, costs, agent);
+	public List<Node> shortestPath(Node from, Node to, Costs costs){
+		return pathBetween(from, to, costs);
 	}
 	
 	/**
@@ -95,8 +94,8 @@ public class Graph {
 	 * @param to target node
 	 * @return Shortest path between nodes as a node list
 	 */
-	public List<Node> shortestPath(Node from, Node to, MovingAgentBody agent){
-		return shortestPath(from, to, new DefaultLengthCosts(), agent);
+	public List<Node> shortestPath(Node from, Node to){
+		return shortestPath(from, to, new DefaultLengthCosts());
 	}
 
 }

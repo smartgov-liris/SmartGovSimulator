@@ -1,6 +1,5 @@
 package org.liris.smartgov.simulator.core.environment.graph;
 
-import org.liris.smartgov.simulator.core.agent.moving.MovingAgentBody;
 import org.liris.smartgov.simulator.core.environment.graph.astar.Costs;
 
 /**
@@ -46,11 +45,6 @@ public class DefaultLengthCosts implements Costs {
 	@Override
 	public double cost(Arc edge) {
 		return edge.getLength();
-	}
-
-	@Override
-	public double cost(Arc arc, MovingAgentBody body) {
-		return cost(arc);
 	}
 
 }
