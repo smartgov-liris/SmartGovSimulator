@@ -81,14 +81,6 @@ public class SimulationRuntime {
 	}
 	
 	/**
-	 * Allows to restart the simulation
-	 * @param context
-	 */
-	public void restart(SmartGovContext context) {
-		throw new UnsupportedOperationException("Not implemented on this runtime");
-	}
-	
-	/**
 	 * Runs the simulation for the specified number of ticks.
 	 *
 	 * @param ticks number of ticks to run

@@ -55,14 +55,6 @@ public class SmartGov {
 		this.simulationBuilder = simulationBuilder;
 		this.simulationBuilder.build();
 	}
-	
-	
-	public void restart(SmartGovContext context) {
-		this.context = context;
-		smartGovRuntime.restart(context);
-		simulationBuilder = new SimulationBuilder(context);
-		simulationBuilder.build();
-	}
 
 	
     public static void main(String[] args) {

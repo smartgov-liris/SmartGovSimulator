@@ -51,10 +51,6 @@ public class SimulationBuilder {
 		SmartGov.logger.info("Time to process simulation creation: " + (System.currentTimeMillis() - beginTime) + " ms.");
 	}
 	
-	public void rebuild() {
-		throw new UnsupportedOperationException("Not implemented on this builder");
-	}
-	
 	/**
 	 * Current context.
 	 *
