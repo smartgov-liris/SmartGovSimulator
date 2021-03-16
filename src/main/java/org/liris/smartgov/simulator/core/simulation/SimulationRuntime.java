@@ -24,28 +24,28 @@ public class SimulationRuntime {
 	
 	private final Logger logger = LogManager.getLogger(SimulationRuntime.class);
 
-	private SmartGovContext context;
-	private int tickCount = 0;
-	private int maxTicks = Integer.MAX_VALUE;
-	private boolean run = false;
-	private boolean pause = true;
+	protected SmartGovContext context;
+	protected int tickCount = 0;
+	protected int maxTicks = Integer.MAX_VALUE;
+	protected boolean run = false;
+	protected boolean pause = true;
 
 	// Time that correspond to a tick, in seconds
-	private double tickDuration = 1.0;
+	protected double tickDuration = 1.0;
 	
 	// Delay between each ticks in ms
-	private long tickDelay = 0;
+	protected long tickDelay = 0;
 	
 	// Simulation clock
-	private Clock clock;
+	protected Clock clock;
 	
-	private SimulationThread simulationThread;
+	protected SimulationThread simulationThread;
 
-	private Collection<EventHandler<SimulationStarted>> simulationStartedEventHandlers;
-	private Collection<EventHandler<SimulationStopped>> simulationStoppedEventHandlers;
-	private Collection<EventHandler<SimulationPaused>> simulationPausedEventHandlers;
-	private Collection<EventHandler<SimulationResumed>> simulationResumedEventHandlers;
-	private Collection<EventHandler<SimulationStep>> simulationStepEventHandlers;
+	protected Collection<EventHandler<SimulationStarted>> simulationStartedEventHandlers;
+	protected Collection<EventHandler<SimulationStopped>> simulationStoppedEventHandlers;
+	protected Collection<EventHandler<SimulationPaused>> simulationPausedEventHandlers;
+	protected Collection<EventHandler<SimulationResumed>> simulationResumedEventHandlers;
+	protected Collection<EventHandler<SimulationStep>> simulationStepEventHandlers;
 	
 	/**
 	 * SimulationRuntime constructor.
@@ -152,6 +152,8 @@ public class SimulationRuntime {
 		return run;
 	}
 	
+	
+	
 	/**
 	 * Performs a step, if the current simulation is running and paused.
 	 * 
@@ -170,7 +172,7 @@ public class SimulationRuntime {
 		_step();
 	}
 	
-	private void _step() {
+	protected void _step() {
 		long begin = System.currentTimeMillis();
 		for (Agent<?> agent : context.agents.values()) {
 			agent.live();
@@ -283,6 +285,10 @@ public class SimulationRuntime {
 		return simulationThread;
 	}
 	
+	public SmartGovContext getContext() {
+		return context;
+	}
+	
 	/**
 	 * Blocking function to wait until the simulation has stopped.
 	 * 
@@ -294,9 +300,9 @@ public class SimulationRuntime {
 		}
 	}
 	
-	private class SimulationThread extends Thread {
+	protected class SimulationThread extends Thread {
 		
-		private boolean internalRun = true;
+		protected boolean internalRun = true;
 		
 		/*
 		 * Synchronized methods to safely handle thread pause and resume
@@ -337,7 +343,7 @@ public class SimulationRuntime {
 		simulationStartedEventHandlers.add(listener);
 	}
 	
-	private void triggerSimulationStartedListeners() {
+	protected void triggerSimulationStartedListeners() {
 		SimulationStarted event = new SimulationStarted(maxTicks);
 		for(EventHandler<SimulationStarted> listener : simulationStartedEventHandlers) {
 			listener.handle(event);
@@ -354,7 +360,7 @@ public class SimulationRuntime {
 		simulationStoppedEventHandlers.add(listener);
 	}
 	
-	private void triggerSimulationStoppedListeners() {
+	protected void triggerSimulationStoppedListeners() {
 		SimulationStopped event = new SimulationStopped(tickCount, clock.time());
 		for(EventHandler<SimulationStopped> listener : simulationStoppedEventHandlers) {
 			listener.handle(event);
@@ -371,7 +377,7 @@ public class SimulationRuntime {
 		simulationPausedEventHandlers.add(listener);
 	}
 	
-	private void triggerSimulationPausedListeners() {
+	protected void triggerSimulationPausedListeners() {
 		SimulationPaused event = new SimulationPaused(tickCount, clock.time());
 		for(EventHandler<SimulationPaused> listener : simulationPausedEventHandlers) {
 			listener.handle(event);
@@ -388,7 +394,7 @@ public class SimulationRuntime {
 		simulationResumedEventHandlers.add(listener);
 	}
 	
-	private void triggerSimulationResumedListeners() {
+	protected void triggerSimulationResumedListeners() {
 		SimulationResumed event = new SimulationResumed(tickCount, clock.time());
 		for(EventHandler<SimulationResumed> listener : simulationResumedEventHandlers) {
 			listener.handle(event);
@@ -405,7 +411,7 @@ public class SimulationRuntime {
 		simulationStepEventHandlers.add(listener);
 	}
 	
-	private void triggerSimulationStepListeners() {
+	protected void triggerSimulationStepListeners() {
 		SimulationStep event = new SimulationStep(tickCount, clock.time());
 		for(EventHandler<SimulationStep> listener : simulationStepEventHandlers) {
 			listener.handle(event);

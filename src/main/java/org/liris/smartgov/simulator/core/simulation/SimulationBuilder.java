@@ -49,7 +49,6 @@ public class SimulationBuilder {
 		SmartGov.logger.info("Loading World for " + context.getScenario().getClass().getSimpleName());
 		context.getScenario().loadWorld(context);
 		SmartGov.logger.info("Time to process simulation creation: " + (System.currentTimeMillis() - beginTime) + " ms.");
-
 	}
 	
 	/**

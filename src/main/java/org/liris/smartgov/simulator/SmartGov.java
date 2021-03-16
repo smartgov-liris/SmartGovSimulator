@@ -21,9 +21,9 @@ public class SmartGov {
 	
 	public static final Logger logger = LogManager.getLogger(SmartGov.class);
 	
-	private SmartGovContext context;
-	private static SimulationBuilder simulationBuilder;
-	private static SimulationRuntime smartGovRuntime;
+	protected SmartGovContext context;
+	protected static SimulationBuilder simulationBuilder;
+	protected static SimulationRuntime smartGovRuntime;
 	
 	
 	public SmartGov(SmartGovContext context) {
@@ -35,6 +35,28 @@ public class SmartGov {
 	
 	}
 
+	public SmartGov(SmartGovContext context, SimulationRuntime smartGovRuntime) {
+		logger.info("Starting SmartGov");
+		if (! smartGovRuntime.getContext().equals(context)) {
+			throw new IllegalArgumentException("The contexts are not the same");
+		}
+		this.context = context;
+		this.smartGovRuntime = smartGovRuntime;
+		simulationBuilder = new SimulationBuilder(context);
+		simulationBuilder.build();
+	}
+	
+	public SmartGov(SmartGovContext context, SimulationRuntime smartGovRuntime, SimulationBuilder simulationBuilder) {
+		if ( (! simulationBuilder.getContext().equals(context) ) ||  (! smartGovRuntime.getContext().equals(context) )) {
+			throw new IllegalArgumentException("The contexts are not the same");
+		}
+		this.context = context;
+		this.smartGovRuntime = smartGovRuntime;
+		this.simulationBuilder = simulationBuilder;
+		this.simulationBuilder.build();
+	}
+
+	
     public static void main(String[] args) {
         SmartGov smartGov = new SmartGov(new OsmContext(args[0]));
         getRuntime().addSimulationStoppedListener(new EventHandler<SimulationStopped>() {
