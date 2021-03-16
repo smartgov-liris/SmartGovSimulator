@@ -39,6 +39,47 @@ To build the project using the [Gradle CLI](https://docs.gradle.org/current/user
 
 This will compile the Java classes, and run all the unit tests.
 
+## Running the test
+
+Although the tests are already executed when building with Gradle, you might
+wish to run them independently. Running all the tests is achieved with
+```
+./gradlew test
+```
+and running a subset (defined by the regexp argument) of the test can
+be done with e.g.
+```
+./gradlew test --console=verbose --tests "org.liris.*"
+```
+Eventually running a single test can be done with e.g.
+```
+./gradlew test --tests DeliveryDriverBehaviorTest
+```
+One some tests are executed you will find an html based report within
+the `build/reports/tests/test/index.html` subdirectory.
+
+In order to display the names of all the tests place the following
+lines within the `build.gradle` configuration file
+```
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+```
+## Other gradle notes
+ * Gradle available tasks can be listed with
+   ```
+   ./gradlew tasks --all
+   ```
+   Notice the availability of the `clean` task launchable as
+   ```
+   ./gradlew clean
+   ```
+ * The `--console=verbose` flag will have gradle display the
+   task that are already up to date e.g.
+   `./gradlew test --console=verbose --tests`
+
 ## IntelliJ IDEA
 
 To import the project in the IntelliJ IDEA :
