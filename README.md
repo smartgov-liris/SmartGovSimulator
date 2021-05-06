@@ -5,7 +5,7 @@ The framework is sufficiently generic to handle any graph-based multi-agent simu
 
 # Documentation
 
-For concrete examples and tutorials, check the [wiki of this repository](https://github.com/smartgov-liris/SmartGovSimulator/wiki).
+For concrete examples and tutorials, check the [SmartGovSimulatorDocExamples repository](https://github.com/smartgov-liris/SmartGovSimulatorDocExamples).
 
 For the complete Java API, check the online [javadoc](https://smartgov-liris.github.io/SmartGovSimulator/).
 
