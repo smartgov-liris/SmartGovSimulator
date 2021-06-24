@@ -60,25 +60,45 @@ the `build/reports/tests/test/index.html` subdirectory.
 
 In order to display the names of all the tests place the following
 lines within the `build.gradle` configuration file
-```
+
+```bash
 test {
     testLogging {
         events "passed", "skipped", "failed"
     }
 }
 ```
-## Other gradle notes
- * Gradle available tasks can be listed with
-   ```
+
+## Building the javadoc
+
+Building the [Javadoc](https://en.wikipedia.org/wiki/Javadoc) is achieved 
+through a gradle task
+
+```bash
+gradlew javadoc
+```
+
+that places the generated documentation within the `docs/` sub-directory and
+that can be browsed with your favorite web-browser by opening the
+`docs/index.html` file.
+
+## Gradle related notes
+
+- Gradle available tasks can be listed with
+
+  ```bash
    ./gradlew tasks --all
    ```
+
    Notice the availability of the `clean` task launchable as
-   ```
+
+   ```bash
    ./gradlew clean
    ```
- * The `--console=verbose` flag will have gradle display the
-   task that are already up to date e.g.
-   `./gradlew test --console=verbose --tests`
+
+- The `--console=verbose` flag will have gradle display the
+  task that are already up to date e.g.
+  `./gradlew test --console=verbose --tests`
 
 ## IntelliJ IDEA
 
