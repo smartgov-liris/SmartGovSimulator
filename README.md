@@ -1,3 +1,5 @@
+[![Build status](https://travis-ci.com/smartgov-liris/SmartGovSimulator.svg?branch=master)](https://github.com/smartgov-liris/SmartGovSimulator)
+
 # SmartGovSimulator
 A multi-agent simulator for urban problems.
 
