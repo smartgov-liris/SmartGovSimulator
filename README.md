@@ -1,7 +1,7 @@
 [![Build status](https://travis-ci.com/smartgov-liris/SmartGovSimulator.svg?branch=master)](https://github.com/smartgov-liris/SmartGovSimulator)
 
 # SmartGovSimulator
-A multi-agent simulator for urban problems.
+A multi-agent simulator for urban mobility policies.
 
 The framework is sufficiently generic to handle any graph-based multi-agent simulation.
 
